@@ -2,18 +2,20 @@
 #ifndef routines_h
 #define routines_h
 
-extern void av_CheckSumAll(void);
-extern char av_ScanAll(void);
-extern void pgrm_DrawSplashScreen(void);
-extern char av_ValidateSaved(void);
-extern void settings_SaveDate(void);
-extern void settings_VerifyDate(void);
+void av_CheckSumAll(void);
+char av_ScanAll(void);
+void pgrm_DrawSplashScreen(void);
+char av_ValidateSaved(void);
+void settings_SaveDate(void);
+void settings_VerifyDate(void);
 extern void SetHook();
-extern void RemoveHook();
-extern void pgrm_DrawSettingsMenu(void);
-extern void pgrm_ApplySettings();
-extern void pgrm_SaveSettings();
-extern char pgrm_DrawMainMenu(void);
+void RemoveHook();
+void pgrm_DrawSettingsMenu(void);
+void pgrm_ApplySettings();
+void pgrm_SaveSettings();
+char pgrm_DrawMainMenu(char option);
+void showBoxes(void);
+bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge);
 
 
 #endif

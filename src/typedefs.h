@@ -11,7 +11,7 @@ typedef struct {
     uint16_t year; } time_struct_short_t;
 
 typedef struct {
-    time_struct_t savedtime;
+    time_struct_t time;
     uint8_t hookInstall;
     uint8_t enableFirewall;
     uint8_t enableQuarantine;

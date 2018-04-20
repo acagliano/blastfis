@@ -18,6 +18,7 @@ _SetHook:
     ld b, 0
     ld hl, HookAppV
     call 0020320h       ; mov9toOP1
+    call 0021448h       ; should move to archive
     call 002050Ch       ; chkfindsym
 varexists:
     ex de, hl
@@ -122,9 +123,15 @@ nextdef:
     inc hl
     jr loopvdef
 ReturnZ:
+    ld hl, AppVName
+    call 0020320h           ; mov9toop1
+    call 0021448h
     cp a
     ret
 ReturnNZ:
+    ld hl, AppVName
+    call 0020320h           ; mov9toop1
+    call 0021448h
     or 1
     ret
 AppVName:
