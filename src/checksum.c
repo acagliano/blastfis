@@ -1,17 +1,9 @@
-//
-//  scan.h
-//  BlastAV
-//
-//  Created by Anthony Cagliano on 4/4/18.
-//  Copyright © 2018 ClrHome Productions. All rights reserved.
-//
-
-#ifndef checksum_h
-#define checksum_h
-
-#include <stdbool.h>
+#include <graphx.h>
 #include <fileioc.h>
-
+#include <decompress.h>
+#include "typedefs.h"
+#include <string.h>
+#include "globals.h"
 
 void av_CheckSumAll(void){
     char *progname, tempread;
@@ -72,4 +64,3 @@ void av_CheckSumAll(void){
     while(!os_GetCSC());
 }
 
-#endif

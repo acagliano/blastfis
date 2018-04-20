@@ -1,14 +1,8 @@
-//
-//  scan.h
-//  BlastAV
-//
-//  Created by Anthony Cagliano on 4/4/18.
-//  Copyright © 2018 ClrHome Productions. All rights reserved.
-//
-
-#ifndef scan_h
-#define scan_h
-
+#include <graphx.h>
+#include <fileioc.h>
+#include "typedefs.h"
+#include "globals.h"
+#include <string.h>
 
 char av_ScanAll(void){
     char *progname;
@@ -78,4 +72,3 @@ char av_ScanAll(void){
 }
 
 
-#endif /* scan_h */

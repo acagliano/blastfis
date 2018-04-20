@@ -29,34 +29,14 @@
 #include "typedefs.h"
 
 /* Put your function prototypes here */
-void av_CheckSumAll(void);
-char av_ScanAll(void);
-void pgrm_DrawSplashScreen(void);
-char av_ValidateSaved(void);
-void settings_SaveDate(void);
-void settings_VerifyDate(void);
-extern void SetHook();
-extern void RemoveHook();
-void pgrm_DrawSettingsMenu(void);
-void pgrm_ApplySettings();
-void pgrm_SaveSettings();
-char pgrm_DrawMainMenu(void);
 
 
 
+#include "routines.h"
 #include "gfx/all_gfx.h"
 /* Put all your globals here. */
-const char *ScanDB = "AVData";
-const char *VDefs = "AVDEFS";
-const char *AVSettings = "AVSett";
-const char *ProgName = "Blast";
-const char *SubName = "Calculator Security Suite";
-const char *Version = "0.7b";
+#include "globals.h"
 
-
-
-time_struct_t systemtime;
-settings_save_t settingsSave = {0};
 
 void main(void) {
 	/* Fill in the body of the main function here */
@@ -139,9 +119,3 @@ void main(void) {
 }
 
 /* Put other functions here */
-#include "checksum.h"
-#include "scan.h"
-#include "splash.h"
-#include "mainmenu.h"
-#include "settings.h"
-#include "validate.h"

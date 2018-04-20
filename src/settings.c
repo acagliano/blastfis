@@ -1,8 +1,9 @@
-
-#ifndef settings_h
-#define settings_h
-#include <stdio.h>
-
+#include <graphx.h>
+#include <fileioc.h>
+#include <decompress.h>
+#include "typedefs.h"
+#include "splash.c"
+#include "routines.h"
 void showBoxes();
 
 void pgrm_DrawSettingsMenu(void){
@@ -94,4 +95,3 @@ void showBoxes(){
     free(uncompressed_on);
     free(uncompressed_off);
 }
-#endif

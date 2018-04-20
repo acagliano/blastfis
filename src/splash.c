@@ -1,7 +1,8 @@
-#ifndef splash_h
-#define splash_h
-
-#include <tice.h>
+#include "gfx/all_gfx.h"
+#include "globals.h"
+#include <graphx.h>
+#include <decompress.h>
+#include <fileioc.h>
 
 bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge);
 
@@ -81,4 +82,3 @@ bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
     
 }
 
-#endif

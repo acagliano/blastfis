@@ -1,17 +1,8 @@
-
-//
-//  scan.h
-//  BlastAV
-//
-//  Created by Anthony Cagliano on 4/4/18.
-//  Copyright © 2018 ClrHome Productions. All rights reserved.
-//
-
-#ifndef validate_h
-#define validate_h
-
-#include <stdbool.h>
+#include <graphx.h>
 #include <fileioc.h>
+#include <decompress.h>
+#include "typedefs.h"
+#include "globals.h"
 #include <string.h>
 
 
@@ -77,4 +68,3 @@ char av_ValidateSaved(void){
     return 0;
 }
 
-#endif

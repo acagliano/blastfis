@@ -1,3 +1,5 @@
+#include <graphx.h>
+#include <fileioc.h>
 
 
 char pgrm_DrawMainMenu(void){
