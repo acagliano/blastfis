@@ -1,0 +1,17 @@
+Opened convpng.ini
+
+--- Group all_gfx (C) ---
+Using built-in xlibc palette ...
+4:
+ blast_logo : converted! (4098 > 329 bytes)
+ warning : converted! (123 > 38 bytes)
+ funcoff : converted! (66 > 8 bytes)
+ funcon : converted! (66 > 8 bytes)
+
+Converted in 0 s
+
+[warning] image quality might be too low.
+please try grouping similar images, reducing image colors, 
+or selecting a better palette if conversion is not ideal.
+
+Finished!
