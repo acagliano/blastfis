@@ -1,5 +1,9 @@
 #ifndef typedefs_h
 #define typedefs_h
+#include <stdbool.h>
+#include <stddef.h>
+#include <stdint.h>
+#include <tice.h>
 
 // Time Structures //
 typedef struct {
@@ -13,6 +17,7 @@ typedef struct {
 typedef struct {
     time_struct_t time;
     uint8_t hookInstall;
+    uint8_t smartAttr;
     uint8_t enableFirewall;
     uint8_t enableQuarantine;
 } settings_save_t;

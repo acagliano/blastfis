@@ -13,10 +13,10 @@
 
 ; Included for Assembler Compatibility
 ;------------------------------------
-#define equ .equ
-#define EQU .equ
-#define end .end
-#define END .end
+define equ .equ
+define EQU .equ
+define end .end
+define END .end
 
 ; Hardware Defines
 ;------------------------------

@@ -27,16 +27,29 @@
 #include <intce.h>
 
 #include "typedefs.h"
+#include "files.h"
+#include "asmstuff.h"
+#include "gfx/all_gfx.h"
 
 /* Put your function prototypes here */
+void av_CheckSumAll(void);
+char av_ScanAll(void);
+char av_ValidateSaved(void);
+void showBoxes(void);
+char pgrm_DrawMainMenu(char selected);
+void pgrm_DrawSettingsMenu(void);
+void pgrm_DrawSplashScreen(void);
+void pgrm_ApplySettings(void);
+void pgrm_SaveSettings(void);
+bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge);
 
-
-
-#include "routines.h"
-#include "gfx/all_gfx.h"
 /* Put all your globals here. */
-#include "globals.h"
+const char *ProgName = "Blast";
+const char *SubName = "Calculator Security Suite";
+const char *Version = "0.8b";
 
+time_struct_t systemtime;
+settings_save_t settingsSave = {0};
 
 void main(void) {
 	/* Fill in the body of the main function here */
@@ -108,6 +121,8 @@ void main(void) {
                 gfx_PrintStringXY("by Anthony Cagliano", 0, 107);
                 gfx_PrintStringXY("Any key to return to main menu", 0, 227);
                 while(!os_GetCSC());
+                gfx_ZeroScreen();
+                pgrm_DrawSplashScreen();
                 break;
         }
     }
@@ -179,40 +194,7 @@ void av_CheckSumAll(void){
     while(!os_GetCSC());
 }
 
-char pgrm_DrawMainMenu(char selected){
-    char key = 0;
-    ti_CloseAll();
-    gfx_PrintStringXY("BLASTCSS MAIN MENU", 130, 86);
-    gfx_SetColor(135);
-    gfx_HorizLine(130, 96, 135);
-    gfx_SetColor(0);
-    gfx_PrintStringXY("Scan Programs", 130, 100);
-    gfx_PrintStringXY("Verify Attributes", 130, 112);
-    gfx_PrintStringXY("Update Attributes File", 130, 124);
-    gfx_PrintStringXY("Advanced Settings", 130, 136);
-    gfx_PrintStringXY("About", 130, 148);
-    gfx_PrintStringXY("Exit", 130, 160);
-    gfx_SetColor(135);
-    gfx_FillCircle(120, selected * 12 + 91, 3);
-    while( (key = os_GetCSC()) != sk_Enter ){
-        if(key){
-            gfx_SetColor(0);
-            gfx_FillCircle(120, selected * 12 + 91, 3);
-            gfx_SetColor(135);
-        }
-        if(key == sk_Up){
-            selected--;
-            if(selected < 1) selected = 6;
-        }
-        if(key == sk_Down){
-            selected++;
-            if(selected > 6) selected = 1;
-        }
-        if(key) gfx_FillCircle(120, selected * 12 + 91, 3);
-        if(key == sk_Clear) { selected = 6; break; }
-    }
-    return selected;
-}
+
 
 
 char av_ScanAll(void){
@@ -282,6 +264,124 @@ char av_ScanAll(void){
     return 0;
 }
 
+
+char av_ValidateSaved(void){
+    ti_var_t avData;
+    char tempread;
+    uint16_t xpos = 10, ypos = 0;
+    ti_CloseAll();
+    if( !(avData = ti_Open(ScanDB, "r")) ) return 1;
+    // when called, destroys the pre-existing checksums database
+    // recreates it and saves new values
+    // for each installed program variable, we save:
+    //      up to 9 bytes for name + type
+    //      24-bit (3-byte) checksum
+    //      date of last checksum also written
+    if(ti_Seek(4, SEEK_SET, avData) == EOF) return 2;
+    gfx_ZeroScreen();
+    gfx_PrintStringXY("Verifying Checksums...", xpos, ypos);
+    gfx_SetColor(135);
+    gfx_HorizLine(0, 10, 320);
+    gfx_SetColor(0);
+    xpos = 5;
+    ypos += 13;
+    
+    while(ti_Tell(avData) < ti_GetSize(avData)) {
+        // repeat until ti_DetectVar returns NULL
+        // ti_DetectVar returns program name
+        ti_var_t progdata;
+        uint24_t checksum = 0;
+        ProgData_t *program = malloc(sizeof(ProgData_t));   // init zero'd program data structure
+        gfx_SetTextFGColor(135);
+        memset(program, '\0', sizeof(ProgData_t));
+        ti_Read(program, sizeof(ProgData_t), 1, avData);
+        
+        if(progdata = ti_OpenVar(program->name, "r", program->type)){    // open var slot for program
+            gfx_PrintStringXY(program->name, xpos, ypos);
+            xpos += 150;
+            if(program->size == ti_GetSize(progdata)) gfx_SetTextFGColor(135);
+            else gfx_SetTextFGColor(192);
+            gfx_PrintStringXY("size", xpos, ypos);
+            xpos += 75;
+            
+            while((tempread = ti_GetC(progdata)) != EOF){       // read out every byte of program
+                checksum += tempread;          // add data at tempread to checksum
+            }
+            if(program->checksum == checksum) gfx_SetTextFGColor(135);
+            else gfx_SetTextFGColor(192);
+            gfx_PrintStringXY("checksum", xpos, ypos);
+            ti_Close(progdata);
+            free(program);
+            xpos = 5;
+            ypos += 12;
+            if(ypos > 227){
+                while(!os_GetCSC());
+                gfx_SetColor(0);
+                gfx_FillRectangle(0, 13, 320, 227);
+                ypos = 12;
+            }
+        }
+    }
+    while(!os_GetCSC());
+    ti_Close(avData);
+    return 0;
+}
+
+void showBoxes(void){
+    gfx_sprite_t *uncompressed_off, *uncompressed_on;
+    uncompressed_off = gfx_MallocSprite(8,8);
+    dzx7_Standard(funcoff_compressed, uncompressed_off);
+    uncompressed_on = gfx_MallocSprite(8,8);
+    dzx7_Standard(funcon_compressed, uncompressed_on);
+    if(settingsSave.hookInstall){ gfx_Sprite(uncompressed_on, 280, 112); }
+    else { gfx_Sprite(uncompressed_off, 280, 112); }
+    if(settingsSave.smartAttr){ gfx_Sprite(uncompressed_on, 280, 124); }
+    else { gfx_Sprite(uncompressed_off, 280, 124); }
+    if(settingsSave.enableFirewall){ gfx_Sprite(uncompressed_on, 280, 136); }
+    else {gfx_Sprite(uncompressed_off, 280, 136);}
+    if(settingsSave.enableQuarantine) {gfx_Sprite(uncompressed_on, 280, 148);}
+    else {gfx_Sprite(uncompressed_off, 280, 148);}
+    free(uncompressed_on);
+    free(uncompressed_off);
+}
+
+
+char pgrm_DrawMainMenu(char selected){
+    char key = 0;
+    ti_CloseAll();
+    gfx_PrintStringXY("BLASTCSS MAIN MENU", 130, 86);
+    gfx_SetColor(135);
+    gfx_HorizLine(130, 96, 135);
+    gfx_SetColor(0);
+    gfx_PrintStringXY("Scan Programs", 130, 100);
+    gfx_PrintStringXY("Verify Attributes", 130, 112);
+    gfx_PrintStringXY("Update Attributes File", 130, 124);
+    gfx_PrintStringXY("Advanced Settings", 130, 136);
+    gfx_PrintStringXY("About", 130, 148);
+    gfx_PrintStringXY("Exit", 130, 160);
+    gfx_SetColor(135);
+    gfx_FillCircle(120, selected * 12 + 91, 3);
+    while( (key = os_GetCSC()) != sk_Enter ){
+        if(key){
+            gfx_SetColor(0);
+            gfx_FillCircle(120, selected * 12 + 91, 3);
+            gfx_SetColor(135);
+        }
+        if(key == sk_Up){
+            selected--;
+            if(selected < 1) selected = 6;
+        }
+        if(key == sk_Down){
+            selected++;
+            if(selected > 6) selected = 1;
+        }
+        if(key) gfx_FillCircle(120, selected * 12 + 91, 3);
+        if(key == sk_Clear) { selected = 6; break; }
+    }
+    return selected;
+}
+
+
 void pgrm_DrawSettingsMenu(void){
     char selected = 1, key = 0;
     ti_CloseAll();
@@ -292,9 +392,10 @@ void pgrm_DrawSettingsMenu(void){
     gfx_HorizLine(130, 108, 166);
     gfx_SetColor(0);
     gfx_PrintStringXY("Enable Smart-Detect", 130, 112);
-    gfx_PrintStringXY("Enable Firewall", 130, 124);
-    gfx_PrintStringXY("Enable Quarantine", 130, 136);
-    gfx_PrintStringXY("Main Menu", 130, 148);
+    gfx_PrintStringXY("Enable Smart-Attrib.", 130, 124);
+    gfx_PrintStringXY("Enable Firewall", 130, 136);
+    gfx_PrintStringXY("Enable Quarantine", 130, 148);
+    gfx_PrintStringXY("Main Menu", 130, 160);
     showBoxes();
     gfx_SetColor(135);
     gfx_FillCircle(120, selected * 12 + 103, 3);
@@ -307,11 +408,11 @@ void pgrm_DrawSettingsMenu(void){
         }
         if(key == sk_Up){
             selected--;
-            if(selected < 1) selected = 4;
+            if(selected < 1) selected = 5;
         }
         if(key == sk_Down){
             selected++;
-            if(selected > 4) selected = 1;
+            if(selected > 5) selected = 1;
         }
         if(key == sk_Enter){
             switch(selected){
@@ -320,55 +421,28 @@ void pgrm_DrawSettingsMenu(void){
                     showBoxes();
                     break;
                 case 2:
-                    settingsSave.enableFirewall = !settingsSave.enableFirewall;
+                    settingsSave.smartAttr = !settingsSave.smartAttr;
                     showBoxes();
                     break;
                 case 3:
-                    settingsSave.enableQuarantine = !settingsSave.enableQuarantine;
+                    settingsSave.enableFirewall = !settingsSave.enableFirewall;
                     showBoxes();
                     break;
                 case 4:
+                    settingsSave.enableQuarantine = !settingsSave.enableQuarantine;
+                    showBoxes();
+                    break;
+                case 5:
                     key = sk_Clear;
                     break;
             }
         }
         if(key) gfx_FillCircle(120, selected * 12 + 103, 3);
+        if(key == sk_Clear) break;
     }
     pgrm_SaveSettings();
     pgrm_ApplySettings();
 }
-
-void pgrm_ApplySettings(){
-    if(settingsSave.hookInstall == 1) SetHook();
-    if(settingsSave.hookInstall == 0) RemoveHook();
-}
-
-void pgrm_SaveSettings(){
-    ti_var_t settings;
-    ti_CloseAll();
-    if(settings = ti_Open(AVSettings, "w")){
-        ti_Write(&settingsSave, sizeof(settings_save_t), 1, settings);
-        ti_SetArchiveStatus(true, settings);
-        ti_Close(settings);
-    }
-}
-
-void showBoxes(){
-    gfx_sprite_t *uncompressed_off, *uncompressed_on;
-    uncompressed_off = gfx_MallocSprite(8,8);
-    dzx7_Standard(funcoff_compressed, uncompressed_off);
-    uncompressed_on = gfx_MallocSprite(8,8);
-    dzx7_Standard(funcon_compressed, uncompressed_on);
-    if(settingsSave.hookInstall){ gfx_Sprite(uncompressed_on, 280, 112); }
-    else { gfx_Sprite(uncompressed_off, 280, 112); }
-    if(settingsSave.enableFirewall){ gfx_Sprite(uncompressed_on, 280, 124); }
-    else {gfx_Sprite(uncompressed_off, 280, 124);}
-    if(settingsSave.enableQuarantine) {gfx_Sprite(uncompressed_on, 280, 136);}
-    else {gfx_Sprite(uncompressed_off, 280, 136);}
-    free(uncompressed_on);
-    free(uncompressed_off);
-}
-
 
 void pgrm_DrawSplashScreen(void) {
     // Draw splash screen
@@ -436,6 +510,24 @@ void pgrm_DrawSplashScreen(void) {
     // Draw menu items
 }
 
+
+void pgrm_ApplySettings(void){
+    if(settingsSave.hookInstall == 1) SetParserHook();
+    if(settingsSave.hookInstall == 0) RemoveParserHook();
+}
+
+void pgrm_SaveSettings(void){
+    ti_var_t settings;
+    ti_CloseAll();
+    if(settings = ti_Open(AVSettings, "w")){
+        ti_Write(&settingsSave, sizeof(settings_save_t), 1, settings);
+        ti_SetArchiveStatus(true, settings);
+        ti_Close(settings);
+    }
+}
+
+
+
 bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
     uint24_t systemdays, filedays;
     systemdays = (systemtime.year * 365) + (systemtime.month * 30) + systemtime.day;
@@ -443,68 +535,6 @@ bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
     if(systemdays - filedays >= maxAge) return 1;
     return 0;
     
-}
-
-char av_ValidateSaved(void){
-    ti_var_t avData;
-    char tempread;
-    uint16_t xpos = 10, ypos = 0;
-    ti_CloseAll();
-    if( !(avData = ti_Open(ScanDB, "r")) ) return 1;
-    // when called, destroys the pre-existing checksums database
-    // recreates it and saves new values
-    // for each installed program variable, we save:
-    //      up to 9 bytes for name + type
-    //      24-bit (3-byte) checksum
-    //      date of last checksum also written
-    if(ti_Seek(4, SEEK_SET, avData) == EOF) return 2;
-    gfx_ZeroScreen();
-    gfx_PrintStringXY("Verifying Checksums...", xpos, ypos);
-    gfx_SetColor(135);
-    gfx_HorizLine(0, 10, 320);
-    gfx_SetColor(0);
-    xpos = 5;
-    ypos += 13;
-    
-    while(ti_Tell(avData) < ti_GetSize(avData)) {
-        // repeat until ti_DetectVar returns NULL
-        // ti_DetectVar returns program name
-        ti_var_t progdata;
-        uint24_t checksum = 0;
-        ProgData_t *program = malloc(sizeof(ProgData_t));   // init zero'd program data structure
-        gfx_SetTextFGColor(135);
-        memset(program, '\0', sizeof(ProgData_t));
-        ti_Read(program, sizeof(ProgData_t), 1, avData);
-        
-        if(progdata = ti_OpenVar(program->name, "r", program->type)){    // open var slot for program
-            gfx_PrintStringXY(program->name, xpos, ypos);
-            xpos += 150;
-            if(program->size == ti_GetSize(progdata)) gfx_SetTextFGColor(135);
-            else gfx_SetTextFGColor(192);
-            gfx_PrintStringXY("size", xpos, ypos);
-            xpos += 75;
-            
-            while((tempread = ti_GetC(progdata)) != EOF){       // read out every byte of program
-                checksum += tempread;          // add data at tempread to checksum
-            }
-            if(program->checksum == checksum) gfx_SetTextFGColor(135);
-            else gfx_SetTextFGColor(192);
-            gfx_PrintStringXY("checksum", xpos, ypos);
-            ti_Close(progdata);
-            free(program);
-            xpos = 5;
-            ypos += 12;
-            if(ypos > 227){
-                while(!os_GetCSC());
-                gfx_SetColor(0);
-                gfx_FillRectangle(0, 13, 320, 227);
-                ypos = 12;
-            }
-        }
-    }
-    while(!os_GetCSC());
-    ti_Close(avData);
-    return 0;
 }
 
 

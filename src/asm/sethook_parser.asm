@@ -1,9 +1,9 @@
 .assume adl = 1
-XDEF _SetHook
-XDEF _RemoveHook
+XDEF _SetParserHook
+XDEF _RemoveParserHook
 
-_SetHook:
-    ld hl, HookAppV
+_SetParserHook:
+    ld hl, ParsHookAppV
     call 0020320h       ; mov9toOP1
     call 002050Ch       ; chkfindsym
     jr nc, varexists
@@ -16,7 +16,7 @@ _SetHook:
     ld bc, ParserHook_End-ParserHook
     ldir
     ld b, 0
-    ld hl, HookAppV
+    ld hl, ParsHookAppV
     call 0020320h       ; mov9toOP1
     call 0021448h       ; should move to archive
     call 002050Ch       ; chkfindsym
@@ -28,9 +28,9 @@ varexists:
     call 002149Ch       ; setparserhook
     ret
 
-_RemoveHook:
+_RemoveParserHook:
     call 00214A0h       ; unset parser hook
-    ld hl, HookAppV
+    ld hl, ParsHookAppV
     call 0020320h       ; mov9toOP1
     call 002050Ch       ; chkfindsym
     ret c
@@ -38,8 +38,8 @@ _RemoveHook:
     ret
 
 
-HookAppV:
-db 15h, "AVHook",0
+ParsHookAppV:
+db 15h, "AVPars",0
 
 
 ParserHook:
