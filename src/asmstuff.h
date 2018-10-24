@@ -2,8 +2,10 @@
 #ifndef asmstuff_h
 #define asmstuff_h
 
-void SetParserHook();
+void InstallParserHook();
 void RemoveParserHook();
+void InstallAppChangeHook();
+void RemoveAppChangeHook();
 
 
 

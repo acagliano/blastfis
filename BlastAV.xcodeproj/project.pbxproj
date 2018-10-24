@@ -3,26 +3,41 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 50;
 	objects = {
 
+/* Begin PBXFileReference section */
+		857C8F16208A604B000BD01A /* src */ = {isa = PBXFileReference; lastKnownFileType = folder; path = src; sourceTree = "<group>"; };
+		857C8F17208A604B000BD01A /* iconc.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconc.png; sourceTree = "<group>"; };
+		857C8F18208A604B000BD01A /* readme.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = readme.md; sourceTree = "<group>"; };
+		857C8F19208A604B000BD01A /* bin */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bin; sourceTree = "<group>"; };
+		857C8F1A208A604B000BD01A /* makefile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.make; path = makefile; sourceTree = "<group>"; };
+		857C8F1B208A604B000BD01A /* obj */ = {isa = PBXFileReference; lastKnownFileType = folder; path = obj; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
 /* Begin PBXGroup section */
-		85C363911EFD94B800597D91 = {
+		85D422F4208A601D00A0852D = {
 			isa = PBXGroup;
 			children = (
+				857C8F19208A604B000BD01A /* bin */,
+				857C8F17208A604B000BD01A /* iconc.png */,
+				857C8F1A208A604B000BD01A /* makefile */,
+				857C8F1B208A604B000BD01A /* obj */,
+				857C8F18208A604B000BD01A /* readme.md */,
+				857C8F16208A604B000BD01A /* src */,
 			);
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		85C363961EFD94B800597D91 /* BlastAV */ = {
+		85D422F9208A601D00A0852D /* BlastAV */ = {
 			isa = PBXLegacyTarget;
 			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = 85C363991EFD94B800597D91 /* Build configuration list for PBXLegacyTarget "BlastAV" */;
+			buildConfigurationList = 85D422FC208A601D00A0852D /* Build configuration list for PBXLegacyTarget "BlastAV" */;
 			buildPhases = (
 			);
-			buildToolPath = wine;
+			buildToolPath = /usr/bin/make;
 			dependencies = (
 			);
 			name = BlastAV;
@@ -32,63 +47,71 @@
 /* End PBXLegacyTarget section */
 
 /* Begin PBXProject section */
-		85C363921EFD94B800597D91 /* Project object */ = {
+		85D422F5208A601D00A0852D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0830;
-				ORGANIZATIONNAME = "ClrHome Productions";
+				LastUpgradeCheck = 0930;
+				ORGANIZATIONNAME = "Anthony Cagliano";
 				TargetAttributes = {
-					85C363961EFD94B800597D91 = {
-						CreatedOnToolsVersion = 8.3.2;
-						DevelopmentTeam = NEF98LJWPK;
-						ProvisioningStyle = Automatic;
+					85D422F9208A601D00A0852D = {
+						CreatedOnToolsVersion = 9.3;
 					};
 				};
 			};
-			buildConfigurationList = 85C363951EFD94B800597D91 /* Build configuration list for PBXProject "BlastAV" */;
-			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			buildConfigurationList = 85D422F8208A601D00A0852D /* Build configuration list for PBXProject "BlastAV" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 85C363911EFD94B800597D91;
+			mainGroup = 85D422F4208A601D00A0852D;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				85C363961EFD94B800597D91 /* BlastAV */,
+				85D422F9208A601D00A0852D /* BlastAV */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin XCBuildConfiguration section */
-		85C363971EFD94B800597D91 /* Debug */ = {
+		85D422FA208A601D00A0852D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -107,33 +130,43 @@
 			};
 			name = Debug;
 		};
-		85C363981EFD94B800597D91 /* Release */ = {
+		85D422FB208A601D00A0852D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -145,12 +178,12 @@
 			};
 			name = Release;
 		};
-		85C3639A1EFD94B800597D91 /* Debug */ = {
+		85D422FD208A601D00A0852D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
 				DEBUGGING_SYMBOLS = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = NEF98LJWPK;
 				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				OTHER_CFLAGS = "";
@@ -159,11 +192,11 @@
 			};
 			name = Debug;
 		};
-		85C3639B1EFD94B800597D91 /* Release */ = {
+		85D422FE208A601D00A0852D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = NEF98LJWPK;
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -173,24 +206,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		85C363951EFD94B800597D91 /* Build configuration list for PBXProject "BlastAV" */ = {
+		85D422F8208A601D00A0852D /* Build configuration list for PBXProject "BlastAV" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				85C363971EFD94B800597D91 /* Debug */,
-				85C363981EFD94B800597D91 /* Release */,
+				85D422FA208A601D00A0852D /* Debug */,
+				85D422FB208A601D00A0852D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		85C363991EFD94B800597D91 /* Build configuration list for PBXLegacyTarget "BlastAV" */ = {
+		85D422FC208A601D00A0852D /* Build configuration list for PBXLegacyTarget "BlastAV" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				85C3639A1EFD94B800597D91 /* Debug */,
-				85C3639B1EFD94B800597D91 /* Release */,
+				85D422FD208A601D00A0852D /* Debug */,
+				85D422FE208A601D00A0852D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 85C363921EFD94B800597D91 /* Project object */;
+	rootObject = 85D422F5208A601D00A0852D /* Project object */;
 }

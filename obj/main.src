@@ -1,15 +1,532 @@
 ; Zilog eZ80 ANSI C Compiler Release 3.4
-; -nomodsect -optspeed -noreduceopt -peephole -globalopt
+; -debug -optsize -noreduceopt -nomodsect -peephole -globalopt
 ; -localcse -const=ROM 
 	FILE	"..\SRC\MAIN.C"
 	.assume ADL=1
+.DEBUG "C"
+	SEGMENT CODE
+.BEGREC "NONAME0",9
+.DEFINE "sign"
+.VALUE 0
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "exp"
+.VALUE 1
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "mant"
+.VALUE 2
+.CLASS 8
+.DIM 7
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME0"
+.BEGREC "NONAME1",18
+.DEFINE "real"
+.VALUE 0
+.CLASS 8
+.TAG "NONAME0"
+.TYPE 8
+.ENDEF
+.DEFINE "imag"
+.VALUE 9
+.CLASS 8
+.TAG "NONAME0"
+.TYPE 8
+.ENDEF
+.ENDREC "NONAME1"
+.BEGREC "NONAME2",11
+.DEFINE "dim"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME0"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME2"
+.BEGREC "NONAME3",20
+.DEFINE "dim"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME1"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME3"
+.BEGREC "NONAME4",11
+.DEFINE "cols"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "rows"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "items"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TAG "NONAME0"
+.TYPE 104
+.ENDEF
+.ENDREC "NONAME4"
+.BEGREC "NONAME5",3
+.DEFINE "len"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME5"
+.BEGREC "NONAME6",3
+.DEFINE "len"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME6"
+.BEGREC "NONAME7",3
+.DEFINE "size"
+.VALUE 0
+.CLASS 8
+.TYPE 13
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME7"
+.BEGREC "fmt_type",19
+.DEFINE "status"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "flags"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "size"
+.VALUE 2
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "chr"
+.VALUE 3
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "type"
+.VALUE 4
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "field_width"
+.VALUE 5
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "precision"
+.VALUE 6
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "set_begin"
+.VALUE 7
+.CLASS 8
+.TYPE 34
+.ENDEF
+.DEFINE "set_end"
+.VALUE 10
+.CLASS 8
+.TYPE 34
+.ENDEF
+.DEFINE "pad_whole"
+.VALUE 13
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_pre_fract"
+.VALUE 14
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_post_fract"
+.VALUE 15
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "pad_at"
+.VALUE 16
+.CLASS 8
+.TYPE 34
+.ENDEF
+.ENDREC "fmt_type"
+.BEGREC "flt_info",12
+.DEFINE "flags"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "exp"
+.VALUE 1
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "digits"
+.VALUE 2
+.CLASS 8
+.DIM 10
+.TYPE 108
+.ENDEF
+.ENDREC "flt_info"
+.BEGREC "NONAME8",6
+.DEFINE "quot"
+.VALUE 0
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "rem"
+.VALUE 3
+.CLASS 8
+.TYPE 4
+.ENDEF
+.ENDREC "NONAME8"
+.BEGREC "NONAME9",8
+.DEFINE "quot"
+.VALUE 0
+.CLASS 8
+.TYPE 5
+.ENDEF
+.DEFINE "rem"
+.VALUE 4
+.CLASS 8
+.TYPE 5
+.ENDEF
+.ENDREC "NONAME9"
+.BEGREC "header",6
+.DEFINE "s"
+.VALUE 0
+.CLASS 11
+.TAG "NONAME10"
+.TYPE 8
+.ENDEF
+.DEFINE "x"
+.VALUE 0
+.CLASS 11
+.TYPE 2
+.ENDEF
+.ENDREC "header"
+.BEGREC "NONAME10",6
+.DEFINE "ptr"
+.VALUE 0
+.CLASS 8
+.TAG "header"
+.TYPE 40
+.ENDEF
+.DEFINE "size"
+.VALUE 3
+.CLASS 8
+.TYPE 14
+.ENDEF
+.ENDREC "NONAME10"
+.BEGREC "__stdio_file",1
+.DEFINE "slot"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.ENDREC "__stdio_file"
+.BEGREC "NONAME11",3
+.DEFINE "width"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "height"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME11"
+.BEGREC "NONAME12",3
+.DEFINE "width"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "height"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "data"
+.VALUE 2
+.CLASS 8
+.DIM 1
+.TYPE 108
+.ENDEF
+.ENDREC "NONAME12"
+.BEGREC "NONAME13",6
+.DEFINE "x"
+.VALUE 0
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "y"
+.VALUE 3
+.CLASS 8
+.TYPE 4
+.ENDEF
+.ENDREC "NONAME13"
+.BEGREC "NONAME14",12
+.DEFINE "xmin"
+.VALUE 0
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "ymin"
+.VALUE 3
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "xmax"
+.VALUE 6
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "ymax"
+.VALUE 9
+.CLASS 8
+.TYPE 4
+.ENDEF
+.ENDREC "NONAME14"
+.BEGREC "NONAME15",18
+.DEFINE "map"
+.VALUE 0
+.CLASS 8
+.TYPE 44
+.ENDEF
+.DEFINE "tiles"
+.VALUE 3
+.CLASS 8
+.TAG "NONAME11"
+.TYPE 296
+.ENDEF
+.DEFINE "tile_height"
+.VALUE 6
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "tile_width"
+.VALUE 7
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "draw_height"
+.VALUE 8
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "draw_width"
+.VALUE 9
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "type_width"
+.VALUE 10
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "type_height"
+.VALUE 11
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "height"
+.VALUE 12
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "width"
+.VALUE 13
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "y_loc"
+.VALUE 14
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "x_loc"
+.VALUE 15
+.CLASS 8
+.TYPE 14
+.ENDEF
+.ENDREC "NONAME15"
+.BEGREC "NONAME16",7
+.DEFINE "sec"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "min"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "hour"
+.VALUE 2
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "day"
+.VALUE 3
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "month"
+.VALUE 4
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "year"
+.VALUE 5
+.CLASS 8
+.TYPE 13
+.ENDEF
+.ENDREC "NONAME16"
+.BEGREC "NONAME17",4
+.DEFINE "month"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "day"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "year"
+.VALUE 2
+.CLASS 8
+.TYPE 13
+.ENDEF
+.ENDREC "NONAME17"
+.BEGREC "NONAME18",2
+.DEFINE "enable_TimeRestore"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "enable_FileQuarantine"
+.VALUE 1
+.CLASS 8
+.TYPE 12
+.ENDEF
+.ENDREC "NONAME18"
+.BEGREC "NONAME19",203
+.DEFINE "opcodestr"
+.VALUE 0
+.CLASS 8
+.DIM 100
+.TYPE 98
+.ENDEF
+.DEFINE "opcodesize"
+.VALUE 100
+.CLASS 8
+.TYPE 4
+.ENDEF
+.DEFINE "opcodehex"
+.VALUE 103
+.CLASS 8
+.DIM 100
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME19"
+.BEGREC "NONAME20",17
+.DEFINE "type"
+.VALUE 0
+.CLASS 8
+.TYPE 12
+.ENDEF
+.DEFINE "size"
+.VALUE 1
+.CLASS 8
+.TYPE 14
+.ENDEF
+.DEFINE "name"
+.VALUE 4
+.CLASS 8
+.DIM 9
+.TYPE 98
+.ENDEF
+.DEFINE "checksum"
+.VALUE 13
+.CLASS 8
+.TYPE 15
+.ENDEF
+.ENDREC "NONAME20"
+.BEGREC "NONAME21",10
+.DEFINE "progtype"
+.VALUE 0
+.CLASS 8
+.TYPE 2
+.ENDEF
+.DEFINE "progname"
+.VALUE 1
+.CLASS 8
+.DIM 9
+.TYPE 98
+.ENDEF
+.ENDREC "NONAME21"
 	SEGMENT STRSECT
 L__0:
-	DB	"AVData"
+	DB	"AVAttrs"
 	DB	0
 	SEGMENT DATA
-_ScanDB:
+_AttrDB:
 	DW24	L__0
+.DEFINE "AttrDB"
+.ALIAS "_AttrDB"
+.CLASS 69
+.VALUE _AttrDB
+.TYPE 194
+.ENDEF
 	SEGMENT STRSECT
 L__1:
 	DB	"AVDEFS"
@@ -17,6 +534,12 @@ L__1:
 	SEGMENT DATA
 _VDefs:
 	DW24	L__1
+.DEFINE "VDefs"
+.ALIAS "_VDefs"
+.CLASS 69
+.VALUE _VDefs
+.TYPE 194
+.ENDEF
 	SEGMENT STRSECT
 L__2:
 	DB	"AVSett"
@@ -24,42 +547,2677 @@ L__2:
 	SEGMENT DATA
 _AVSettings:
 	DW24	L__2
+.DEFINE "AVSettings"
+.ALIAS "_AVSettings"
+.CLASS 69
+.VALUE _AVSettings
+.TYPE 194
+.ENDEF
 	SEGMENT STRSECT
 L__3:
+	DB	"AVParsH"
+	DB	0
+	SEGMENT DATA
+_ProgRunHook:
+	DW24	L__3
+.DEFINE "ProgRunHook"
+.ALIAS "_ProgRunHook"
+.CLASS 69
+.VALUE _ProgRunHook
+.TYPE 194
+.ENDEF
+	SEGMENT STRSECT
+L__4:
+	DB	"AVEditP"
+	DB	0
+	SEGMENT DATA
+_ProgEditHook:
+	DW24	L__4
+.DEFINE "ProgEditHook"
+.ALIAS "_ProgEditHook"
+.CLASS 69
+.VALUE _ProgEditHook
+.TYPE 194
+.ENDEF
+	SEGMENT STRSECT
+L__5:
 	DB	"Blast"
 	DB	0
 	SEGMENT DATA
 _ProgName:
-	DW24	L__3
+	DW24	L__5
+.DEFINE "ProgName"
+.ALIAS "_ProgName"
+.CLASS 69
+.VALUE _ProgName
+.TYPE 194
+.ENDEF
 	SEGMENT STRSECT
-L__4:
+L__6:
 	DB	"Calculator Security Suite"
 	DB	0
 	SEGMENT DATA
 _SubName:
-	DW24	L__4
+	DW24	L__6
+.DEFINE "SubName"
+.ALIAS "_SubName"
+.CLASS 69
+.VALUE _SubName
+.TYPE 194
+.ENDEF
 	SEGMENT STRSECT
-L__5:
-	DB	"0.7b"
+L__7:
+	DB	"0.91b"
 	DB	0
 	SEGMENT DATA
 _Version:
-	DW24	L__5
+	DW24	L__7
+.DEFINE "Version"
+.ALIAS "_Version"
+.CLASS 69
+.VALUE _Version
+.TYPE 194
+.ENDEF
+_proglist:
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+	DB	0
+.DEFINE "proglist"
+.ALIAS "_proglist"
+.CLASS 69
+.VALUE _proglist
+.DIM 256
+.TAG "NONAME21"
+.TYPE 104
+.ENDEF
 	SEGMENT BSS
+_sprites:
+	DS	3
+.DEFINE "sprites"
+.ALIAS "_sprites"
+.CLASS 83
+.VALUE _sprites
+.DIM 1
+.TAG "NONAME11"
+.TYPE 360
+.ENDEF
 _systemtime:
 	DS	7
+.DEFINE "systemtime"
+.ALIAS "_systemtime"
+.CLASS 83
+.VALUE _systemtime
+.TAG "NONAME16"
+.TYPE 8
+.ENDEF
 	SEGMENT DATA
 _settingsSave:
 	DB	0
 	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DW	0
-	DB	0
-	DB	0
-	DB	0
-	SEGMENT CODE
+.DEFINE "settingsSave"
+.ALIAS "_settingsSave"
+.CLASS 69
+.VALUE _settingsSave
+.TAG "NONAME18"
+.TYPE 8
+.ENDEF
 ;    1	//--------------------------------------
 ;    2	// Program Name:
 ;    3	// Author:
@@ -85,36 +3243,426 @@ _settingsSave:
 ;   23	#define FORCE_INTERRUPTS
 ;   24	#include <graphx.h>
 ;   25	#include <fileioc.h>
-;   26	#include <decompress.h>
+;   26	#include <compression.h>
 ;   27	#include <intce.h>
 ;   28	
 ;   29	#include "typedefs.h"
-;   30	
-;   31	/* Put your function prototypes here */
-;   32	
+;   30	#include "files.h"
+;   31	#include "asmstuff.h"
+;   32	#include "gfx/all_gfx.h"
 ;   33	
-;   34	
-;   35	#include "routines.h"
-;   36	#include "gfx/all_gfx.h"
-;   37	/* Put all your globals here. */
-;   38	#include "globals.h"
-;   39	
-;   40	
-;   41	void main(void) {
+;   34	/* Put your function prototypes here */
+;   35	
+;   36	char pgrm_MainMenu(char selected);
+;   37	char pgrm_IntegMenu(unsigned char selected, unsigned char max);
+;   38	void pgrm_EraseContent(void);
+;   39	void pgrm_DrawBackground(void);
+;   40	void pgrm_DrawSplashScreen(char selected);
+;   41	void gfx_custom_wrappedtext(char *text, int x, int width);
+;   42	bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge);
+;   43	
+;   44	void av_About(void);
+;   45	void av_Integrity(program_t* proglist, ti_var_t attributes, int selected, int max, gfx_sprite_t* sprites[]);
+;   46	
+;   47	
+;   48	int integ_IsFileTracked(char *progname, ti_var_t attributes);
+;   49	unsigned long av_CheckSumFile(char* progname, unsigned char type);
+;   50	
+;   51	/* Put all your globals here. */
+;   52	const char *ProgName = "Blast";
+;   53	const char *SubName = "Calculator Security Suite";
+;   54	const char *Version = "0.91b";
+;   55	
+;   56	program_t proglist[256] = {0};
+;   57	gfx_sprite_t* sprites[1];
+;   58	
+;   59	time_struct_t systemtime;
+;   60	settings_save_t settingsSave = {0};
+	SEGMENT CODE
+;   61	
+;   62	void main(void) {
 _main:
-	LD	HL,-7
-	CALL	__frameset
-;   42		/* Fill in the body of the main function here */
-;   43	    char option;
-;   44	    ti_var_t settings;
-;   45	    time_struct_t *savedtime = &settingsSave.time;
-	LD	BC,_settingsSave
-	LD	(IX+-3),BC
-;   46	    asm_RunIndicOff();
+.DEFINE "_main"
+
+.VALUE _main
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "main",62,"_main"
+
+.LINE 62
+
+.DEFINE "option"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "proglist_selected"
+
+.CLASS 65
+
+.VALUE -2
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "f_attributes"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "key"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "prior_option"
+
+.CLASS 65
+
+.VALUE -5
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -6
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "prognum"
+
+.CLASS 65
+
+.VALUE -9
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "progname"
+
+.CLASS 65
+
+.VALUE -12
+
+.TYPE 34
+
+.ENDEF
+
+.DEFINE "searchtypes"
+
+.CLASS 65
+
+.VALUE -14
+
+.DIM 2
+
+.TYPE 98
+
+.ENDEF
+
+.DEFINE "search_pos"
+
+.CLASS 65
+
+.VALUE -17
+
+.TYPE 44
+
+.ENDEF
+
+.DEFINE "integnum"
+
+.CLASS 65
+
+.VALUE -20
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "progdata"
+
+.CLASS 65
+
+.VALUE -23
+
+.TAG "NONAME20"
+
+.TYPE 40
+
+.ENDEF
+
+.DEFINE "source"
+
+.CLASS 65
+
+.VALUE -40
+
+.TAG "NONAME20"
+
+.TYPE 8
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	LEA	HL,IX+-46
+	LD	SP,HL
+;   63		/* Fill in the body of the main function here */
+;   64	    ProgData_t *progdata;
+;   65	    char option = 0, prior_option = 0, i;
+.LINE 65
+
+	LD	(IX+-1),0
+	LD	(IX+-5),0
+;   66	    char proglist_selected = 0;
+.LINE 66
+
+	LD	(IX+-2),0
+;   67	    char* progname;
+;   68	    ti_var_t f_attributes;
+;   69	    char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE};
+.LINE 69
+
+	LEA	DE,IX+-14
+	LD	HL,_0temp0
+	LD	BC,2
+	LDIR	
+;   70	    int prognum = 0, integnum = 0;
+.LINE 70
+
+	LD	BC,0
+	LD	(IX+-9),BC
+	LD	(IX+-20),BC
+;   71	    sprites[0] = gfx_MallocSprite(tracking_icon_width, tracking_icon_height);
+.LINE 71
+
+	LD	BC,_malloc
+	PUSH	BC
+	LD	BC,9
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_AllocSprite
+	POP	BC
+	POP	BC
+	POP	BC
+	LD	(_sprites),HL
+;   72	    zx7_Decompress(sprites[0], tracking_icon_compressed);
+.LINE 72
+
+	LD	BC,_tracking_icon_compressed
+	PUSH	BC
+	LD	BC,(_sprites)
+	PUSH	BC
+	CALL	_zx7_Decompress
+	POP	BC
+	POP	BC
+;   73	    if((f_attributes = ti_Open(AttrDB, "r+")))
+.LINE 73
+
+	LD	BC,L__8
+	PUSH	BC
+	LD	BC,(_AttrDB)
+	PUSH	BC
+	CALL	_ti_Open
+	POP	BC
+	POP	BC
+	LD	(IX+-3),A
+	OR	A,A
+	JR	NZ,L_14
+;   74	        ;
+;   75	    else if(f_attributes = ti_Open(AttrDB, "w+"))
+.LINE 75
+
+	LD	BC,L__10
+	PUSH	BC
+	LD	BC,(_AttrDB)
+	PUSH	BC
+	CALL	_ti_Open
+	POP	BC
+	POP	BC
+	LD	(IX+-3),A
+	OR	A,A
+	JR	Z,L_50
+;   76	        ;
+;   77	    else return;
+.LINE 77
+
+L_14:
+;   78	        
+;   79	    for(i = 0; i < sizeof(searchtypes); i++){
+.LINE 79
+
+	LD	(IX+-6),0
+	JR	L_13
+L_11:
+;   80	        uint8_t *search_pos = NULL;
+.LINE 80
+
+	LD	BC,0
+	LD	(IX+-17),BC
+;   81	        while((progname = ti_DetectVar(&search_pos, NULL, searchtypes[i])) != NULL) {
+.LINE 81
+
+	JR	L_9
+L_10:
+;   82	            if (strcmp(progname, "#") && strcmp(progname, "!")){
+.LINE 82
+
+	LD	BC,L__12
+	PUSH	BC
+	LD	BC,(IX+-12)
+	PUSH	BC
+	CALL	_strcmp
+	POP	BC
+	POP	BC
+	CALL	__icmpzero
+	JR	Z,L_9
+	LD	BC,L__14
+	PUSH	BC
+	LD	BC,(IX+-12)
+	PUSH	BC
+	CALL	_strcmp
+	POP	BC
+	POP	BC
+	CALL	__icmpzero
+	JR	Z,L_9
+;   83	                proglist[prognum].progtype = searchtypes[i];
+.LINE 83
+
+	LD	A,(IX+-6)
+	SEXT	HL
+	LD	L,(IX+-6)
+	LD	BC,HL
+	LEA	HL,IX+-14
+	ADD	HL,BC
+	LD	IY,HL
+	LD	HL,(IX+-9)
+	LD	A,10
+	CALL	__imul_b
+	LD	BC,_proglist
+	ADD	HL,BC
+	LD	A,(IY)
+	LD	IY,HL
+	LD	(IY+0),A
+;   84	                strcpy(proglist[prognum++].progname, progname);
+.LINE 84
+
+	LD	BC,(IX+-9)
+	LD	DE,(IX+-9)
+	INC	DE
+	LD	(IX+-9),DE
+	LD	DE,(IX+-12)
+	PUSH	DE
+	LD	HL,10
+	CALL	__imulu
+	LD	BC,_proglist
+	ADD	HL,BC
+	LD	IY,HL
+	PEA	IY+1
+	CALL	_strcpy
+	POP	BC
+	POP	BC
+;   85	            }
+;   86	        }
+L_9:
+.LINE 86
+
+	LD	A,(IX+-6)
+	SEXT	HL
+	LD	L,(IX+-6)
+	LD	BC,HL
+	LEA	HL,IX+-14
+	ADD	HL,BC
+	LD	C,(HL)
+	LD	B,0
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	PEA	IX+-17
+	CALL	_ti_DetectVar
+	POP	BC
+	POP	BC
+	POP	BC
+	LD	(IX+-12),HL
+	CALL	__icmpzero
+	JR	NZ,L_10
+	INC	(IX+-6)
+;   87	    }
+L_13:
+.LINE 87
+
+	LD	A,(IX+-6)
+	CP	A,2
+	JR	C,L_11
+;   88	    asm_RunIndicOff();
+.LINE 88
+
 	CALL	_asm_RunIndicOff
-;   47	    gfx_Begin();
+;   89	    gfx_Begin();
+.LINE 89
+
 	CALL	_gfx_Begin
-;   48	    gfx_SetClipRegion(0, 0, 320, 240);
+;   90	    gfx_SetDrawBuffer();
+.LINE 90
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_SetDraw
+	POP	BC
+;   91	    gfx_SetTextTransparentColor(33);
+.LINE 91
+
+	LD	BC,33
+	PUSH	BC
+	CALL	_gfx_SetTextTransparentColor
+	POP	BC
+;   92	    gfx_SetTransparentColor(255);
+.LINE 92
+
+	LD	BC,255
+	PUSH	BC
+	CALL	_gfx_SetTransparentColor
+	POP	BC
+;   93	    gfx_SetTextBGColor(33);
+.LINE 93
+
+	LD	BC,33
+	PUSH	BC
+	CALL	_gfx_SetTextBGColor
+	POP	BC
+;   94	    gfx_SetClipRegion(0, 0, 320, 240);
+.LINE 94
+
 	LD	BC,240
 	PUSH	BC
 	LD	BC,320
@@ -127,373 +3675,354 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-;   49	    ti_CloseAll();
+;   95	    ti_CloseAll();
+.LINE 95
+
 	CALL	_ti_CloseAll
-;   50	    if(settings = ti_Open(AVSettings, "r")){
-	LD	BC,L__6
+;   96	    int_Disable();
+.LINE 96
+
+di
+;   97	    pgrm_DrawBackground();
+.LINE 97
+
+	CALL	_pgrm_DrawBackground
+;   98	    while(option != 6){
+.LINE 98
+
+	JR	L_47
+L_48:
+;   99	        unsigned char key;
+;  100	        pgrm_DrawSplashScreen(option);
+.LINE 100
+
+	LD	C,(IX+-1)
+	LD	B,0
 	PUSH	BC
-	LD	BC,(_AVSettings)
-	PUSH	BC
-	CALL	_ti_Open
+	CALL	_pgrm_DrawSplashScreen
 	POP	BC
-	POP	BC
-	LD	(IX+-5),A
+;  101	        key = os_GetCSC();
+.LINE 101
+
+	CALL	_os_GetCSC
+	LD	(IX+-4),A
+;  102	        if((key == sk_Up) && (option > 0)) option--;
+.LINE 102
+
+	CP	A,4
+	JR	NZ,L_22
+	XOR	A,A
+	CP	A,(IX+-1)
+	JP	P,L_22
+	DEC	(IX+-1)
+L_22:
+;  103	        if((key == sk_Down) && (option < 5)) option++;
+.LINE 103
+
+	LD	A,(IX+-4)
+	CP	A,1
+	JR	NZ,L_24
+	LD	A,(IX+-1)
+	CP	A,5
+	CALL	__setflag
+	JP	P,L_24
+	INC	(IX+-1)
+L_24:
+;  104	        if(key == sk_Clear) option = 6;
+.LINE 104
+
+	LD	A,(IX+-4)
+	CP	A,15
+	JR	NZ,L_38
+	LD	(IX+-1),6
+L_38:
+;  105	        if(option == 1){
+.LINE 105
+
+	LD	A,(IX+-1)
+	CP	A,1
+	JR	NZ,L_45
+;  106	            if(key == sk_Stat) prior_option = 0;
+.LINE 106
+
+	LD	A,(IX+-4)
+	CP	A,32
+	JR	NZ,L_29
+	LD	(IX+-5),0
+L_29:
+;  107	            if((key == sk_Add) && (proglist_selected < (prognum-1))) {proglist_selected++; prior_option = 0;}
+.LINE 107
+
+	LD	A,(IX+-4)
+	CP	A,10
+	JR	NZ,L_33
+	LD	BC,(IX+-9)
+	DEC	BC
+	LD	A,(IX+-2)
+	SEXT	HL
+	LD	L,(IX+-2)
 	OR	A,A
-	JR	Z,L_1
-;   51	        ti_Read(&settingsSave, sizeof(settings_save_t), 1, settings);
-	LD	C,(IX+-5)
+	SBC	HL,BC
+	CALL	__setflag
+	JP	P,L_33
+	INC	(IX+-2)
+	LD	(IX+-5),0
+L_33:
+;  108	            if((key == sk_Sub) && (proglist_selected > 0)){proglist_selected--; prior_option = 0;}
+.LINE 108
+
+	LD	A,(IX+-4)
+	CP	A,11
+	JR	NZ,L_36
+	XOR	A,A
+	CP	A,(IX+-2)
+	CALL	__setflag
+	JP	P,L_36
+	DEC	(IX+-2)
+	LD	(IX+-5),0
+L_36:
+;  109	            if(key == sk_Mode) {
+.LINE 109
+
+	LD	A,(IX+-4)
+	CP	A,55
+	JR	NZ,L_45
+;  110	                if((integ_IsFileTracked(proglist[proglist_selected].progname, f_attributes)) == -1){
+.LINE 110
+
+	LD	C,(IX+-3)
+	LD	B,0
+	PUSH	BC
+	LD	A,(IX+-2)
+	SEXT	HL
+	LD	L,(IX+-2)
+	LD	A,10
+	CALL	__imul_b
+	LD	BC,_proglist
+	ADD	HL,BC
+	LD	IY,HL
+	PEA	IY+1
+	CALL	_integ_IsFileTracked
+	POP	BC
+	POP	BC
+	LD	BC,16777215
+	OR	A,A
+	SBC	HL,BC
+	JR	NZ,L_45
+;  111	                    ProgData_t source;
+;  112	                    strcpy(source.name, proglist[proglist_selected].progname);
+.LINE 112
+
+	LD	A,(IX+-2)
+	SEXT	HL
+	LD	L,(IX+-2)
+	LD	A,10
+	CALL	__imul_b
+	LD	BC,_proglist
+	ADD	HL,BC
+	LD	IY,HL
+	PEA	IY+1
+	PEA	IX+-36
+	CALL	_strcpy
+	POP	BC
+	POP	BC
+;  113	                    source.type = proglist[proglist_selected].progtype;
+.LINE 113
+
+	LD	A,(IX+-2)
+	SEXT	HL
+	LD	L,(IX+-2)
+	LD	A,10
+	CALL	__imul_b
+	LD	BC,HL
+	LD	DE,BC
+	LD	HL,_proglist
+	ADD	HL,DE
+	LD	(IX+-46),HL
+	LD	DE,_proglist
+	LD	HL,BC
+	ADD	HL,DE
+	LD	(IX+-43),HL
+	LD	IY,(IX+-43)
+	LD	A,(IY+0)
+	LD	(IX+-40),A
+;  114	                    source.checksum = av_CheckSumFile(proglist[proglist_selected].progname, source.type);
+.LINE 114
+
+	LD	C,(IX+-40)
+	LD	B,0
+	PUSH	BC
+	PEA	IY+1
+	CALL	_av_CheckSumFile
+	POP	BC
+	POP	BC
+	LD	(IX+-27),HL
+	LD	(IX+-24),E
+;  115	                    ti_Seek(0, SEEK_END, f_attributes);
+.LINE 115
+
+	LD	C,(IX+-3)
+	LD	B,0
+	PUSH	BC
+	LD	BC,2
+	PUSH	BC
+	LD	BC,0
+	PUSH	BC
+	CALL	_ti_Seek
+	POP	BC
+	POP	BC
+	POP	BC
+;  116	                    ti_Write(&source, sizeof(ProgData_t), 1, f_attributes);
+.LINE 116
+
+	LD	C,(IX+-3)
 	LD	B,0
 	PUSH	BC
 	LD	BC,1
 	PUSH	BC
-	LD	BC,10
+	LD	BC,17
 	PUSH	BC
-	LD	BC,_settingsSave
-	PUSH	BC
-	CALL	_ti_Read
+	PEA	IX+-40
+	CALL	_ti_Write
 	POP	BC
 	POP	BC
 	POP	BC
 	POP	BC
-;   52	        ti_Close(settings);
-	LD	C,(IX+-5)
+;  117	                    ti_Rewind(f_attributes);
+.LINE 117
+
+	LD	C,(IX+-3)
 	LD	B,0
 	PUSH	BC
-	CALL	_ti_Close
+	CALL	_ti_Rewind
 	POP	BC
-;   53	    }
-L_1:
-;   54	        // check and restore or save date
-;   55	    boot_GetDate(&systemtime.day, &systemtime.month, &systemtime.year);
-	LD	BC,_systemtime+5
-	PUSH	BC
-	LD	BC,_systemtime+4
-	PUSH	BC
-	LD	BC,_systemtime+3
-	PUSH	BC
-	CALL	_boot_GetDate
-	POP	BC
-	POP	BC
-	POP	BC
-;   56	    boot_GetTime(&systemtime.sec, &systemtime.min, &systemtime.hour);
-	LD	BC,_systemtime+2
-	PUSH	BC
-	LD	BC,_systemtime+1
-	PUSH	BC
-	LD	BC,_systemtime
-	PUSH	BC
-	CALL	_boot_GetTime
-	POP	BC
-	POP	BC
-	POP	BC
-;   57	    if( systemtime.year < savedtime->year ) {
-	LD	IY,(IX+-3)
-	LD	BC,(IY+5)
-	LD	(IX+-7),C
-	LD	(IX+-6),B
-	LD	BC,(IX+-7)
-	LD	HL,(_systemtime+5)
-	OR	A,A
-	SBC.SIS	HL,BC
-	JR	NC,L_3
-;   58	        boot_SetDate(savedtime->day, savedtime->month, savedtime->year);
-	LD	BC,(IX+-7)
-	PUSH	BC
-	LD	IY,(IX+-3)
-	LD	C,(IY+4)
-	LD	B,0
-	PUSH	BC
-	LD	C,(IY+3)
-	PUSH	BC
-	CALL	_boot_SetDate
-	POP	BC
-	POP	BC
-	POP	BC
-;   59	        boot_SetTime(savedtime->sec, savedtime->min, savedtime->hour);
-	LD	IY,(IX+-3)
-	LD	C,(IY+2)
-	LD	B,0
-	PUSH	BC
-	LD	C,(IY+1)
-	PUSH	BC
-	LD	C,(IY+0)
-	PUSH	BC
-	CALL	_boot_SetTime
-	POP	BC
-	POP	BC
-	POP	BC
-;   60	    } else {
-	JR	L_4
-L_3:
-;   61	        savedtime->day = systemtime.day;
-	LD	A,(_systemtime+3)
-	LD	IY,(IX+-3)
-	LD	(IY+3),A
-;   62	        savedtime->month = systemtime.month;
-	LD	A,(_systemtime+4)
-	LD	(IY+4),A
-;   63	        savedtime->year = systemtime.year;
-	LD	BC,(_systemtime+5)
-	LD	(IY+5),C
-	LD	(IY+6),B
-;   64	        savedtime->sec = systemtime.sec;
-	LD	A,(_systemtime)
-	LD	(IY+0),A
-;   65	        savedtime->min = systemtime.min;
-	LD	A,(_systemtime+1)
-	LD	(IY+1),A
-;   66	        savedtime->hour = systemtime.hour;
-	LD	A,(_systemtime+2)
-	LD	(IY+2),A
-;   67	    }
-L_4:
-;   68	    pgrm_ApplySettings();
-	CALL	_pgrm_ApplySettings
-;   69	    ti_CloseAll();
-	CALL	_ti_CloseAll
-;   70	    int_Disable();
-di
-;   71	    pgrm_DrawSplashScreen();
-	CALL	_pgrm_DrawSplashScreen
-;   72	    option = 1;
-	LD	(IX+-4),1
-;   73	    while((option = pgrm_DrawMainMenu(option)) != 6){
-	JR	L_13
-L_14:
-;   74	        switch(option){
-	LD	A,(IX+-4)
+;  118	                    prior_option = 0;
+.LINE 118
+
+	LD	(IX+-5),0
+;  119	                }
+;  120	            }
+;  121	        }
+L_45:
+.LINE 121
+
+;  122	        switch(option){
+.LINE 122
+
+	LD	A,(IX+-1)
 	SEXT	HL
-	LD	L,(IX+-4)
-	LD	BC,HL
-L__10:
-	LD	DE,1
-	OR	A,A
-	SBC	HL,DE
-	JR	C,L_13
-	LD	HL,5
-	OR	A,A
-	SBC	HL,BC
-	JR	C,L_13
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	LD	BC,L__9-3
-	ADD	HL,BC
-	LD	HL,(HL)
+	LD	L,(IX+-1)
+	CALL	__case8D
 	JP	(HL)
-L__9:
-	DW24	L_5	
+L__31:
+	DW	2
+	DB	0
+	DW24	L_39	
 
-	DW24	L_6	
+	DB	1
+	DW24	L_42	
 
-	DW24	L_7	
+	DW24	L_46	
 
-	DW24	L_8	
+;  123	            case 0:
+L_39:
+.LINE 123
 
-	DW24	L_9	
+;  124	                if(option != prior_option) pgrm_EraseContent();
+.LINE 124
 
-;   75	            case 1:
-L_5:
-;   76	                av_ScanAll();
-	CALL	_av_ScanAll
-;   77	                gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;   78	                pgrm_DrawSplashScreen();
-	CALL	_pgrm_DrawSplashScreen
-;   79	                // error conditions not implemented
-;   80	                break;
-	JR	L_13
-;   81	            case 2:
-L_6:
-;   82	                av_ValidateSaved();
-	CALL	_av_ValidateSaved
-;   83	                gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;   84	                pgrm_DrawSplashScreen();
-	CALL	_pgrm_DrawSplashScreen
-;   85	                break;
-	JR	L_13
-;   86	            case 3:
-L_7:
-;   87	                av_CheckSumAll();
-	CALL	_av_CheckSumAll
-;   88	                gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;   89	                pgrm_DrawSplashScreen();
-	CALL	_pgrm_DrawSplashScreen
-;   90	                break;
-	JR	L_13
-;   91	            case 4:
-L_8:
-;   92	                pgrm_DrawSettingsMenu();
-	CALL	_pgrm_DrawSettingsMenu
-;   93	                gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;   94	                pgrm_DrawSplashScreen();
-	CALL	_pgrm_DrawSplashScreen
-;   95	                break;
-	JR	L_13
-;   96	            case 5:
-L_9:
-;   97	                gfx_SetTextFGColor(135);
-	LD	BC,135
+	LD	A,(IX+-1)
+	CP	A,(IX+-5)
+	JR	Z,L_41
+	CALL	_pgrm_EraseContent
+L_41:
+;  125	                av_About();
+.LINE 125
+
+	CALL	_av_About
+;  126	                break;
+.LINE 126
+
+	JR	L_46
+;  127	            case 1:
+L_42:
+.LINE 127
+
+;  128	                if(option != prior_option) pgrm_EraseContent();
+.LINE 128
+
+	LD	A,(IX+-1)
+	CP	A,(IX+-5)
+	JR	Z,L_44
+	CALL	_pgrm_EraseContent
+L_44:
+;  129	                av_Integrity(&proglist, f_attributes, proglist_selected, prognum, sprites);
+.LINE 129
+
+	LD	BC,_sprites
 	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-;   98	                gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;   99	                gfx_PrintStringXY("About Blast CSS", 50, 0);
-	LD	BC,0
+	LD	BC,(IX+-9)
 	PUSH	BC
-	LD	BC,50
-	PUSH	BC
-	LD	BC,L__13
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  100	                gfx_HorizLine(0, 10, 320);
-	LD	BC,320
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_HorizLine
-	POP	BC
-	POP	BC
-	POP	BC
-;  101	                gfx_PrintStringXY("Calculator Security for the TI-84+ CE", 0, 13);
-	LD	BC,13
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__14
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  102	                gfx_PrintStringXY("- Retains checksums and sizes of all vars", 0, 25);
-	LD	BC,25
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__15
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  103	                gfx_PrintStringXY("- Can verify both against current values", 0, 37);
-	LD	BC,37
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__16
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  104	                gfx_PrintStringXY("- Scans all vars based on defs. file", 0, 49);
-	LD	BC,49
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__17
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  105	                gfx_PrintStringXY("- Smartly records/restores time/date", 0, 61);
-	LD	BC,61
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__18
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  106	                gfx_PrintStringXY("- Community-sourced malware defs.", 0, 73);
-	LD	BC,73
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__19
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  107	                gfx_PrintStringXY("More info @ http://clrhome.org/blastav", 0, 85);
-	LD	BC,85
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__20
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  108	                gfx_PrintStringXY("by Anthony Cagliano", 0, 107);
-	LD	BC,107
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__21
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  109	                gfx_PrintStringXY("Any key to return to main menu", 0, 227);
-	LD	BC,227
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__22
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  110	                while(!os_GetCSC());
-L_11:
-	CALL	_os_GetCSC
-	OR	A,A
-	JR	Z,L_11
-;  111	                break;
-;  112	        }
-;  113	    }
-L_13:
-	LD	C,(IX+-4)
+	LD	A,(IX+-2)
+	SEXT	HL
+	LD	L,(IX+-2)
+	PUSH	HL
+	LD	C,(IX+-3)
 	LD	B,0
 	PUSH	BC
-	CALL	_pgrm_DrawMainMenu
+	LD	BC,_proglist
+	PUSH	BC
+	CALL	_av_Integrity
 	POP	BC
-	LD	(IX+-4),A
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  130	              //  if(key == sk_Sub && proglist_selected > 0) proglist_selected--;
+;  131	              //  if(key == sk_Add && proglist_selected < prognum) proglist_selected++;
+;  132	                break;
+;  133	        }
+L_46:
+.LINE 133
+
+;  134	        prior_option = option;
+.LINE 134
+
+	LD	A,(IX+-1)
+	LD	(IX+-5),A
+;  135	    }
+L_47:
+.LINE 135
+
+	LD	A,(IX+-1)
 	CP	A,6
-	JR	NZ,L_14
-;  114	    int_Enable();
-ei
-;  115	    ti_CloseAll();
+	JR	NZ,L_48
+;  136	    ti_CloseAll();
+.LINE 136
+
 	CALL	_ti_CloseAll
-;  116	    gfx_End();
+;  137	    gfx_End();
+.LINE 137
+
 	CALL	_gfx_End
-;  117		prgm_CleanUp();
-;  118	    asm_ClrLCDFull();
+;  138		prgm_CleanUp();
+;  139	    int_Enable();
+.LINE 139
+
+ei
+;  140	    asm_ClrLCDFull();
+.LINE 140
+
 	CALL	_asm_ClrLCDFull
-;  119	    asm_DrawStatusBar();
+;  141	    asm_DrawStatusBar();
+.LINE 141
+
 	CALL	_asm_DrawStatusBar
-;  120	}
+;  142	    return;
+;  143	}
+L_50:
+.LINE 143
+
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -504,369 +4033,1778 @@ ei
 ;_asm_DrawStatusBar                  IMPORT  -----   function
 ;_asm_ClrLCDFull                     IMPORT  -----   function
 ;_gfx_End                            IMPORT  -----   function
-;_pgrm_DrawMainMenu                  IMPORT  -----   function
+;_av_Integrity                       IMPORT  -----   function
+;_av_About                           IMPORT  -----   function
+;_pgrm_EraseContent                  IMPORT  -----   function
+;_ti_Rewind                          IMPORT  -----   function
+;_ti_Write                           IMPORT  -----   function
+;_ti_Seek                            IMPORT  -----   function
+;_av_CheckSumFile                    IMPORT  -----   function
+;_integ_IsFileTracked                IMPORT  -----   function
 ;_os_GetCSC                          IMPORT  -----   function
-;_gfx_HorizLine                      IMPORT  -----   function
-;_gfx_PrintStringXY                  IMPORT  -----   function
-;_gfx_SetTextFGColor                 IMPORT  -----   function
-;_pgrm_DrawSettingsMenu              IMPORT  -----   function
-;_av_CheckSumAll                     IMPORT  -----   function
-;_av_ValidateSaved                   IMPORT  -----   function
-;_gfx_ZeroScreen                     IMPORT  -----   function
-;_av_ScanAll                         IMPORT  -----   function
 ;_pgrm_DrawSplashScreen              IMPORT  -----   function
-;_pgrm_ApplySettings                 IMPORT  -----   function
-;_boot_SetTime                       IMPORT  -----   function
-;_boot_SetDate                       IMPORT  -----   function
-;_boot_GetTime                       IMPORT  -----   function
-;_systemtime                         STATIC      7   variable
-;_boot_GetDate                       IMPORT  -----   function
-;_ti_Close                           IMPORT  -----   function
-;_ti_Read                            IMPORT  -----   function
-;_AVSettings                         STATIC      3   variable
-;_ti_Open                            IMPORT  -----   function
+;_pgrm_DrawBackground                IMPORT  -----   function
 ;_ti_CloseAll                        IMPORT  -----   function
 ;_gfx_SetClipRegion                  IMPORT  -----   function
+;_gfx_SetTextBGColor                 IMPORT  -----   function
+;_gfx_SetTransparentColor            IMPORT  -----   function
+;_gfx_SetTextTransparentColor        IMPORT  -----   function
+;_gfx_SetDraw                        IMPORT  -----   function
 ;_gfx_Begin                          IMPORT  -----   function
 ;_asm_RunIndicOff                    IMPORT  -----   function
-;_settingsSave                       STATIC     10   variable
-;G_0                                   IX-7      2   variable
-;settings                              IX-5      1   variable
-;option                                IX-4      1   variable
-;savedtime                             IX-3      3   variable
+;_ti_DetectVar                       IMPORT  -----   function
+;_strcpy                             IMPORT  -----   function
+;_proglist                           STATIC   2560   variable
+;_strcmp                             IMPORT  -----   function
+;_AttrDB                             STATIC      3   variable
+;_ti_Open                            IMPORT  -----   function
+;_tracking_icon_compressed           IMPORT     35   variable
+;_zx7_Decompress                     IMPORT  -----   function
+;_sprites                            STATIC      3   variable
+;_malloc                             IMPORT  -----   function
+;_gfx_AllocSprite                    IMPORT  -----   function
+;_0temp0                             STATIC      2   variable
+;source                               IX-40     17   variable
+;progdata                             IX-23      3   variable
+;integnum                             IX-20      3   variable
+;search_pos                           IX-17      3   variable
+;searchtypes                          IX-14      2   variable
+;progname                             IX-12      3   variable
+;prognum                               IX-9      3   variable
+;i                                     IX-6      1   variable
+;prior_option                          IX-5      1   variable
+;key                                   IX-4      1   variable
+;f_attributes                          IX-3      1   variable
+;proglist_selected                     IX-2      1   variable
+;option                                IX-1      1   variable
 
 
-; Stack Frame Size: 13 (bytes)
+; Stack Frame Size: 52 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
+.ENDFUNC "main",143,"_main"
 	SEGMENT STRSECT
-L__6:
-	DB	"r"
+L__8:
+	DB	"r+"
 	DB	0
-L__13:
-	DB	"About Blast CSS"
+L__10:
+	DB	"w+"
+	DB	0
+L__12:
+	DB	"#"
 	DB	0
 L__14:
-	DB	"Calculator Security for the TI-84+ CE"
+	DB	"!"
 	DB	0
-L__15:
-	DB	"- Retains checksums and sizes of all vars"
-	DB	0
-L__16:
-	DB	"- Can verify both against current values"
-	DB	0
-L__17:
-	DB	"- Scans all vars based on defs. file"
-	DB	0
-L__18:
-	DB	"- Smartly records/restores time/date"
-	DB	0
-L__19:
-	DB	"- Community-sourced malware defs."
-	DB	0
-L__20:
-	DB	"More info @ http://clrhome.org/blastav"
-	DB	0
-L__21:
-	DB	"by Anthony Cagliano"
-	DB	0
-L__22:
-	DB	"Any key to return to main menu"
-	DB	0
+	SEGMENT TEXT
+_0temp0:
+	DB	5
+	DB	6
 	SEGMENT CODE
-;  121	
-;  122	/* Put other functions here */
-;  123	
-;  124	void av_CheckSumAll(void){
-_av_CheckSumAll:
-	LD	HL,-21
-	CALL	__frameset
-;  125	    char *progname, tempread;
-;  126	    time_struct_short_t modified;
-;  127	    uint16_t ypos = 0;
-;  128	    char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE}, i = 0;
-	LEA	DE,IX+-18
-	LD	HL,_0temp17
-	LD	BC,2
+;  144	
+;  145	/* Put other functions here */
+;  146	
+;  147	void av_About(void){
+_av_About:
+.DEFINE "_av_About"
+
+.VALUE _av_About
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "av_About",147,"_av_About"
+
+.LINE 147
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "x"
+
+.CLASS 65
+
+.VALUE -6
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "y"
+
+.CLASS 65
+
+.VALUE -9
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "about"
+
+.CLASS 65
+
+.VALUE -365
+
+.DIM 353
+
+.TYPE 98
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	LD	HL,-365
+	ADD	HL,SP
+	LD	SP,HL
+;  148	    int i;
+;  149	    int x = 115, y = 75, xmax = 310;
+.LINE 149
+
+	LD	BC,115
+	LD	(IX+-6),BC
+	LD	BC,75
+	LD	(IX+-9),BC
+;  150	    char about[] = "Blast2 is a file integrity|and malware detection|software. It can detect|changes to programs on your|calc and scan them for harm-|ful things. Optionally this|program can quarantine|harmful programs and|take snapshots (backups)|of programs, allowing you|to revert changes to|programs at any time.||For more information,|visit:|http://clrhome.org/blastav";
+.LINE 150
+
+	LD	HL,IX
+	LD	BC,-365
+	ADD	HL,BC
+	LD	DE,HL
+	LD	HL,_1temp51
+	LD	BC,353
 	LDIR	
-;  129	    ti_var_t avData = ti_Open(ScanDB, "w");
-	LD	BC,L__26
-	PUSH	BC
-	LD	BC,(_ScanDB)
-	PUSH	BC
-	CALL	_ti_Open
-	POP	BC
-	POP	BC
-	LD	(IX+-10),A
-;  130	    
-;  131	    // when called, destroys the pre-existing checksums database
-;  132	    // recreates it and saves new values
-;  133	    // for each installed program variable, we save:
-;  134	    //      up to 9 bytes for name + type
-;  135	    //      24-bit (3-byte) checksum
-;  136	    //      date of last checksum also written
-;  137	    boot_GetDate(&modified.day, &modified.month, &modified.year);
-	PEA	IX+-14
-	PEA	IX+-16
-	PEA	IX+-15
-	CALL	_boot_GetDate
-	POP	BC
-	POP	BC
-	POP	BC
-;  138	    ti_Write(&modified, sizeof(time_struct_short_t), 1, avData);
-	LD	C,(IX+-10)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,4
-	PUSH	BC
-	PEA	IX+-16
-	CALL	_ti_Write
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  139	    gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;  140	    gfx_PrintStringXY("Checksumming Programs...", 10, ypos);
+;  151	    gfx_SetTextFGColor(0);
+.LINE 151
+
 	LD	BC,0
 	PUSH	BC
-	LD	BC,10
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;  152	    for(i = 0; i < strlen(about); i++) {
+.LINE 152
+
+	LD	BC,0
+	LD	(IX+-3),BC
+	JR	L_57
+L_55:
+;  153	        if(about[i] == '|') {y += 9; x = 115;}
+.LINE 153
+
+	LD	BC,(IX+-3)
+	LD	HL,IX
+	LD	DE,-365
+	ADD	HL,DE
+	ADD	HL,BC
+	LD	(IX+-12),HL
+	LD	A,(HL)
+	LD	B,A
+	SEXT	HL
+	LD	L,B
+	LD	BC,124
+	OR	A,A
+	SBC	HL,BC
+	JR	NZ,L_54
+	LD	IY,(IX+-9)
+	LEA	IY,IY+9
+	LD	(IX+-9),IY
+	LD	BC,115
+	LD	(IX+-6),BC
+;  154	        else{
+.LINE 154
+
+	JR	L_56
+L_54:
+;  155	            gfx_SetTextXY(x, y);
+.LINE 155
+
+	LD	BC,(IX+-9)
 	PUSH	BC
-	LD	BC,L__27
+	LD	BC,(IX+-6)
 	PUSH	BC
+	CALL	_gfx_SetTextXY
+	POP	BC
+	POP	BC
+;  156	            gfx_PrintChar(about[i]);
+.LINE 156
+
+	LD	HL,(IX+-12)
+	LD	C,(HL)
+	LD	B,0
+	PUSH	BC
+	CALL	_gfx_PrintChar
+	POP	BC
+;  157	            x+=7;
+.LINE 157
+
+	LD	IY,(IX+-6)
+	LEA	IY,IY+7
+	LD	(IX+-6),IY
+;  158	        }
+;  159	    }
+L_56:
+.LINE 159
+
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+L_57:
+	LD	HL,IX
+	LD	BC,-365
+	ADD	HL,BC
+	LD	BC,HL
+	PUSH	BC
+	CALL	_strlen
+	POP	BC
+	LD	BC,HL
+	LD	HL,(IX+-3)
+	OR	A,A
+	SBC	HL,BC
+	JR	C,L_55
+;  160	    gfx_BlitBuffer();
+.LINE 160
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_Blit
+	POP	BC
+;  161	}
+.LINE 161
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _av_About ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_Blit                           IMPORT  -----   function
+;_strlen                             IMPORT  -----   function
+;_gfx_PrintChar                      IMPORT  -----   function
+;_gfx_SetTextXY                      IMPORT  -----   function
+;_gfx_SetTextFGColor                 IMPORT  -----   function
+;_1temp51                            STATIC    353   variable
+;about                               IX-365    353   variable
+;G_0                                  IX-12      3   variable
+;y                                     IX-9      3   variable
+;x                                     IX-6      3   variable
+;i                                     IX-3      3   variable
+
+
+; Stack Frame Size: 371 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "av_About",161,"_av_About"
+	SEGMENT TEXT
+_1temp51:
+	DB	66
+	DB	108
+	DB	97
+	DB	115
+	DB	116
+	DB	50
+	DB	32
+	DB	105
+	DB	115
+	DB	32
+	DB	97
+	DB	32
+	DB	102
+	DB	105
+	DB	108
+	DB	101
+	DB	32
+	DB	105
+	DB	110
+	DB	116
+	DB	101
+	DB	103
+	DB	114
+	DB	105
+	DB	116
+	DB	121
+	DB	124
+	DB	97
+	DB	110
+	DB	100
+	DB	32
+	DB	109
+	DB	97
+	DB	108
+	DB	119
+	DB	97
+	DB	114
+	DB	101
+	DB	32
+	DB	100
+	DB	101
+	DB	116
+	DB	101
+	DB	99
+	DB	116
+	DB	105
+	DB	111
+	DB	110
+	DB	124
+	DB	115
+	DB	111
+	DB	102
+	DB	116
+	DB	119
+	DB	97
+	DB	114
+	DB	101
+	DB	46
+	DB	32
+	DB	73
+	DB	116
+	DB	32
+	DB	99
+	DB	97
+	DB	110
+	DB	32
+	DB	100
+	DB	101
+	DB	116
+	DB	101
+	DB	99
+	DB	116
+	DB	124
+	DB	99
+	DB	104
+	DB	97
+	DB	110
+	DB	103
+	DB	101
+	DB	115
+	DB	32
+	DB	116
+	DB	111
+	DB	32
+	DB	112
+	DB	114
+	DB	111
+	DB	103
+	DB	114
+	DB	97
+	DB	109
+	DB	115
+	DB	32
+	DB	111
+	DB	110
+	DB	32
+	DB	121
+	DB	111
+	DB	117
+	DB	114
+	DB	124
+	DB	99
+	DB	97
+	DB	108
+	DB	99
+	DB	32
+	DB	97
+	DB	110
+	DB	100
+	DB	32
+	DB	115
+	DB	99
+	DB	97
+	DB	110
+	DB	32
+	DB	116
+	DB	104
+	DB	101
+	DB	109
+	DB	32
+	DB	102
+	DB	111
+	DB	114
+	DB	32
+	DB	104
+	DB	97
+	DB	114
+	DB	109
+	DB	45
+	DB	124
+	DB	102
+	DB	117
+	DB	108
+	DB	32
+	DB	116
+	DB	104
+	DB	105
+	DB	110
+	DB	103
+	DB	115
+	DB	46
+	DB	32
+	DB	79
+	DB	112
+	DB	116
+	DB	105
+	DB	111
+	DB	110
+	DB	97
+	DB	108
+	DB	108
+	DB	121
+	DB	32
+	DB	116
+	DB	104
+	DB	105
+	DB	115
+	DB	124
+	DB	112
+	DB	114
+	DB	111
+	DB	103
+	DB	114
+	DB	97
+	DB	109
+	DB	32
+	DB	99
+	DB	97
+	DB	110
+	DB	32
+	DB	113
+	DB	117
+	DB	97
+	DB	114
+	DB	97
+	DB	110
+	DB	116
+	DB	105
+	DB	110
+	DB	101
+	DB	124
+	DB	104
+	DB	97
+	DB	114
+	DB	109
+	DB	102
+	DB	117
+	DB	108
+	DB	32
+	DB	112
+	DB	114
+	DB	111
+	DB	103
+	DB	114
+	DB	97
+	DB	109
+	DB	115
+	DB	32
+	DB	97
+	DB	110
+	DB	100
+	DB	124
+	DB	116
+	DB	97
+	DB	107
+	DB	101
+	DB	32
+	DB	115
+	DB	110
+	DB	97
+	DB	112
+	DB	115
+	DB	104
+	DB	111
+	DB	116
+	DB	115
+	DB	32
+	DB	40
+	DB	98
+	DB	97
+	DB	99
+	DB	107
+	DB	117
+	DB	112
+	DB	115
+	DB	41
+	DB	124
+	DB	111
+	DB	102
+	DB	32
+	DB	112
+	DB	114
+	DB	111
+	DB	103
+	DB	114
+	DB	97
+	DB	109
+	DB	115
+	DB	44
+	DB	32
+	DB	97
+	DB	108
+	DB	108
+	DB	111
+	DB	119
+	DB	105
+	DB	110
+	DB	103
+	DB	32
+	DB	121
+	DB	111
+	DB	117
+	DB	124
+	DB	116
+	DB	111
+	DB	32
+	DB	114
+	DB	101
+	DB	118
+	DB	101
+	DB	114
+	DB	116
+	DB	32
+	DB	99
+	DB	104
+	DB	97
+	DB	110
+	DB	103
+	DB	101
+	DB	115
+	DB	32
+	DB	116
+	DB	111
+	DB	124
+	DB	112
+	DB	114
+	DB	111
+	DB	103
+	DB	114
+	DB	97
+	DB	109
+	DB	115
+	DB	32
+	DB	97
+	DB	116
+	DB	32
+	DB	97
+	DB	110
+	DB	121
+	DB	32
+	DB	116
+	DB	105
+	DB	109
+	DB	101
+	DB	46
+	DB	124
+	DB	124
+	DB	70
+	DB	111
+	DB	114
+	DB	32
+	DB	109
+	DB	111
+	DB	114
+	DB	101
+	DB	32
+	DB	105
+	DB	110
+	DB	102
+	DB	111
+	DB	114
+	DB	109
+	DB	97
+	DB	116
+	DB	105
+	DB	111
+	DB	110
+	DB	44
+	DB	124
+	DB	118
+	DB	105
+	DB	115
+	DB	105
+	DB	116
+	DB	58
+	DB	124
+	DB	104
+	DB	116
+	DB	116
+	DB	112
+	DB	58
+	DB	47
+	DB	47
+	DB	99
+	DB	108
+	DB	114
+	DB	104
+	DB	111
+	DB	109
+	DB	101
+	DB	46
+	DB	111
+	DB	114
+	DB	103
+	DB	47
+	DB	98
+	DB	108
+	DB	97
+	DB	115
+	DB	116
+	DB	97
+	DB	118
+	DB	0
+	SEGMENT CODE
+;  162	
+;  163	void av_Integrity(program_t* proglist, ti_var_t attributes, int selected, int max, gfx_sprite_t* sprites[]){
+_av_Integrity:
+.DEFINE "_av_Integrity"
+
+.VALUE _av_Integrity
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "av_Integrity",163,"_av_Integrity"
+
+.LINE 163
+
+.DEFINE "proglist"
+
+.CLASS 65
+
+.VALUE 6
+
+.TAG "NONAME21"
+
+.TYPE 40
+
+.ENDEF
+
+.DEFINE "attributes"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "selected"
+
+.CLASS 65
+
+.VALUE 12
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "max"
+
+.CLASS 65
+
+.VALUE 15
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "sprites"
+
+.CLASS 65
+
+.VALUE 18
+
+.TAG "NONAME11"
+
+.TYPE 296
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "texty"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "index"
+
+.CLASS 65
+
+.VALUE -7
+
+.TYPE 4
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	PUSH	BC
+	DEC	SP
+;  164	    char i = 0;
+.LINE 164
+
+	LD	(IX+-1),0
+;  165	    int index;
+;  166	    int textx = 140, texty = 75;
+.LINE 166
+
+	LD	BC,75
+	LD	(IX+-4),BC
+;  167	    while( i < max ){
+.LINE 167
+
+	JR	L_65
+L_66:
+;  168	        if(selected == i){
+.LINE 168
+
+	LD	A,(IX+-1)
+	SEXT	HL
+	LD	L,(IX+-1)
+	LD	BC,HL
+	LD	HL,(IX+12)
+	OR	A,A
+	SBC	HL,BC
+	JR	NZ,L_61
+;  169	            gfx_SetColor(139);
+.LINE 169
+
+	LD	BC,139
+	PUSH	BC
+	CALL	_gfx_SetColor
+	POP	BC
+;  170	            gfx_FillRectangle(textx-25, texty-2, 318 - textx + 25, 11);
+.LINE 170
+
+	LD	BC,11
+	PUSH	BC
+	LD	BC,203
+	PUSH	BC
+	LD	IY,(IX+-4)
+	LEA	BC,IY+-2
+	PUSH	BC
+	LD	BC,115
+	PUSH	BC
+	CALL	_gfx_FillRectangle
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  171	        }
+L_61:
+.LINE 171
+
+;  172	        gfx_PrintStringXY(proglist[i].progname, textx, texty);
+.LINE 172
+
+	LD	BC,(IX+-4)
+	PUSH	BC
+	LD	BC,140
+	PUSH	BC
+	LD	A,(IX+-1)
+	SEXT	HL
+	LD	L,(IX+-1)
+	LD	A,10
+	CALL	__imul_b
+	LD	BC,(IX+6)
+	ADD	HL,BC
+	LD	IY,HL
+	PEA	IY+1
 	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-;  141	    gfx_SetColor(135);
-	LD	BC,135
+;  173	        //gfx_TransparentSprite(tracking_uncompressed, textx-14, texty-1);
+;  174	        if((index = integ_IsFileTracked(proglist[i].progname, attributes)) != -1)
+.LINE 174
+
+	LD	C,(IX+9)
+	LD	B,0
 	PUSH	BC
-	CALL	_gfx_SetColor
+	LD	A,(IX+-1)
+	SEXT	HL
+	LD	L,(IX+-1)
+	LD	A,10
+	CALL	__imul_b
+	LD	BC,(IX+6)
+	ADD	HL,BC
+	LD	IY,HL
+	PEA	IY+1
+	CALL	_integ_IsFileTracked
 	POP	BC
-;  142	    gfx_HorizLine(0, 10, 320);
-	LD	BC,320
+	POP	BC
+	LD	(IX+-7),HL
+	LD	BC,16777215
+	LD	HL,(IX+-7)
+	OR	A,A
+	SBC	HL,BC
+	JR	Z,L_63
+;  175	            gfx_TransparentSprite(sprites[0], textx-14, texty-1);
+.LINE 175
+
+	LD	BC,(IX+-4)
+	DEC	BC
 	PUSH	BC
-	LD	BC,10
+	LD	BC,126
 	PUSH	BC
+	LD	HL,(IX+18)
+	LD	BC,(HL)
+	PUSH	BC
+	CALL	_gfx_TransparentSprite
+	POP	BC
+	POP	BC
+	POP	BC
+L_63:
+;  176	        texty += 10;
+.LINE 176
+
+	LD	IY,(IX+-4)
+	LEA	IY,IY+10
+	LD	(IX+-4),IY
+;  177	        i++;
+.LINE 177
+
+	INC	(IX+-1)
+;  178	    }
+L_65:
+.LINE 178
+
+	LD	A,(IX+-1)
+	SEXT	HL
+	LD	L,(IX+-1)
+	LD	BC,(IX+15)
+	OR	A,A
+	SBC	HL,BC
+	CALL	__setflag
+	JP	M,L_66
+;  179	    gfx_BlitBuffer();
+.LINE 179
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_Blit
+	POP	BC
+;  180	}
+.LINE 180
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _av_Integrity ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_Blit                           IMPORT  -----   function
+;_gfx_TransparentSprite              IMPORT  -----   function
+;_integ_IsFileTracked                IMPORT  -----   function
+;_gfx_PrintStringXY                  IMPORT  -----   function
+;_gfx_FillRectangle                  IMPORT  -----   function
+;_gfx_SetColor                       IMPORT  -----   function
+;index                                 IX-7      3   variable
+;texty                                 IX-4      3   variable
+;i                                     IX-1      1   variable
+;sprites                              IX+18      3   parameter
+;max                                  IX+15      3   parameter
+;selected                             IX+12      3   parameter
+;attributes                            IX+9      1   parameter
+;proglist                              IX+6      3   parameter
+
+
+; Stack Frame Size: 28 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "av_Integrity",180,"_av_Integrity"
+;  181	    
+;  182	
+;  183	int integ_IsFileTracked(char *progname, ti_var_t attributes){
+_integ_IsFileTracked:
+.DEFINE "_integ_IsFileTracked"
+
+.VALUE _integ_IsFileTracked
+
+.CLASS 2
+
+.TYPE 68
+
+.ENDEF
+
+.BEGFUNC "integ_IsFileTracked",183,"_integ_IsFileTracked"
+
+.LINE 183
+
+.DEFINE "progname"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 34
+
+.ENDEF
+
+.DEFINE "attributes"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "response"
+
+.CLASS 65
+
+.VALUE -6
+
+.TYPE 4
+
+.ENDEF
+
+.DEFINE "check"
+
+.CLASS 65
+
+.VALUE -23
+
+.TAG "NONAME20"
+
+.TYPE 8
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	LEA	HL,IX+-23
+	LD	SP,HL
+;  184	    int response = -1, i = 0;
+.LINE 184
+
+	LD	BC,16777215
+	LD	(IX+-6),BC
 	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_HorizLine
-	POP	BC
-	POP	BC
-	POP	BC
-;  143	    gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  144	    ypos += 13;
-	LD	(IX+-5),13
-	LD	(IX+-4),0
-;  145	    
-;  146	    for(i = 0; i < sizeof(searchtypes); i++){
-	LD	(IX+-9),0
-	JR	L_35
-L_33:
-;  147	        uint8_t *search_pos = NULL;
-	LD	BC,0
-	LD	(IX+-21),BC
-;  148	        while((progname = ti_DetectVar(&search_pos, NULL, searchtypes[i])) != NULL) {
-	JR	L_31
-L_32:
-;  149	            // repeat until ti_DetectVar returns NULL
-;  150	            // ti_DetectVar returns program name
-;  151	            if (strcmp(progname, "#") && strcmp(progname, "!")){
-	LD	BC,L__28
-	PUSH	BC
-	LD	BC,(IX+-8)
+	LD	(IX+-3),BC
+;  185	    ProgData_t check;
+;  186	    while(ti_Read(&check, sizeof(ProgData_t), 1, attributes)){
+.LINE 186
+
+	JR	L_72
+L_73:
+;  187	        if(!strcmp(progname, check.name)) {response = i; break;}
+.LINE 187
+
+	PEA	IX+-19
+	LD	BC,(IX+6)
 	PUSH	BC
 	CALL	_strcmp
 	POP	BC
 	POP	BC
-	LD	BC,0
-	OR	A,A
-	SBC	HL,BC
-	JR	Z,L_31
-	LD	BC,L__30
+	CALL	__icmpzero
+	JR	NZ,L_71
+	LD	BC,(IX+-3)
+	LD	(IX+-6),BC
+	JR	L_74
+L_71:
+;  188	        i++;
+.LINE 188
+
+	LD	BC,(IX+-3)
+	INC	BC
+	LD	(IX+-3),BC
+;  189	    }
+L_72:
+.LINE 189
+
+	LD	C,(IX+9)
+	LD	B,0
 	PUSH	BC
-	LD	BC,(IX+-8)
+	LD	BC,1
 	PUSH	BC
-	CALL	_strcmp
+	LD	BC,17
+	PUSH	BC
+	PEA	IX+-23
+	CALL	_ti_Read
 	POP	BC
 	POP	BC
-	LD	BC,0
-	OR	A,A
-	SBC	HL,BC
-	JR	Z,L_31
-;  152	                ProgData_t *program = malloc(sizeof(ProgData_t));      // init zero'd program data structure
-	LD	BC,15
-	PUSH	BC
-	CALL	_malloc
 	POP	BC
-	LD	(IX+-3),HL
-;  153	                ti_var_t progdata = ti_OpenVar(progname, "r", TI_PRGM_TYPE);    // open var slot for program
-	LD	BC,5
+	POP	BC
+	CALL	__icmpzero
+	JR	NZ,L_73
+L_74:
+;  190	    return response;
+.LINE 190
+
+	LD	HL,(IX+-6)
+;  191	}
+.LINE 191
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _integ_IsFileTracked ***************************
+;Name                         Addr/Register   Size   Type
+;_ti_Read                            IMPORT  -----   function
+;_strcmp                             IMPORT  -----   function
+;check                                IX-23     17   variable
+;response                              IX-6      3   variable
+;i                                     IX-3      3   variable
+;attributes                            IX+9      1   parameter
+;progname                              IX+6      3   parameter
+
+
+; Stack Frame Size: 35 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "integ_IsFileTracked",191,"_integ_IsFileTracked"
+;  192	       
+;  193	unsigned long av_CheckSumFile(char* progname, unsigned char type){
+_av_CheckSumFile:
+.DEFINE "_av_CheckSumFile"
+
+.VALUE _av_CheckSumFile
+
+.CLASS 2
+
+.TYPE 79
+
+.ENDEF
+
+.BEGFUNC "av_CheckSumFile",193,"_av_CheckSumFile"
+
+.LINE 193
+
+.DEFINE "progname"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 34
+
+.ENDEF
+
+.DEFINE "type"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "temp"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 13
+
+.ENDEF
+
+.DEFINE "size"
+
+.CLASS 65
+
+.VALUE -5
+
+.TYPE 13
+
+.ENDEF
+
+.DEFINE "checksum"
+
+.CLASS 65
+
+.VALUE -9
+
+.TYPE 15
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
 	PUSH	BC
-	LD	BC,L__32
 	PUSH	BC
-	LD	BC,(IX+-8)
+	PUSH	BC
+;  194	    ti_var_t temp = ti_OpenVar(progname, "r", type);
+.LINE 194
+
+	LD	C,(IX+9)
+	LD	B,0
+	PUSH	BC
+	LD	BC,L__46
+	PUSH	BC
+	LD	BC,(IX+6)
 	PUSH	BC
 	CALL	_ti_OpenVar
 	POP	BC
 	POP	BC
 	POP	BC
-	LD	(IX+-11),A
-;  154	                gfx_PrintStringXY(progname, 5, ypos);
-	LD	BC,(IX+-5)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,5
-	PUSH	BC
-	LD	BC,(IX+-8)
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  155	                memset(program, '\0', sizeof(ProgData_t));
-	LD	BC,15
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_memset
-	POP	BC
-	POP	BC
-	POP	BC
-;  156	                program->type = TI_PRGM_TYPE;
-	LD	IY,(IX+-3)
-	LD	(IY+0),5
-;  157	                program->size = ti_GetSize(progdata);
-	LD	C,(IX+-11)
+	LD	(IX+-1),A
+;  195	    uint16_t size = ti_GetSize(temp);
+.LINE 195
+
+	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_ti_GetSize
 	POP	BC
-	LD	IY,(IX+-3)
-	LD	BC,HL
-	LD	(IY+1),C
-	LD	(IY+2),B
-;  158	                strcpy(program->name, progname);     // copy progname to struct
-	LD	BC,(IX+-8)
-	PUSH	BC
-	PEA	IY+3
-	CALL	_strcpy
-	POP	BC
-	POP	BC
-;  159	                while((tempread = ti_GetC(progdata)) != EOF){       // read out every byte of program
-	JR	L_20
-L_21:
-;  160	                    program->checksum += tempread;          // add data at tempread to checksum
-	LD	A,(IX+-12)
-	SEXT	HL
-	LD	L,(IX+-12)
-	LD	IY,(IX+-3)
-	LD	BC,(IY+12)
-	ADD	HL,BC
-	LD	(IY+12),HL
-;  161	                }
-L_20:
-	LD	C,(IX+-11)
+	LD	(IX+-5),L
+	LD	(IX+-4),H
+;  196	    uint16_t i;
+;  197	    unsigned long checksum = 0;
+.LINE 197
+
+	LD	BC,0
+	XOR	A,A
+	LD	(IX+-9),BC
+	LD	(IX+-6),A
+;  198	    for(i = 0; i < size; i++)
+.LINE 198
+
+	LD	(IX+-3),0
+	LD	(IX+-2),0
+	JR	L_79
+L_77:
+;  199	        checksum += ti_GetC(temp);
+.LINE 199
+
+	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_ti_GetC
 	POP	BC
-	LD	(IX+-12),L
-	LD	A,(IX+-12)
-	CP	A,-1
-	JR	NZ,L_21
-;  162	                if(ti_Write(program, sizeof(ProgData_t), 1, avData) == 1) gfx_PrintStringXY("success", 150, ypos);
-	LD	C,(IX+-10)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,15
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_ti_Write
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	BC,1
+	LD	BC,HL
+	CALL	__itol
+	LD	HL,(IX+-9)
+	LD	E,(IX+-6)
+	CALL	__ladd
+	LD	(IX+-9),HL
+	LD	(IX+-6),E
+	LD	HL,(IX+-3)
+	INC	HL
+	LD	(IX+-3),L
+	LD	(IX+-2),H
+L_79:
+	LD	BC,(IX+-5)
+	LD	HL,(IX+-3)
 	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_23
-	LD	BC,(IX+-5)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,150
-	PUSH	BC
-	LD	BC,L__35
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  163	                else gfx_PrintStringXY("failed", 150, ypos);
-	JR	L_25
-L_23:
-	LD	BC,(IX+-5)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,150
-	PUSH	BC
-	LD	BC,L__36
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-L_25:
-;  164	                ti_Close(progdata);
-	LD	C,(IX+-11)
+	SBC.SIS	HL,BC
+	JR	C,L_77
+;  200	    ti_Close(temp);
+.LINE 200
+
+	LD	C,(IX+-1)
 	LD	B,0
 	PUSH	BC
 	CALL	_ti_Close
 	POP	BC
-;  165	                free(program);
-	LD	BC,(IX+-3)
+;  201	    return checksum;
+.LINE 201
+
+	LD	HL,(IX+-9)
+	LD	E,(IX+-6)
+;  202	}
+.LINE 202
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _av_CheckSumFile ***************************
+;Name                         Addr/Register   Size   Type
+;_ti_Close                           IMPORT  -----   function
+;_ti_GetC                            IMPORT  -----   function
+;_ti_GetSize                         IMPORT  -----   function
+;_ti_OpenVar                         IMPORT  -----   function
+;checksum                              IX-9      4   variable
+;size                                  IX-5      2   variable
+;i                                     IX-3      2   variable
+;temp                                  IX-1      1   variable
+;type                                  IX+9      1   parameter
+;progname                              IX+6      3   parameter
+
+
+; Stack Frame Size: 21 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "av_CheckSumFile",202,"_av_CheckSumFile"
+	SEGMENT STRSECT
+L__46:
+	DB	"r"
+	DB	0
+	SEGMENT CODE
+;  203	/*
+;  204	void av_CheckSumAll(void){
+;  205	    time_struct_short_t modified;
+;  206	    uint16_t ypos = 0;
+;  207	    
+;  208	    // when called, destroys the pre-existing checksums database
+;  209	    // recreates it and saves new values
+;  210	    // for each installed program variable, we save:
+;  211	    //      up to 9 bytes for name + type
+;  212	    //      24-bit (3-byte) checksum
+;  213	    //      date of last checksum also written
+;  214	    boot_GetDate(&modified.day, &modified.month, &modified.year);
+;  215	    ti_Write(&modified, sizeof(time_struct_short_t), 1, avData);
+;  216	    gfx_ZeroScreen();
+;  217	    gfx_PrintStringXY("Checksumming Programs...", 10, ypos);
+;  218	    gfx_SetColor(135);
+;  219	    gfx_HorizLine(0, 10, 320);
+;  220	    gfx_SetColor(0);
+;  221	    ypos += 13;
+;  222	    
+;  223	   
+;  224	            // repeat until ti_DetectVar returns NULL
+;  225	            // ti_DetectVar returns program name
+;  226	                ProgData_t *program = malloc(sizeof(ProgData_t));      // init zero'd program data structure
+;  227	                ti_var_t progdata = ti_OpenVar(progname, "r", TI_PRGM_TYPE);    // open var slot for program
+;  228	                gfx_PrintStringXY(progname, 5, ypos);
+;  229	                memset(program, '\0', sizeof(ProgData_t));
+;  230	                program->type = TI_PRGM_TYPE;
+;  231	                program->size = ti_GetSize(progdata);
+;  232	                strcpy(program->name, progname);     // copy progname to struct
+;  233	                while((tempread = ti_GetC(progdata)) != EOF){       // read out every byte of program
+;  234	                    program->checksum += tempread;          // add data at tempread to checksum
+;  235	                }
+;  236	                if(ti_Write(program, sizeof(ProgData_t), 1, avData) == 1) gfx_PrintStringXY("success", 150, ypos);
+;  237	                else gfx_PrintStringXY("failed", 150, ypos);
+;  238	                ti_Close(progdata);
+;  239	                free(program);
+;  240	                ypos += 12;
+;  241	                if(ypos > 227){
+;  242	                    while(!os_GetCSC());
+;  243	                    gfx_SetColor(0);
+;  244	                    gfx_FillRectangle(0, 13, 320, 227);
+;  245	                    ypos = 13;
+;  246	                }
+;  247	            }
+;  248	        }
+;  249	    }
+;  250	    ti_SetArchiveStatus(true, avData);
+;  251	    ti_Close(avData);
+;  252	    free(progname);
+;  253	    while(!os_GetCSC());
+;  254	}
+;  255	
+;  256	
+;  257	
+;  258	
+;  259	char av_ScanAll(void){
+;  260	    char *progname, key, i;
+;  261	    ti_var_t avDefs;
+;  262	    int opstrsize, descsize;
+;  263	    ti_CloseAll();
+;  264	    if( !(avDefs = ti_Open(VDefs, "r")) ) return 1;
+;  265	    if(ti_Seek(4, SEEK_SET, avDefs) == EOF) return 2;
+;  266	    gfx_SetTextConfig(gfx_text_clip);
+;  267	    while((opstrsize = ti_GetC(avDefs)) != EOF){
+;  268	        int xpos = 0, ypos = 0;
+;  269	        char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE}, i;
+;  270	        opitem_t optemp = {0};
+;  271	        gfx_ZeroScreen();
+;  272	        gfx_PrintStringXY("Press [Clear] to abort at any time.",0, 228);
+;  273	        // this should loop until EOF reached
+;  274	        // tempread should have size of current byte sequence to scan for, or EOF
+;  275	        ti_Read(&optemp.opcodestr, opstrsize, 1, avDefs);
+;  276	        gfx_PrintStringXY(optemp.opcodestr, xpos, ypos);
+;  277	        optemp.opcodesize = ti_GetC(avDefs);
+;  278	        ti_Read(&optemp.opcodehex, optemp.opcodesize, 1, avDefs);
+;  279	        descsize = ti_GetC(avDefs);
+;  280	      //  ti_Read(&optemp.desc, descsize, 1, avDefs);
+;  281	        gfx_PrintString("h");
+;  282	     //   gfx_PrintStringXY(optemp.desc, xpos, ypos+12);
+;  283	        gfx_SetColor(135);
+;  284	        gfx_HorizLine(0, 24, 320);
+;  285	        gfx_SetColor(0);
+;  286	        ypos += 18;
+;  287	        // Print on screen what byte sequence we are scanning for
+;  288	        for(i = 0; i < sizeof(searchtypes); i++){
+;  289	            uint8_t *search_pos = NULL;
+;  290	            int tempread = 0;
+;  291	            while((progname = ti_DetectVar(&search_pos, NULL, searchtypes[i])) != NULL) {
+;  292	                if (strcmp(progname, "#") && strcmp(progname, "!") && strcmp(progname, "BLASTCSS")){
+;  293	                    char *searchloc = &optemp.opcodehex;
+;  294	                    uint8_t hits = 0;
+;  295	                    ti_var_t tempfile = ti_OpenVar(progname, "r", searchtypes[i]);
+;  296	                    while((tempread = ti_GetC(tempfile)) != EOF){
+;  297	                        if((key = os_GetCSC()) == sk_Clear) {
+;  298	                            ti_CloseAll();
+;  299	                            break;
+;  300	                        }
+;  301	                        if((char)tempread == *searchloc){
+;  302	                            hits++;
+;  303	                            if(hits == optemp.opcodesize){
+;  304	                                uint16_t position = ti_Tell(tempfile) - optemp.opcodesize;
+;  305	                                char hextemp[7];
+;  306	                                ypos += 12;
+;  307	                                gfx_PrintStringXY(progname, xpos, ypos);
+;  308	                                gfx_PrintStringXY("offset: ", xpos+90, ypos);
+;  309	                                gfx_PrintUInt(position, 1 + (position > 9) + (position > 99) + (position > 999) + (position > 9999));
+;  310	                                gfx_PrintString(", addr: 0x");
+;  311	                                sprintf(hextemp, "%06X", ti_GetDataPtr(tempfile));
+;  312	                                gfx_PrintString(hextemp);
+;  313	                                gfx_PrintString("h");
+;  314	                                break;
+;  315	                            }
+;  316	                            searchloc++;
+;  317	                        } else {
+;  318	                            searchloc = &optemp.opcodehex;
+;  319	                            hits = 0;
+;  320	                        }
+;  321	                    }
+;  322	                    if(key == sk_Clear) break;
+;  323	                    // repeat until ti_DetectVar returns NULL
+;  324	                    // ti_DetectVar returns program name
+;  325	                    // should simply output any filename containing byte sequence
+;  326	                    ti_Close(tempfile);
+;  327	                }
+;  328	            }
+;  329	            if(key == sk_Clear) break;
+;  330	        }
+;  331	        if(key == sk_Clear) break;
+;  332	        ypos += 10;
+;  333	        gfx_PrintStringXY("Search complete. Any key to proceed...", xpos, ypos);
+;  334	        while(!os_GetCSC());    // wait for keypress, hopefully give user time to write down
+;  335	    }
+;  336	    ti_SetArchiveStatus(true, avDefs);
+;  337	    ti_Close(avDefs);
+;  338	    gfx_SetTextConfig(gfx_text_noclip);
+;  339	    return 0;
+;  340	}
+;  341	
+;  342	
+;  343	char av_ValidateSaved(void){
+;  344	   
+;  345	}
+;  346	*/
+;  347	void pgrm_EraseContent(void){
+_pgrm_EraseContent:
+.DEFINE "_pgrm_EraseContent"
+
+.VALUE _pgrm_EraseContent
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "pgrm_EraseContent",347,"_pgrm_EraseContent"
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;  348	    gfx_SetColor(205);
+.LINE 348
+
+	LD	BC,205
 	PUSH	BC
-	CALL	_free
+	CALL	_gfx_SetColor
 	POP	BC
-;  166	                ypos += 12;
-	LD	IY,(IX+-5)
-	LEA	HL,IY+12
-	LD	(IX+-5),L
-	LD	(IX+-4),H
-;  167	                if(ypos > 227){
-	LD	BC,(IX+-5)
-	LD.LIS	HL,227
-	OR	A,A
-	SBC.SIS	HL,BC
-	JR	NC,L_31
-;  168	                    while(!os_GetCSC());
-L_26:
-	CALL	_os_GetCSC
-	OR	A,A
-	JR	Z,L_26
-;  169	                    gfx_SetColor(0);
+;  349	    gfx_FillRectangle(111, 71, 319-111, 219-71);
+.LINE 349
+
+	LD	BC,148
+	PUSH	BC
+	LD	BC,208
+	PUSH	BC
+	LD	BC,71
+	PUSH	BC
+	LD	BC,111
+	PUSH	BC
+	CALL	_gfx_FillRectangle
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  350	}
+.LINE 350
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _pgrm_EraseContent ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_FillRectangle                  IMPORT  -----   function
+;_gfx_SetColor                       IMPORT  -----   function
+
+
+; Stack Frame Size: 6 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "pgrm_EraseContent",350,"_pgrm_EraseContent"
+;  351	
+;  352	void pgrm_DrawBackground(void){
+_pgrm_DrawBackground:
+.DEFINE "_pgrm_DrawBackground"
+
+.VALUE _pgrm_DrawBackground
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "pgrm_DrawBackground",352,"_pgrm_DrawBackground"
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;  353	    // draw background
+;  354	    gfx_FillScreen(205);
+.LINE 354
+
+	LD	BC,205
+	PUSH	BC
+	CALL	_gfx_FillScreen
+	POP	BC
+;  355	    gfx_SetColor(0);
+.LINE 355
+
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  170	                    gfx_FillRectangle(0, 13, 320, 227);
-	LD	BC,227
+;  356	    gfx_FillRectangle(0, 0, 320, 70);
+.LINE 356
+
+	LD	BC,70
 	PUSH	BC
 	LD	BC,320
 	PUSH	BC
-	LD	BC,13
+	LD	BC,0
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_FillRectangle
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  357	    gfx_SetColor(40);
+.LINE 357
+
+	LD	BC,40
+	PUSH	BC
+	CALL	_gfx_SetColor
+	POP	BC
+;  358	    gfx_FillRectangle(4, 4, 320-8, 70-8);
+.LINE 358
+
+	LD	BC,62
+	PUSH	BC
+	LD	BC,312
+	PUSH	BC
+	LD	BC,4
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_FillRectangle
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  359	    gfx_SetTextFGColor(255);
+.LINE 359
+
+	LD	BC,255
+	PUSH	BC
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;  360	    gfx_SetTextScale(3,3);
+.LINE 360
+
+	LD	BC,3
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_SetTextScale
+	POP	BC
+	POP	BC
+;  361	    gfx_PrintStringXY("B L A S T", 100, 20);
+.LINE 361
+
+	LD	BC,20
+	PUSH	BC
+	LD	BC,100
+	PUSH	BC
+	LD	BC,L__50
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  362	    gfx_SetTextScale(2,2);
+.LINE 362
+
+	LD	BC,2
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_SetTextScale
+	POP	BC
+	POP	BC
+;  363	    gfx_PrintStringXY("2", 265, 15);
+.LINE 363
+
+	LD	BC,15
+	PUSH	BC
+	LD	BC,265
+	PUSH	BC
+	LD	BC,L__51
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  364	    gfx_SetTextScale(1,1);
+.LINE 364
+
+	LD	BC,1
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_SetTextScale
+	POP	BC
+	POP	BC
+;  365	    gfx_PrintStringXY("TI File Integrity Software", 100, 50);
+.LINE 365
+
+	LD	BC,50
+	PUSH	BC
+	LD	BC,100
+	PUSH	BC
+	LD	BC,L__52
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  366	    gfx_SetTextFGColor(0);
+.LINE 366
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;  367	    gfx_PrintStringXY("(c) 2018 - Anthony Cagliano, ClrHome", 5, 228);
+.LINE 367
+
+	LD	BC,228
+	PUSH	BC
+	LD	BC,5
+	PUSH	BC
+	LD	BC,L__53
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  368	    gfx_BlitBuffer();
+.LINE 368
+
+	LD	BC,1
+	PUSH	BC
+	CALL	_gfx_Blit
+	POP	BC
+;  369	}
+.LINE 369
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _pgrm_DrawBackground ***************************
+;Name                         Addr/Register   Size   Type
+;_gfx_Blit                           IMPORT  -----   function
+;_gfx_PrintStringXY                  IMPORT  -----   function
+;_gfx_SetTextScale                   IMPORT  -----   function
+;_gfx_SetTextFGColor                 IMPORT  -----   function
+;_gfx_FillRectangle                  IMPORT  -----   function
+;_gfx_SetColor                       IMPORT  -----   function
+;_gfx_FillScreen                     IMPORT  -----   function
+
+
+; Stack Frame Size: 6 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "pgrm_DrawBackground",369,"_pgrm_DrawBackground"
+	SEGMENT STRSECT
+L__50:
+	DB	"B L A S T"
+	DB	0
+L__51:
+	DB	"2"
+	DB	0
+L__52:
+	DB	"TI File Integrity Software"
+	DB	0
+L__53:
+	DB	"(c) 2018 - Anthony Cagliano, ClrHome"
+	DB	0
+	SEGMENT CODE
+;  370	
+;  371	void pgrm_DrawSplashScreen(char selected) {
+_pgrm_DrawSplashScreen:
+.DEFINE "_pgrm_DrawSplashScreen"
+
+.VALUE _pgrm_DrawSplashScreen
+
+.CLASS 2
+
+.TYPE 65
+
+.ENDEF
+
+.BEGFUNC "pgrm_DrawSplashScreen",371,"_pgrm_DrawSplashScreen"
+
+.LINE 371
+
+.DEFINE "selected"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "i"
+
+.CLASS 65
+
+.VALUE -1
+
+.TYPE 2
+
+.ENDEF
+
+.DEFINE "label"
+
+.CLASS 65
+
+.VALUE -4
+
+.TYPE 34
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	DEC	SP
+;  372	    // Draw splash screen
+;  373	    char i;
+;  374	    gfx_sprite_t *uncompressed, *scaled;
+;  375	    ti_var_t avData;
+;  376	    uint16_t temp;
+;  377	    ti_CloseAll();
+.LINE 377
+
+	CALL	_ti_CloseAll
+;  378	    // Draw sidebar
+;  379	    gfx_SetTextFGColor(0);
+.LINE 379
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;  380	    for(i = 0; i < 6; i++){
+.LINE 380
+
+	LD	(IX+-1),0
+	JR	L_98
+L_96:
+;  381	        char *label;
+;  382	        gfx_SetColor(0);
+.LINE 382
+
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_SetColor
+	POP	BC
+;  383	        gfx_FillRectangle(0, i * 25 + 70, 110, 25);
+.LINE 383
+
+	LD	BC,25
+	PUSH	BC
+	LD	BC,110
+	PUSH	BC
+	LD	A,(IX+-1)
+	SEXT	HL
+	LD	L,(IX+-1)
+	LD	A,25
+	CALL	__imul_b
+	LD	IY,HL
+	LEA	BC,IY+70
 	PUSH	BC
 	LD	BC,0
 	PUSH	BC
@@ -875,2459 +5813,205 @@ L_26:
 	POP	BC
 	POP	BC
 	POP	BC
-;  171	                    ypos = 13;
-	LD	(IX+-5),13
-	LD	(IX+-4),0
-;  172	                }
-;  173	            }
-;  174	        }
-L_31:
-	LD	A,(IX+-9)
-	SEXT	HL
-	LD	L,(IX+-9)
-	LD	BC,HL
-	LEA	HL,IX+-18
-	ADD	HL,BC
-	LD	C,(HL)
-	LD	B,0
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	PEA	IX+-21
-	CALL	_ti_DetectVar
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-8),HL
-	LD	BC,0
-	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_32
-	INC	(IX+-9)
-;  175	    }
-L_35:
-	LD	A,(IX+-9)
-	CP	A,2
-	JR	C,L_33
-;  176	    ti_SetArchiveStatus(true, avData);
-	LD	C,(IX+-10)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	CALL	_ti_SetArchiveStatus
-	POP	BC
-	POP	BC
-;  177	    ti_Close(avData);
-	LD	C,(IX+-10)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  178	    free(progname);
-	LD	BC,(IX+-8)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  179	    while(!os_GetCSC());
-L_38:
-	CALL	_os_GetCSC
-	OR	A,A
-	JR	Z,L_38
-;  180	}
-	LD	SP,IX
-	POP	IX
-	RET	
+;  384	        if(selected == i) gfx_SetColor(139);
+.LINE 384
 
-
-;**************************** _av_CheckSumAll ***************************
-;Name                         Addr/Register   Size   Type
-;_ti_SetArchiveStatus                IMPORT  -----   function
-;_ti_DetectVar                       IMPORT  -----   function
-;_gfx_FillRectangle                  IMPORT  -----   function
-;_os_GetCSC                          IMPORT  -----   function
-;_free                               IMPORT  -----   function
-;_ti_Close                           IMPORT  -----   function
-;_ti_GetC                            IMPORT  -----   function
-;_strcpy                             IMPORT  -----   function
-;_ti_GetSize                         IMPORT  -----   function
-;_memset                             IMPORT  -----   function
-;_ti_OpenVar                         IMPORT  -----   function
-;_malloc                             IMPORT  -----   function
-;_strcmp                             IMPORT  -----   function
-;_gfx_HorizLine                      IMPORT  -----   function
-;_gfx_SetColor                       IMPORT  -----   function
-;_gfx_PrintStringXY                  IMPORT  -----   function
-;_gfx_ZeroScreen                     IMPORT  -----   function
-;_ti_Write                           IMPORT  -----   function
-;_boot_GetDate                       IMPORT  -----   function
-;_ScanDB                             STATIC      3   variable
-;_ti_Open                            IMPORT  -----   function
-;_0temp17                            STATIC      2   variable
-;search_pos                           IX-21      3   variable
-;searchtypes                          IX-18      2   variable
-;modified                             IX-16      4   variable
-;tempread                             IX-12      1   variable
-;progdata                             IX-11      1   variable
-;avData                               IX-10      1   variable
-;i                                     IX-9      1   variable
-;progname                              IX-8      3   variable
-;ypos                                  IX-5      2   variable
-;program                               IX-3      3   variable
-
-
-; Stack Frame Size: 27 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-	SEGMENT STRSECT
-L__26:
-	DB	"w"
-	DB	0
-L__27:
-	DB	"Checksumming Programs..."
-	DB	0
-L__28:
-	DB	"#"
-	DB	0
-L__30:
-	DB	"!"
-	DB	0
-L__32:
-	DB	"r"
-	DB	0
-L__35:
-	DB	"success"
-	DB	0
-L__36:
-	DB	"failed"
-	DB	0
-	SEGMENT TEXT
-_0temp17:
-	DB	5
-	DB	6
-	SEGMENT CODE
-;  181	
-;  182	char pgrm_DrawMainMenu(char selected){
-_pgrm_DrawMainMenu:
-	LD	HL,-1
-	CALL	__frameset
-;  183	    char key = 0;
-	LD	(IX+-1),0
-;  184	    ti_CloseAll();
-	CALL	_ti_CloseAll
-;  185	    gfx_PrintStringXY("BLASTCSS MAIN MENU", 130, 86);
-	LD	BC,86
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__43
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  186	    gfx_SetColor(135);
-	LD	BC,135
+	LD	A,(IX+6)
+	CP	A,(IX+-1)
+	JR	NZ,L_86
+	LD	BC,139
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  187	    gfx_HorizLine(130, 96, 135);
-	LD	BC,135
-	PUSH	BC
-	LD	BC,96
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	CALL	_gfx_HorizLine
-	POP	BC
-	POP	BC
-	POP	BC
-;  188	    gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  189	    gfx_PrintStringXY("Scan Programs", 130, 100);
-	LD	BC,100
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__44
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  190	    gfx_PrintStringXY("Verify Attributes", 130, 112);
-	LD	BC,112
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__45
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  191	    gfx_PrintStringXY("Update Attributes File", 130, 124);
-	LD	BC,124
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__46
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  192	    gfx_PrintStringXY("Advanced Settings", 130, 136);
-	LD	BC,136
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__47
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  193	    gfx_PrintStringXY("About", 130, 148);
-	LD	BC,148
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__48
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  194	    gfx_PrintStringXY("Exit", 130, 160);
-	LD	BC,160
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__49
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  195	    gfx_SetColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  196	    gfx_FillCircle(120, selected * 12 + 91, 3);
-	LD	BC,3
-	PUSH	BC
-	LD	A,(IX+6)
-	SEXT	HL
-	LD	L,(IX+6)
-	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	LD	IY,HL
-	LEA	BC,IY+91
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
-	CALL	_gfx_FillCircle
-	POP	BC
-	POP	BC
-	POP	BC
-;  197	    while( (key = os_GetCSC()) != sk_Enter ){
-	JR	L_53
-L_54:
-;  198	        if(key){
-	LD	A,(IX+-1)
-	OR	A,A
-	JR	Z,L_44
-;  199	            gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  200	            gfx_FillCircle(120, selected * 12 + 91, 3);
-	LD	BC,3
-	PUSH	BC
-	LD	A,(IX+6)
-	SEXT	HL
-	LD	L,(IX+6)
-	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	LD	IY,HL
-	LEA	BC,IY+91
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
-	CALL	_gfx_FillCircle
-	POP	BC
-	POP	BC
-	POP	BC
-;  201	            gfx_SetColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  202	        }
-L_44:
-;  203	        if(key == sk_Up){
-	LD	A,(IX+-1)
-	CP	A,4
-	JR	NZ,L_48
-;  204	            selected--;
-	DEC	(IX+6)
-;  205	            if(selected < 1) selected = 6;
-	LD	A,(IX+6)
-	CP	A,1
-	JP	P,L_48
-	LD	(IX+6),6
-;  206	        }
-L_48:
-;  207	        if(key == sk_Down){
-	LD	A,(IX+-1)
-	CP	A,1
-	JR	NZ,L_50
-;  208	            selected++;
-	INC	(IX+6)
-;  209	            if(selected > 6) selected = 1;
-	LD	A,6
-	CP	A,(IX+6)
-	JP	P,L__58
-	JP	PE,L_50
-	JR	L__59
-L__58:
-	JP	PO,L_50
-L__59:
-	LD	(IX+6),1
-;  210	        }
-L_50:
-;  211	        if(key) gfx_FillCircle(120, selected * 12 + 91, 3);
-	LD	A,(IX+-1)
-	OR	A,A
-	JR	Z,L_52
-	LD	BC,3
-	PUSH	BC
-	LD	A,(IX+6)
-	SEXT	HL
-	LD	L,(IX+6)
-	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	LD	IY,HL
-	LEA	BC,IY+91
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
-	CALL	_gfx_FillCircle
-	POP	BC
-	POP	BC
-	POP	BC
-L_52:
-;  212	        if(key == sk_Clear) { selected = 6; break; }
-	LD	A,(IX+-1)
-	CP	A,15
-	JR	NZ,L_53
-	LD	(IX+6),6
-	JR	L_55
-;  213	    }
-L_53:
-	CALL	_os_GetCSC
-	LD	(IX+-1),A
-	CP	A,9
-	JR	NZ,L_54
-L_55:
-;  214	    return selected;
-	LD	A,(IX+6)
-;  215	}
-	LD	SP,IX
-	POP	IX
-	RET	
+;  385	        else gfx_SetColor(172);
+.LINE 385
 
-
-;**************************** _pgrm_DrawMainMenu ***************************
-;Name                         Addr/Register   Size   Type
-;_os_GetCSC                          IMPORT  -----   function
-;_gfx_FillCircle                     IMPORT  -----   function
-;_gfx_HorizLine                      IMPORT  -----   function
-;_gfx_SetColor                       IMPORT  -----   function
-;_gfx_PrintStringXY                  IMPORT  -----   function
-;_ti_CloseAll                        IMPORT  -----   function
-;key                                   IX-1      1   variable
-;selected                              IX+6      1   parameter
-
-
-; Stack Frame Size: 10 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-	SEGMENT STRSECT
-L__43:
-	DB	"BLASTCSS MAIN MENU"
-	DB	0
-L__44:
-	DB	"Scan Programs"
-	DB	0
-L__45:
-	DB	"Verify Attributes"
-	DB	0
-L__46:
-	DB	"Update Attributes File"
-	DB	0
-L__47:
-	DB	"Advanced Settings"
-	DB	0
-L__48:
-	DB	"About"
-	DB	0
-L__49:
-	DB	"Exit"
-	DB	0
-	SEGMENT CODE
-;  216	
-;  217	
-;  218	char av_ScanAll(void){
-_av_ScanAll:
-	LD	HL,-486
-	CALL	__frameset
-;  219	    char *progname;
-;  220	    ti_var_t avDefs;
-;  221	    int opstrsize, descsize;
-;  222	    ti_CloseAll();
-	CALL	_ti_CloseAll
-;  223	    if( !(avDefs = ti_Open(VDefs, "r")) ) return 1;
-	LD	BC,L__61
-	PUSH	BC
-	LD	BC,(_VDefs)
-	PUSH	BC
-	CALL	_ti_Open
-	POP	BC
-	POP	BC
-	LD	(IX+-1),A
-	OR	A,A
-	JR	NZ,L_59
-	LD	A,1
 	JR	L_87
-L_59:
-;  224	    if(ti_Seek(4, SEEK_SET, avDefs) == EOF) return 2;
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,4
-	PUSH	BC
-	CALL	_ti_Seek
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	BC,16777215
-	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_60
-	LD	A,2
-	JR	L_87
-L_60:
-;  225	    gfx_SetTextConfig(gfx_text_clip);
-	LD	BC,1
-	PUSH	BC
-	CALL	_gfx_SetTextConfig
-	POP	BC
-;  226	    while((opstrsize = ti_GetC(avDefs)) != EOF){
-	JR	L_84
-L_85:
-;  227	        int xpos = 0, ypos = 0;
-;  228	        char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE}, i;
-;  229	        opitem_t optemp = {0};
-	LD	IY,IX
-	LEA	DE,IX+-18
-	LD	HL,_1temp61
-	LD	BC,2
-	LDIR	
-	LD	HL,_2temp62
-	LD	BC,459
-	LD	DE,-486
-	ADD	IY,DE
-	LD	DE,IY
-	LDIR	
-;  230	        gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;  231	        // this should loop until EOF reached
-;  232	        // tempread should have size of current byte sequence to scan for, or EOF
-;  233	        ti_Read(&optemp.opcodestr, opstrsize, 1, avDefs);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,(IX+-21)
-	PUSH	BC
-	LD	HL,IX
-	LD	BC,-486
-	ADD	HL,BC
-	LD	BC,HL
-	PUSH	BC
-	CALL	_ti_Read
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  234	        gfx_PrintStringXY(optemp.opcodestr, xpos, ypos);
-	LD	BC,0
-	PUSH	BC
-	PUSH	BC
-	LD	HL,IX
-	LD	BC,-486
-	ADD	HL,BC
-	LD	BC,HL
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  235	        optemp.opcodesize = ti_GetC(avDefs);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_GetC
-	POP	BC
-	LD	BC,-386
-	CALL	__istix
-;  236	        ti_Read(&optemp.opcodehex, optemp.opcodesize, 1, avDefs);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,-386
-	CALL	__ildix
-	PUSH	HL
-	LD	HL,IX
-	LD	BC,-383
-	ADD	HL,BC
-	LD	BC,HL
-	PUSH	BC
-	CALL	_ti_Read
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  237	        descsize = ti_GetC(avDefs);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_GetC
-	POP	BC
-	LD	(IX+-27),HL
-;  238	        ti_Read(&optemp.desc, descsize, 1, avDefs);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,(IX+-27)
-	PUSH	BC
-	LD	HL,IX
-	LD	BC,-283
-	ADD	HL,BC
-	LD	BC,HL
-	PUSH	BC
-	CALL	_ti_Read
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  239	        gfx_PrintString("h");
-	LD	BC,L__64
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  240	        gfx_PrintStringXY(optemp.desc, xpos, ypos+12);
-	LD	BC,12
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	HL,IX
-	LD	BC,-283
-	ADD	HL,BC
-	LD	BC,HL
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  241	        gfx_SetColor(135);
-	LD	BC,135
+L_86:
+	LD	BC,172
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  242	        gfx_HorizLine(0, 24, 320);
-	LD	BC,320
-	PUSH	BC
-	LD	BC,24
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_HorizLine
-	POP	BC
-	POP	BC
-	POP	BC
-;  243	        gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  244	        ypos += 18;
-	LD	BC,18
-	LD	(IX+-9),BC
-;  245	        // Print on screen what byte sequence we are scanning for
-;  246	        for(i = 0; i < sizeof(searchtypes); i++){
-	LD	(IX+-2),0
-	JR	L_80
-L_78:
-;  247	            uint8_t *search_pos = NULL;
-	LD	BC,0
-	LD	(IX+-24),BC
-;  248	            int tempread = 0;
-	LD	(IX+-16),BC
-;  249	            while((progname = ti_DetectVar(&search_pos, NULL, searchtypes[i])) != NULL) {
-	JR	L_76
-L_77:
-;  250	                if (strcmp(progname, "#") && strcmp(progname, "!") && strcmp(progname, "BLASTCSS")){
-	LD	BC,L__65
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_strcmp
-	POP	BC
-	POP	BC
-	LD	BC,0
-	OR	A,A
-	SBC	HL,BC
-	JR	Z,L_76
-	LD	BC,L__67
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_strcmp
-	POP	BC
-	POP	BC
-	LD	BC,0
-	OR	A,A
-	SBC	HL,BC
-	JR	Z,L_76
-	LD	BC,L__69
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_strcmp
-	POP	BC
-	POP	BC
-	LD	BC,0
-	OR	A,A
-	SBC	HL,BC
-	JR	Z,L_76
-;  251	                    char *searchloc = &optemp.opcodehex;
-	LD	HL,IX
-	LD	BC,-383
-	ADD	HL,BC
-	LD	(IX+-12),HL
-;  252	                    uint8_t hits = 0;
-	LD	(IX+-3),0
-;  253	                    ti_var_t tempfile = ti_OpenVar(progname, "r", searchtypes[i]);
-	LD	A,(IX+-2)
-	SEXT	HL
-	LD	L,(IX+-2)
-	LD	BC,HL
-	LEA	HL,IX+-18
-	ADD	HL,BC
-	LD	C,(HL)
-	LD	B,0
-	PUSH	BC
-	LD	BC,L__71
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_ti_OpenVar
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-13),A
-;  254	                    while((tempread = ti_GetC(tempfile)) != EOF){
-	JR	L_72
-L_73:
-;  255	                        if((char)tempread == *searchloc){
-	LD	HL,(IX+-12)
-	LD	A,(HL)
-	LD	B,(IX+-16)
-	CP	A,B
-	JR	NZ,L_71
-;  256	                            hits++;
-	INC	(IX+-3)
-;  257	                            if(hits == optemp.opcodesize){
-	LD	A,(IX+-3)
-	UEXT	HL
-	LD	L,A
-	LD	DE,HL
-	LD	BC,-386
-	CALL	__ildix
-	OR	A,A
-	SBC	HL,DE
-	JR	NZ,L_69
-;  258	                                ypos += 12;
-	LD	IY,(IX+-9)
-	LEA	IY,IY+12
-	LD	(IX+-9),IY
-;  259	                                gfx_PrintStringXY(progname, xpos, ypos);
-	LD	BC,IY
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  260	                                break;
-	JR	L_74
-;  261	                            }
-L_69:
-;  262	                            searchloc++;
-	LD	BC,(IX+-12)
-	INC	BC
-	LD	(IX+-12),BC
-;  263	                        } else {
-	JR	L_72
-L_71:
-;  264	                            searchloc = &optemp.opcodehex;
-	LD	HL,IX
-	LD	BC,-383
-	ADD	HL,BC
-	LD	(IX+-12),HL
-;  265	                            hits = 0;
-	LD	(IX+-3),0
-;  266	                        }
-;  267	                    }
-L_72:
-	LD	C,(IX+-13)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_GetC
-	POP	BC
-	LD	(IX+-16),HL
-	LD	BC,16777215
-	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_73
-L_74:
-;  268	                    // repeat until ti_DetectVar returns NULL
-;  269	                    // ti_DetectVar returns program name
-;  270	                    // should simply output any filename containing byte sequence
-;  271	                    ti_Close(tempfile);
-	LD	C,(IX+-13)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  272	                }
-;  273	            }
-L_76:
-	LD	A,(IX+-2)
-	SEXT	HL
-	LD	L,(IX+-2)
-	LD	BC,HL
-	LEA	HL,IX+-18
-	ADD	HL,BC
-	LD	C,(HL)
-	LD	B,0
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	PEA	IX+-24
-	CALL	_ti_DetectVar
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-6),HL
-	LD	BC,0
-	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_77
-	INC	(IX+-2)
-;  274	        }
-L_80:
-	LD	A,(IX+-2)
-	CP	A,2
-	JR	C,L_78
-;  275	        ypos += 10;
-	LD	IY,(IX+-9)
-	LEA	IY,IY+10
-	LD	(IX+-9),IY
-;  276	        gfx_PrintStringXY("Search complete. Any key to proceed...", xpos, ypos);
-	LD	BC,IY
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,L__77
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  277	        while(!os_GetCSC());    // wait for keypress, hopefully give user time to write down
-L_83:
-	CALL	_os_GetCSC
-	OR	A,A
-	JR	Z,L_83
-;  278	    }
-L_84:
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_GetC
-	POP	BC
-	LD	(IX+-21),HL
-	LD	BC,16777215
-	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_85
-;  279	    ti_SetArchiveStatus(true, avDefs);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	CALL	_ti_SetArchiveStatus
-	POP	BC
-	POP	BC
-;  280	    ti_Close(avDefs);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  281	    gfx_SetTextConfig(gfx_text_noclip);
-	LD	BC,2
-	PUSH	BC
-	CALL	_gfx_SetTextConfig
-	POP	BC
-;  282	    return 0;
-	XOR	A,A
-;  283	}
 L_87:
-	LD	SP,IX
-	POP	IX
-	RET	
+;  386	        gfx_FillRectangle(2, i * 25 + 72, 106, 21);
+.LINE 386
 
+	LD	BC,21
+	PUSH	BC
+	LD	BC,106
+	PUSH	BC
+	LD	A,(IX+-1)
+	SEXT	HL
+	LD	L,(IX+-1)
+	LD	A,25
+	CALL	__imul_b
+	LD	IY,HL
+	LEA	BC,IY+72
+	PUSH	BC
+	LD	BC,2
+	PUSH	BC
+	CALL	_gfx_FillRectangle
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  387	        switch(i){
+.LINE 387
 
-;**************************** _av_ScanAll ***************************
-;Name                         Addr/Register   Size   Type
-;_ti_SetArchiveStatus                IMPORT  -----   function
-;_os_GetCSC                          IMPORT  -----   function
-;_ti_DetectVar                       IMPORT  -----   function
-;_ti_Close                           IMPORT  -----   function
-;_ti_OpenVar                         IMPORT  -----   function
-;_strcmp                             IMPORT  -----   function
-;_gfx_HorizLine                      IMPORT  -----   function
-;_gfx_SetColor                       IMPORT  -----   function
-;_gfx_PrintString                    IMPORT  -----   function
-;_ti_GetC                            IMPORT  -----   function
-;_gfx_PrintStringXY                  IMPORT  -----   function
-;_ti_Read                            IMPORT  -----   function
-;_gfx_ZeroScreen                     IMPORT  -----   function
-;_2temp62                            STATIC    459   variable
-;_1temp61                            STATIC      2   variable
-;_gfx_SetTextConfig                  IMPORT  -----   function
-;_ti_Seek                            IMPORT  -----   function
-;_VDefs                              STATIC      3   variable
-;_ti_Open                            IMPORT  -----   function
-;_ti_CloseAll                        IMPORT  -----   function
-;optemp                              IX-486    459   variable
-;descsize                             IX-27      3   variable
-;search_pos                           IX-24      3   variable
-;opstrsize                            IX-21      3   variable
-;searchtypes                          IX-18      2   variable
-;tempread                             IX-16      3   variable
-;tempfile                             IX-13      1   variable
-;searchloc                            IX-12      3   variable
-;ypos                                  IX-9      3   variable
-;progname                              IX-6      3   variable
-;hits                                  IX-3      1   variable
-;i                                     IX-2      1   variable
-;avDefs                                IX-1      1   variable
-
-
-; Stack Frame Size: 492 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-	SEGMENT STRSECT
-L__61:
-	DB	"r"
-	DB	0
-L__64:
-	DB	"h"
-	DB	0
-L__65:
-	DB	"#"
-	DB	0
-L__67:
-	DB	"!"
-	DB	0
-L__69:
-	DB	"BLASTCSS"
-	DB	0
-L__71:
-	DB	"r"
-	DB	0
-L__77:
-	DB	"Search complete. Any key to proceed..."
-	DB	0
-	SEGMENT TEXT
-_1temp61:
-	DB	5
-	DB	6
-_2temp62:
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
+	LD	A,(IX+-1)
+	SEXT	HL
+	LD	L,(IX+-1)
+	CALL	__seqcaseD
+	JP	(HL)
+L__56:
+	DW	6
 	DW	0
 	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	DB	0
-	SEGMENT CODE
-;  284	
-;  285	void pgrm_DrawSettingsMenu(void){
-_pgrm_DrawSettingsMenu:
-	LD	HL,-11
-	CALL	__frameset
-;  286	    char selected = 1, key = 0;
-	LD	(IX+-1),1
-	LD	(IX+-2),0
-;  287	    ti_CloseAll();
-	CALL	_ti_CloseAll
-;  288	    gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;  289	    pgrm_DrawSplashScreen();
-	CALL	_pgrm_DrawSplashScreen
-;  290	    gfx_PrintStringXY("BLASTCSS SETTINGS MENU", 130, 98);
-	LD	BC,98
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__81
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  291	    gfx_SetColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  292	    gfx_HorizLine(130, 108, 166);
-	LD	BC,166
-	PUSH	BC
-	LD	BC,108
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	CALL	_gfx_HorizLine
-	POP	BC
-	POP	BC
-	POP	BC
-;  293	    gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  294	    gfx_PrintStringXY("Enable Smart-Detect", 130, 112);
-	LD	BC,112
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__82
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  295	    gfx_PrintStringXY("Enable Firewall", 130, 124);
-	LD	BC,124
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__83
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  296	    gfx_PrintStringXY("Enable Quarantine", 130, 136);
-	LD	BC,136
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__84
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  297	    gfx_PrintStringXY("Main Menu", 130, 148);
-	LD	BC,148
-	PUSH	BC
-	LD	BC,130
-	PUSH	BC
-	LD	BC,L__85
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  298	    showBoxes();
-	CALL	_showBoxes
-;  299	    gfx_SetColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  300	    gfx_FillCircle(120, selected * 12 + 103, 3);
-	LD	BC,3
-	PUSH	BC
-	LD	BC,115
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
-	CALL	_gfx_FillCircle
-	POP	BC
-	POP	BC
-	POP	BC
-;  301	    gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  302	    while( (key = os_GetCSC()) != sk_Clear ){
-	JR	L_117
-L_118:
-;  303	        if(key){
-	LD	A,(IX+-2)
-	OR	A,A
-	JR	Z,L_92
-;  304	            gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  305	            gfx_FillCircle(120, selected * 12 + 103, 3);
-	LD	BC,3
-	PUSH	BC
-	LD	A,(IX+-1)
-	SEXT	HL
-	LD	L,(IX+-1)
-	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	LD	IY,HL
-	LEA	BC,IY+103
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
-	CALL	_gfx_FillCircle
-	POP	BC
-	POP	BC
-	POP	BC
-;  306	            gfx_SetColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  307	        }
+	DW24	L_88	
+
+	DW24	L_89	
+
+	DW24	L_90	
+
+	DW24	L_91	
+
+	DW24	L_92	
+
+	DW24	L_93	
+
+	DW24	L_94	
+
+;  388	            case 0:
+L_88:
+.LINE 388
+
+;  389	                label = "About Blast2";
+.LINE 389
+
+	LD	BC,L__57
+	LD	(IX+-4),BC
+;  390	                break;
+.LINE 390
+
+	JR	L_95
+;  391	            case 1:
+L_89:
+.LINE 391
+
+;  392	                label = "File Checking";
+.LINE 392
+
+	LD	BC,L__58
+	LD	(IX+-4),BC
+;  393	                break;
+.LINE 393
+
+	JR	L_95
+;  394	            case 2:
+L_90:
+.LINE 394
+
+;  395	                label = "Quarantine";
+.LINE 395
+
+	LD	BC,L__59
+	LD	(IX+-4),BC
+;  396	                break;
+.LINE 396
+
+	JR	L_95
+;  397	            case 3:
+L_91:
+.LINE 397
+
+;  398	                label = "Snapshots";
+.LINE 398
+
+	LD	BC,L__60
+	LD	(IX+-4),BC
+;  399	                break;
+.LINE 399
+
+	JR	L_95
+;  400	            case 4:
 L_92:
-;  308	        if(key == sk_Up){
-	LD	A,(IX+-2)
-	CP	A,4
-	JR	NZ,L_96
-;  309	            selected--;
-	DEC	(IX+-1)
-;  310	            if(selected < 1) selected = 4;
-	LD	A,(IX+-1)
-	CP	A,1
-	JP	P,L_96
-	LD	(IX+-1),4
-;  311	        }
-L_96:
-;  312	        if(key == sk_Down){
-	LD	A,(IX+-2)
-	CP	A,1
-	JR	NZ,L_114
-;  313	            selected++;
-	INC	(IX+-1)
-;  314	            if(selected > 4) selected = 1;
-	LD	A,4
-	CP	A,(IX+-1)
-	JP	P,L__101
-	JP	PE,L_114
-	JR	L__102
-L__101:
-	JP	PO,L_114
-L__102:
-	LD	(IX+-1),1
-;  315	        }
-L_114:
-;  316	        if(key == sk_Enter){
-	LD	A,(IX+-2)
-	CP	A,9
-	JR	NZ,L_116
-;  317	            switch(selected){
-	LD	A,(IX+-1)
-	SEXT	HL
-	LD	L,(IX+-1)
-	LD	BC,HL
-L__93:
-	LD	DE,1
-	OR	A,A
-	SBC	HL,DE
-	JR	C,L_116
-	LD	HL,4
-	OR	A,A
-	SBC	HL,BC
-	JR	C,L_116
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	LD	BC,L__92-3
-	ADD	HL,BC
-	LD	HL,(HL)
-	JP	(HL)
-L__92:
-	DW24	L_97	
+.LINE 400
 
-	DW24	L_102	
+;  401	                label = "Settings";
+.LINE 401
 
-	DW24	L_107	
+	LD	BC,L__61
+	LD	(IX+-4),BC
+;  402	                break;
+.LINE 402
 
-	DW24	L_112	
+	JR	L_95
+;  403	            case 5:
+L_93:
+.LINE 403
 
-;  318	                case 1:
-L_97:
-;  319	                    settingsSave.hookInstall = !settingsSave.hookInstall;
-	LD	A,(_settingsSave+7)
-	OR	A,A
-	JR	NZ,L_99
-	LD	BC,1
-	LD	(IX+-8),BC
-	JR	L_100
-L_99:
-	LD	BC,0
-	LD	(IX+-8),BC
-L_100:
-	LD	A,(IX+-8)
-	LD	(_settingsSave+7),A
-;  320	                    showBoxes();
-	CALL	_showBoxes
-;  321	                    break;
-	JR	L_116
-;  322	                case 2:
-L_102:
-;  323	                    settingsSave.enableFirewall = !settingsSave.enableFirewall;
-	LD	A,(_settingsSave+8)
-	OR	A,A
-	JR	NZ,L_104
-	LD	BC,1
-	LD	(IX+-11),BC
-	JR	L_105
-L_104:
-	LD	BC,0
-	LD	(IX+-11),BC
-L_105:
-	LD	A,(IX+-11)
-	LD	(_settingsSave+8),A
-;  324	                    showBoxes();
-	CALL	_showBoxes
-;  325	                    break;
-	JR	L_116
-;  326	                case 3:
-L_107:
-;  327	                    settingsSave.enableQuarantine = !settingsSave.enableQuarantine;
-	LD	A,(_settingsSave+9)
-	OR	A,A
-	JR	NZ,L_109
-	LD	BC,1
-	LD	(IX+-5),BC
-	JR	L_110
-L_109:
-	LD	BC,0
-	LD	(IX+-5),BC
-L_110:
-	LD	A,(IX+-5)
-	LD	(_settingsSave+9),A
-;  328	                    showBoxes();
-	CALL	_showBoxes
-;  329	                    break;
-	JR	L_116
-;  330	                case 4:
-L_112:
-;  331	                    key = sk_Clear;
-	LD	(IX+-2),15
-;  332	                    break;
-;  333	            }
-;  334	        }
-L_116:
-;  335	        if(key) gfx_FillCircle(120, selected * 12 + 103, 3);
-	LD	A,(IX+-2)
-	OR	A,A
-	JR	Z,L_117
-	LD	BC,3
-	PUSH	BC
+;  404	                label = "Program Help";
+.LINE 404
+
+	LD	BC,L__62
+	LD	(IX+-4),BC
+;  405	                break;
+.LINE 405
+
+	JR	L_95
+;  406	            default:
+L_94:
+.LINE 406
+
+;  407	                label = "Unimplemented";
+.LINE 407
+
+	LD	BC,L__63
+	LD	(IX+-4),BC
+;  408	                break;
+;  409	                
+;  410	        }
+L_95:
+.LINE 410
+
+;  411	        gfx_PrintStringXY(label, 5, i * 25 + 79);
+.LINE 411
+
 	LD	A,(IX+-1)
 	SEXT	HL
 	LD	L,(IX+-1)
-	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
+	LD	A,25
+	CALL	__imul_b
 	LD	IY,HL
-	LEA	BC,IY+103
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
-	CALL	_gfx_FillCircle
-	POP	BC
-	POP	BC
-	POP	BC
-;  336	    }
-L_117:
-	CALL	_os_GetCSC
-	LD	(IX+-2),A
-	CP	A,15
-	JR	NZ,L_118
-;  337	    pgrm_SaveSettings();
-	CALL	_pgrm_SaveSettings
-;  338	    pgrm_ApplySettings();
-	CALL	_pgrm_ApplySettings
-;  339	}
-	LD	SP,IX
-	POP	IX
-	RET	
-
-
-;**************************** _pgrm_DrawSettingsMenu ***************************
-;Name                         Addr/Register   Size   Type
-;_pgrm_ApplySettings                 IMPORT  -----   function
-;_pgrm_SaveSettings                  IMPORT  -----   function
-;_os_GetCSC                          IMPORT  -----   function
-;_settingsSave                       STATIC     10   variable
-;_gfx_FillCircle                     IMPORT  -----   function
-;_showBoxes                          IMPORT  -----   function
-;_gfx_HorizLine                      IMPORT  -----   function
-;_gfx_SetColor                       IMPORT  -----   function
-;_gfx_PrintStringXY                  IMPORT  -----   function
-;_pgrm_DrawSplashScreen              IMPORT  -----   function
-;_gfx_ZeroScreen                     IMPORT  -----   function
-;_ti_CloseAll                        IMPORT  -----   function
-;temp106                              IX-11      3   variable
-;temp101                               IX-8      3   variable
-;temp111                               IX-5      3   variable
-;key                                   IX-2      1   variable
-;selected                              IX-1      1   variable
-
-
-; Stack Frame Size: 17 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-	SEGMENT STRSECT
-L__81:
-	DB	"BLASTCSS SETTINGS MENU"
-	DB	0
-L__82:
-	DB	"Enable Smart-Detect"
-	DB	0
-L__83:
-	DB	"Enable Firewall"
-	DB	0
-L__84:
-	DB	"Enable Quarantine"
-	DB	0
-L__85:
-	DB	"Main Menu"
-	DB	0
-	SEGMENT CODE
-;  340	
-;  341	void pgrm_ApplySettings(){
-_pgrm_ApplySettings:
-;  342	    if(settingsSave.hookInstall == 1) SetHook();
-	LD	A,(_settingsSave+7)
-	CP	A,1
-	JR	NZ,L_123
-	CALL	_SetHook
-L_123:
-;  343	    if(settingsSave.hookInstall == 0) RemoveHook();
-	LD	A,(_settingsSave+7)
-	OR	A,A
-	JR	NZ,L_124
-	CALL	_RemoveHook
-;  344	}
-L_124:
-	RET	
-
-
-;**************************** _pgrm_ApplySettings ***************************
-;Name                         Addr/Register   Size   Type
-;_RemoveHook                         IMPORT  -----   function
-;_SetHook                            IMPORT  -----   function
-;_settingsSave                       STATIC     10   variable
-
-
-; Stack Frame Size: 6 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-;  345	
-;  346	void pgrm_SaveSettings(){
-_pgrm_SaveSettings:
-	LD	HL,-1
-	CALL	__frameset
-;  347	    ti_var_t settings;
-;  348	    ti_CloseAll();
-	CALL	_ti_CloseAll
-;  349	    if(settings = ti_Open(AVSettings, "w")){
-	LD	BC,L__107
-	PUSH	BC
-	LD	BC,(_AVSettings)
-	PUSH	BC
-	CALL	_ti_Open
-	POP	BC
-	POP	BC
-	LD	(IX+-1),A
-	OR	A,A
-	JR	Z,L_126
-;  350	        ti_Write(&settingsSave, sizeof(settings_save_t), 1, settings);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,_settingsSave
-	PUSH	BC
-	CALL	_ti_Write
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  351	        ti_SetArchiveStatus(true, settings);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	CALL	_ti_SetArchiveStatus
-	POP	BC
-	POP	BC
-;  352	        ti_Close(settings);
-	LD	C,(IX+-1)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  353	    }
-;  354	}
-L_126:
-	LD	SP,IX
-	POP	IX
-	RET	
-
-
-;**************************** _pgrm_SaveSettings ***************************
-;Name                         Addr/Register   Size   Type
-;_ti_Close                           IMPORT  -----   function
-;_ti_SetArchiveStatus                IMPORT  -----   function
-;_settingsSave                       STATIC     10   variable
-;_ti_Write                           IMPORT  -----   function
-;_AVSettings                         STATIC      3   variable
-;_ti_Open                            IMPORT  -----   function
-;_ti_CloseAll                        IMPORT  -----   function
-;settings                              IX-1      1   variable
-
-
-; Stack Frame Size: 7 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-	SEGMENT STRSECT
-L__107:
-	DB	"w"
-	DB	0
-	SEGMENT CODE
-;  355	
-;  356	void showBoxes(){
-_showBoxes:
-	LD	HL,-6
-	CALL	__frameset
-;  357	    gfx_sprite_t *uncompressed_off, *uncompressed_on;
-;  358	    uncompressed_off = gfx_MallocSprite(8,8);
-	LD	BC,_malloc
-	PUSH	BC
-	LD	BC,8
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_AllocSprite
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-3),HL
-;  359	    dzx7_Standard(funcoff_compressed, uncompressed_off);
-	LD	BC,HL
-	PUSH	BC
-	LD	BC,_funcoff_compressed
-	PUSH	BC
-	CALL	_dzx7_Standard
-	POP	BC
-	POP	BC
-;  360	    uncompressed_on = gfx_MallocSprite(8,8);
-	LD	BC,_malloc
-	PUSH	BC
-	LD	BC,8
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_AllocSprite
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-6),HL
-;  361	    dzx7_Standard(funcon_compressed, uncompressed_on);
-	LD	BC,HL
-	PUSH	BC
-	LD	BC,_funcon_compressed
-	PUSH	BC
-	CALL	_dzx7_Standard
-	POP	BC
-	POP	BC
-;  362	    if(settingsSave.hookInstall){ gfx_Sprite(uncompressed_on, 280, 112); }
-	LD	A,(_settingsSave+7)
-	OR	A,A
-	JR	Z,L_128
-	LD	BC,112
-	PUSH	BC
-	LD	BC,280
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  363	    else { gfx_Sprite(uncompressed_off, 280, 112); }
-	JR	L_131
-L_128:
-	LD	BC,112
-	PUSH	BC
-	LD	BC,280
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-L_131:
-;  364	    if(settingsSave.enableFirewall){ gfx_Sprite(uncompressed_on, 280, 124); }
-	LD	A,(_settingsSave+8)
-	OR	A,A
-	JR	Z,L_130
-	LD	BC,124
-	PUSH	BC
-	LD	BC,280
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  365	    else {gfx_Sprite(uncompressed_off, 280, 124);}
-	JR	L_134
-L_130:
-	LD	BC,124
-	PUSH	BC
-	LD	BC,280
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-L_134:
-;  366	    if(settingsSave.enableQuarantine) {gfx_Sprite(uncompressed_on, 280, 136);}
-	LD	A,(_settingsSave+9)
-	OR	A,A
-	JR	Z,L_133
-	LD	BC,136
-	PUSH	BC
-	LD	BC,280
-	PUSH	BC
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  367	    else {gfx_Sprite(uncompressed_off, 280, 136);}
-	JR	L_135
-L_133:
-	LD	BC,136
-	PUSH	BC
-	LD	BC,280
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-L_135:
-;  368	    free(uncompressed_on);
-	LD	BC,(IX+-6)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  369	    free(uncompressed_off);
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  370	}
-	LD	SP,IX
-	POP	IX
-	RET	
-
-
-;**************************** _showBoxes ***************************
-;Name                         Addr/Register   Size   Type
-;_free                               IMPORT  -----   function
-;_gfx_Sprite                         IMPORT  -----   function
-;_settingsSave                       STATIC     10   variable
-;_funcon_compressed                  IMPORT      8   variable
-;_funcoff_compressed                 IMPORT      8   variable
-;_dzx7_Standard                      IMPORT  -----   function
-;_malloc                             IMPORT  -----   function
-;_gfx_AllocSprite                    IMPORT  -----   function
-;uncompressed_on                       IX-6      3   variable
-;uncompressed_off                      IX-3      3   variable
-
-
-; Stack Frame Size: 12 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-;  371	
-;  372	
-;  373	void pgrm_DrawSplashScreen(void) {
-_pgrm_DrawSplashScreen:
-	LD	HL,-15
-	CALL	__frameset
-;  374	    // Draw splash screen
-;  375	    gfx_sprite_t *uncompressed, *scaled;
-;  376	    ti_var_t avData;
-;  377	    uint16_t temp;
-;  378	    ti_CloseAll();
-	CALL	_ti_CloseAll
-;  379	    gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;  380	    gfx_SetTextFGColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-;  381	    gfx_SetTextBGColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetTextBGColor
-	POP	BC
-;  382	    gfx_SetTextScale(4, 4);
-	LD	BC,4
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_SetTextScale
-	POP	BC
-	POP	BC
-;  383	    gfx_PrintStringXY(ProgName, 100, 20);
-	LD	BC,20
-	PUSH	BC
-	LD	BC,100
-	PUSH	BC
-	LD	BC,(_ProgName)
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  384	    gfx_SetTextScale(1, 1);
-	LD	BC,1
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_SetTextScale
-	POP	BC
-	POP	BC
-;  385	    gfx_PrintStringXY(SubName, 100, 55);
-	LD	BC,55
-	PUSH	BC
-	LD	BC,100
-	PUSH	BC
-	LD	BC,(_SubName)
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  386	    gfx_SetTextXY(5, 10);
-	LD	BC,10
+	LEA	BC,IY+79
 	PUSH	BC
 	LD	BC,5
 	PUSH	BC
-	CALL	_gfx_SetTextXY
-	POP	BC
-	POP	BC
-;  387	    gfx_PrintString("v");
-	LD	BC,L__114
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  388	    gfx_PrintString(Version);
-	LD	BC,(_Version)
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  389	    uncompressed = gfx_MallocSprite(64,64);
-	LD	BC,_malloc
-	PUSH	BC
-	LD	BC,64
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_AllocSprite
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-3),HL
-;  390	    dzx7_Standard(blast_logo_compressed, uncompressed);
-	LD	BC,HL
-	PUSH	BC
-	LD	BC,_blast_logo_compressed
-	PUSH	BC
-	CALL	_dzx7_Standard
-	POP	BC
-	POP	BC
-;  391	    scaled = gfx_MallocSprite(96, 96);
-	LD	BC,_malloc
-	PUSH	BC
-	LD	BC,96
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_AllocSprite
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-7),HL
-;  392	    scaled->width = 96;
-	LD	IY,(IX+-7)
-	LD	A,96
-	LD	(IY+0),A
-;  393	    scaled->height = 96;
-	LD	(IY+1),A
-;  394	    gfx_ScaleSprite(uncompressed, scaled);
-	LD	BC,HL
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_gfx_ScaleSprite
-	POP	BC
-	POP	BC
-;  395	    gfx_Sprite(scaled, 10, 90);
-	LD	BC,90
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,(IX+-7)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  396	    free(scaled);
-	LD	BC,(IX+-7)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  397	    free(uncompressed);
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  398	    
-;  399	    // Status Indicators
-;  400	    gfx_PrintStringXY("Attributes File: ", 30, 212);
-	LD	BC,212
-	PUSH	BC
-	LD	BC,30
-	PUSH	BC
-	LD	BC,L__115
+	LD	BC,(IX+-4)
 	PUSH	BC
 	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-;  401	    if((avData = ti_Open(ScanDB, "r"))){
-	LD	BC,L__116
-	PUSH	BC
-	LD	BC,(_ScanDB)
-	PUSH	BC
-	CALL	_ti_Open
-	POP	BC
-	POP	BC
-	LD	(IX+-4),A
-	OR	A,A
-	JR	Z,L_140
-;  402	        time_struct_short_t modified;
-;  403	        ti_Read(&modified, sizeof(time_struct_short_t), 1, avData);
-	LD	C,(IX+-4)
-	LD	B,0
-	PUSH	BC
+	INC	(IX+-1)
+;  412	    }
+L_98:
+.LINE 412
+
+	LD	A,(IX+-1)
+	CP	A,6
+	CALL	__setflag
+	JP	M,L_96
+;  413	    gfx_BlitBuffer();
+.LINE 413
+
 	LD	BC,1
 	PUSH	BC
-	LD	BC,4
-	PUSH	BC
-	PEA	IX+-11
-	CALL	_ti_Read
+	CALL	_gfx_Blit
 	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  404	        gfx_PrintUInt((int)modified.month, 2);
-	LD	BC,2
-	PUSH	BC
-	LD	A,(IX+-11)
-	UEXT	HL
-	LD	L,A
-	PUSH	HL
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  405	        gfx_PrintString("-");
-	LD	BC,L__118
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  406	        gfx_PrintUInt((int)modified.day, 2);
-	LD	BC,2
-	PUSH	BC
-	LD	A,(IX+-10)
-	UEXT	HL
-	LD	L,A
-	PUSH	HL
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  407	        gfx_PrintString("-");
-	LD	BC,L__119
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  408	        gfx_PrintUInt(modified.year, 4);
-	LD	BC,4
-	PUSH	BC
-	LD	BC,(IX+-9)
-	CALL	__stoiu
-	PUSH	HL
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  409	        if(time_IsFileOutdated(&modified, 7)) {
-	LD	BC,7
-	PUSH	BC
-	PEA	IX+-11
-	CALL	_time_IsFileOutdated
-	POP	BC
-	POP	BC
-	OR	A,A
-	JR	Z,L_138
-;  410	            uncompressed = gfx_MallocSprite(11, 11);
-	LD	BC,_malloc
-	PUSH	BC
-	LD	BC,11
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_AllocSprite
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-3),HL
-;  411	            dzx7_Standard(warning_compressed, uncompressed);
-	LD	BC,HL
-	PUSH	BC
-	LD	BC,_warning_compressed
-	PUSH	BC
-	CALL	_dzx7_Standard
-	POP	BC
-	POP	BC
-;  412	            gfx_Sprite(uncompressed, 16, 211);
-	LD	BC,211
-	PUSH	BC
-	LD	BC,16
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  413	            free(uncompressed);
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  414	        }
-L_138:
-;  415	        ti_Close(avData);
-	LD	C,(IX+-4)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  416	    }
-;  417	    else { gfx_PrintString("none"); }
-	JR	L_141
-L_140:
-	LD	BC,L__121
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-L_141:
-;  418	    gfx_PrintStringXY("Definitions File: ", 30, 224);
-	LD	BC,224
-	PUSH	BC
-	LD	BC,30
-	PUSH	BC
-	LD	BC,L__122
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  419	    if((avData = ti_Open(VDefs, "r"))){
-	LD	BC,L__123
-	PUSH	BC
-	LD	BC,(_VDefs)
-	PUSH	BC
-	CALL	_ti_Open
-	POP	BC
-	POP	BC
-	LD	(IX+-4),A
-	OR	A,A
-	JR	Z,L_145
-;  420	        time_struct_short_t modified;
-;  421	        ti_Read(&modified, sizeof(time_struct_short_t), 1, avData);
-	LD	C,(IX+-4)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,4
-	PUSH	BC
-	PEA	IX+-15
-	CALL	_ti_Read
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  422	        gfx_PrintUInt((int)modified.month, 2);
-	LD	BC,2
-	PUSH	BC
-	LD	A,(IX+-15)
-	UEXT	HL
-	LD	L,A
-	PUSH	HL
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  423	        gfx_PrintString("-");
-	LD	BC,L__125
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  424	        gfx_PrintUInt((int)modified.day, 2);
-	LD	BC,2
-	PUSH	BC
-	LD	A,(IX+-14)
-	UEXT	HL
-	LD	L,A
-	PUSH	HL
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  425	        gfx_PrintString("-");
-	LD	BC,L__126
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  426	        gfx_PrintUInt(modified.year, 4);
-	LD	BC,4
-	PUSH	BC
-	LD	BC,(IX+-13)
-	CALL	__stoiu
-	PUSH	HL
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  427	        if(time_IsFileOutdated(&modified, 30)) {
-	LD	BC,30
-	PUSH	BC
-	PEA	IX+-15
-	CALL	_time_IsFileOutdated
-	POP	BC
-	POP	BC
-	OR	A,A
-	JR	Z,L_143
-;  428	            uncompressed = gfx_MallocSprite(11, 11);
-	LD	BC,_malloc
-	PUSH	BC
-	LD	BC,11
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_AllocSprite
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-3),HL
-;  429	            dzx7_Standard(warning_compressed, uncompressed);
-	LD	BC,HL
-	PUSH	BC
-	LD	BC,_warning_compressed
-	PUSH	BC
-	CALL	_dzx7_Standard
-	POP	BC
-	POP	BC
-;  430	            gfx_Sprite(uncompressed, 16, 223);
-	LD	BC,223
-	PUSH	BC
-	LD	BC,16
-	PUSH	BC
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_gfx_Sprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  431	            free(uncompressed);
-	LD	BC,(IX+-3)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  432	        }
-L_143:
-;  433	        ti_Close(avData);
-	LD	C,(IX+-4)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  434	    }
-;  435	    else { gfx_PrintString("none"); }
-	JR	L_146
-L_145:
-	LD	BC,L__128
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  436	    // Draw menu items
-;  437	}
-L_146:
+;  414	}
+.LINE 414
+
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -3335,185 +6019,234 @@ L_146:
 
 ;**************************** _pgrm_DrawSplashScreen ***************************
 ;Name                         Addr/Register   Size   Type
-;_VDefs                              STATIC      3   variable
-;_ti_Close                           IMPORT  -----   function
-;_warning_compressed                 IMPORT     38   variable
-;_time_IsFileOutdated                IMPORT  -----   function
-;_gfx_PrintUInt                      IMPORT  -----   function
-;_ti_Read                            IMPORT  -----   function
-;_ScanDB                             STATIC      3   variable
-;_ti_Open                            IMPORT  -----   function
-;_free                               IMPORT  -----   function
-;_gfx_Sprite                         IMPORT  -----   function
-;_gfx_ScaleSprite                    IMPORT  -----   function
-;_blast_logo_compressed              IMPORT    329   variable
-;_dzx7_Standard                      IMPORT  -----   function
-;_malloc                             IMPORT  -----   function
-;_gfx_AllocSprite                    IMPORT  -----   function
-;_Version                            STATIC      3   variable
-;_gfx_PrintString                    IMPORT  -----   function
-;_gfx_SetTextXY                      IMPORT  -----   function
-;_SubName                            STATIC      3   variable
-;_ProgName                           STATIC      3   variable
+;_gfx_Blit                           IMPORT  -----   function
 ;_gfx_PrintStringXY                  IMPORT  -----   function
-;_gfx_SetTextScale                   IMPORT  -----   function
-;_gfx_SetTextBGColor                 IMPORT  -----   function
+;_gfx_FillRectangle                  IMPORT  -----   function
+;_gfx_SetColor                       IMPORT  -----   function
 ;_gfx_SetTextFGColor                 IMPORT  -----   function
-;_gfx_ZeroScreen                     IMPORT  -----   function
 ;_ti_CloseAll                        IMPORT  -----   function
-;modified                             IX-15      4   variable
-;modified                             IX-11      4   variable
-;scaled                                IX-7      3   variable
-;avData                                IX-4      1   variable
-;uncompressed                          IX-3      3   variable
+;label                                 IX-4      3   variable
+;i                                     IX-1      1   variable
+;selected                              IX+6      1   parameter
 
 
-; Stack Frame Size: 21 (bytes)
+; Stack Frame Size: 13 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
+.ENDFUNC "pgrm_DrawSplashScreen",414,"_pgrm_DrawSplashScreen"
 	SEGMENT STRSECT
-L__114:
-	DB	"v"
+L__57:
+	DB	"About Blast2"
 	DB	0
-L__115:
-	DB	"Attributes File: "
+L__58:
+	DB	"File Checking"
 	DB	0
-L__116:
-	DB	"r"
+L__59:
+	DB	"Quarantine"
 	DB	0
-L__118:
-	DB	"-"
+L__60:
+	DB	"Snapshots"
 	DB	0
-L__119:
-	DB	"-"
+L__61:
+	DB	"Settings"
 	DB	0
-L__121:
-	DB	"none"
+L__62:
+	DB	"Program Help"
 	DB	0
-L__122:
-	DB	"Definitions File: "
-	DB	0
-L__123:
-	DB	"r"
-	DB	0
-L__125:
-	DB	"-"
-	DB	0
-L__126:
-	DB	"-"
-	DB	0
-L__128:
-	DB	"none"
+L__63:
+	DB	"Unimplemented"
 	DB	0
 	SEGMENT CODE
-;  438	
-;  439	bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
+;  415	
+;  416	
+;  417	char pgrm_MainMenu(char selected){
+_pgrm_MainMenu:
+.DEFINE "_pgrm_MainMenu"
+
+.VALUE _pgrm_MainMenu
+
+.CLASS 2
+
+.TYPE 66
+
+.ENDEF
+
+.BEGFUNC "pgrm_MainMenu",417,"_pgrm_MainMenu"
+
+.LINE 417
+
+.DEFINE "selected"
+
+.CLASS 65
+
+.VALUE 6
+
+.TYPE 2
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+;  418	   
+;  419	    return selected;
+.LINE 419
+
+	LD	A,(IX+6)
+;  420	}
+.LINE 420
+
+	LD	SP,IX
+	POP	IX
+	RET	
+
+
+;**************************** _pgrm_MainMenu ***************************
+;Name                         Addr/Register   Size   Type
+;selected                              IX+6      1   parameter
+
+
+; Stack Frame Size: 9 (bytes)
+;       Spill Code: 0 (instruction)
+
+
+.ENDFUNC "pgrm_MainMenu",420,"_pgrm_MainMenu"
+;  421	
+;  422	
+;  423	bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
 _time_IsFileOutdated:
-	LD	HL,-6
-	CALL	__frameset
-;  440	    uint24_t systemdays, filedays;
-;  441	    systemdays = (systemtime.year * 365) + (systemtime.month * 30) + systemtime.day;
+.DEFINE "_time_IsFileOutdated"
+
+.VALUE _time_IsFileOutdated
+
+.CLASS 2
+
+.TYPE 76
+
+.ENDEF
+
+.BEGFUNC "time_IsFileOutdated",423,"_time_IsFileOutdated"
+
+.LINE 423
+
+.DEFINE "file"
+
+.CLASS 65
+
+.VALUE 6
+
+.TAG "NONAME17"
+
+.TYPE 40
+
+.ENDEF
+
+.DEFINE "maxAge"
+
+.CLASS 65
+
+.VALUE 9
+
+.TYPE 12
+
+.ENDEF
+
+.DEFINE "systemdays"
+
+.CLASS 65
+
+.VALUE -3
+
+.TYPE 14
+
+.ENDEF
+
+.DEFINE "filedays"
+
+.CLASS 65
+
+.VALUE -6
+
+.TYPE 14
+
+.ENDEF
+
+	PUSH	IX
+	LD	IX,0
+	ADD	IX,SP
+	PUSH	BC
+	PUSH	BC
+;  424	    uint24_t systemdays, filedays;
+;  425	    systemdays = (systemtime.year * 365) + (systemtime.month * 30) + systemtime.day;
+.LINE 425
+
 	LD	BC,(_systemtime+5)
 	CALL	__stoiu
+	LD	BC,365
+	CALL	__imulu
 	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,BC
-	LD	DE,HL
 	LD	A,(_systemtime+4)
 	UEXT	HL
 	LD	L,A
-	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,DE
+	LD	A,30
+	CALL	__imul_b
+	ADD	HL,BC
 	LD	BC,HL
 	LD	A,(_systemtime+3)
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
 	LD	(IX+-3),HL
-;  442	    filedays = (file->year * 365) + (file->month * 30) + file->day;
+;  426	    filedays = (file->year * 365) + (file->month * 30) + file->day;
+.LINE 426
+
 	LD	IY,(IX+6)
 	LD	BC,(IY+2)
 	CALL	__stoiu
+	LD	BC,365
+	CALL	__imulu
 	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,BC
 	LD	A,(IY+0)
-	LD	DE,HL
 	UEXT	HL
 	LD	L,A
+	LD	A,30
+	CALL	__imul_b
+	ADD	HL,BC
 	LD	BC,HL
-	LD	HL,BC
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	ADD	HL,HL
-	OR	A,A
-	SBC	HL,BC
-	ADD	HL,HL
-	ADD	HL,DE
 	LD	A,(IY+1)
-	LD	BC,HL
 	UEXT	HL
 	LD	L,A
 	ADD	HL,BC
 	LD	(IX+-6),HL
-;  443	    if(systemdays - filedays >= maxAge) return 1;
+;  427	    if(systemdays - filedays >= maxAge) return 1;
+.LINE 427
+
 	LD	BC,HL
 	LD	HL,(IX+-3)
 	OR	A,A
 	SBC	HL,BC
-	LD	BC,HL
+	LD	DE,HL
 	LD	A,(IX+9)
 	UEXT	HL
 	LD	L,A
-	LD	DE,HL
-	LD	HL,BC
+	LD	BC,HL
+	LD	HL,DE
 	OR	A,A
-	SBC	HL,DE
-	JR	C,L_148
+	SBC	HL,BC
+	JR	C,L_103
 	LD	A,1
-	JR	L_149
-L_148:
-;  444	    return 0;
+	JR	L_104
+L_103:
+;  428	    return 0;
+.LINE 428
+
 	XOR	A,A
-;  445	    
-;  446	}
-L_149:
+;  429	    
+;  430	}
+L_104:
+.LINE 430
+
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -3532,433 +6265,32 @@ L_149:
 ;       Spill Code: 0 (instruction)
 
 
-;  447	
-;  448	char av_ValidateSaved(void){
-_av_ValidateSaved:
-	LD	HL,-17
-	CALL	__frameset
-;  449	    ti_var_t avData;
-;  450	    char tempread;
-;  451	    uint16_t xpos = 10, ypos = 0;
-;  452	    ti_CloseAll();
-	CALL	_ti_CloseAll
-;  453	    if( !(avData = ti_Open(ScanDB, "r")) ) return 1;
-	LD	BC,L__132
-	PUSH	BC
-	LD	BC,(_ScanDB)
-	PUSH	BC
-	CALL	_ti_Open
-	POP	BC
-	POP	BC
-	LD	(IX+-6),A
-	OR	A,A
-	JR	NZ,L_152
-	LD	A,1
-	JR	L_174
-L_152:
-;  454	    // when called, destroys the pre-existing checksums database
-;  455	    // recreates it and saves new values
-;  456	    // for each installed program variable, we save:
-;  457	    //      up to 9 bytes for name + type
-;  458	    //      24-bit (3-byte) checksum
-;  459	    //      date of last checksum also written
-;  460	    if(ti_Seek(4, SEEK_SET, avData) == EOF) return 2;
-	LD	C,(IX+-6)
-	LD	B,0
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,4
-	PUSH	BC
-	CALL	_ti_Seek
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	BC,16777215
-	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_153
-	LD	A,2
-	JR	L_174
-L_153:
-;  461	    gfx_ZeroScreen();
-	CALL	_gfx_ZeroScreen
-;  462	    gfx_PrintStringXY("Verifying Checksums...", xpos, ypos);
-	LD	BC,0
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,L__135
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  463	    gfx_SetColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  464	    gfx_HorizLine(0, 10, 320);
-	LD	BC,320
-	PUSH	BC
-	LD	BC,10
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_HorizLine
-	POP	BC
-	POP	BC
-	POP	BC
-;  465	    gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  466	    xpos = 5;
-	LD	(IX+-2),5
-	LD	(IX+-1),0
-;  467	    ypos += 13;
-	LD	(IX+-8),13
-	LD	(IX+-7),0
-;  468	    
-;  469	    while(ti_Tell(avData) < ti_GetSize(avData)) {
-	JR	L_168
-L_169:
-;  470	        // repeat until ti_DetectVar returns NULL
-;  471	        // ti_DetectVar returns program name
-;  472	        ti_var_t progdata;
-;  473	        uint24_t checksum = 0;
-	LD	BC,0
-	LD	(IX+-13),BC
-;  474	        ProgData_t *program = malloc(sizeof(ProgData_t));   // init zero'd program data structure
-	LD	BC,15
-	PUSH	BC
-	CALL	_malloc
-	POP	BC
-	LD	(IX+-5),HL
-;  475	        gfx_SetTextFGColor(135);
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-;  476	        memset(program, '\0', sizeof(ProgData_t));
-	LD	BC,15
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	LD	BC,(IX+-5)
-	PUSH	BC
-	CALL	_memset
-	POP	BC
-	POP	BC
-	POP	BC
-;  477	        ti_Read(program, sizeof(ProgData_t), 1, avData);
-	LD	C,(IX+-6)
-	LD	B,0
-	PUSH	BC
-	LD	BC,1
-	PUSH	BC
-	LD	BC,15
-	PUSH	BC
-	LD	BC,(IX+-5)
-	PUSH	BC
-	CALL	_ti_Read
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  478	        
-;  479	        if(progdata = ti_OpenVar(program->name, "r", program->type)){    // open var slot for program
-	LD	IY,(IX+-5)
-	LD	C,(IY+0)
-	LD	B,0
-	PUSH	BC
-	LD	BC,L__136
-	PUSH	BC
-	PEA	IY+3
-	CALL	_ti_OpenVar
-	POP	BC
-	POP	BC
-	POP	BC
-	LD	(IX+-9),A
-	OR	A,A
-	JR	Z,L_168
-;  480	            gfx_PrintStringXY(program->name, xpos, ypos);
-	LD	BC,(IX+-8)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,(IX+-2)
-	CALL	__stoiu
-	PUSH	HL
-	LD	IY,(IX+-5)
-	PEA	IY+3
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  481	            xpos += 150;
-	LD	HL,(IX+-2)
-	LD.LIS	DE,150
-	ADD.SIS	HL,DE
-	LD	(IX+-2),L
-	LD	(IX+-1),H
-;  482	            if(program->size == ti_GetSize(progdata)) gfx_SetTextFGColor(135);
-	LD	C,(IX+-9)
-	LD	B,0
-	LD	DE,(IX+-5)
-	PUSH	BC
-	LD	(IX+-16),DE
-	LD	(IX+-17),D
-	CALL	_ti_GetSize
-	LD	DE,(IX+-16)
-	LD	D,(IX+-17)
-	POP	BC
-	LD	BC,HL
-	LD	IY,DE
-	LD	HL,(IY+1)
-	OR	A,A
-	SBC.SIS	HL,BC
-	JR	NZ,L_155
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-;  483	            else gfx_SetTextFGColor(192);
-	JR	L_156
-L_155:
-	LD	BC,192
-	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-L_156:
-;  484	            gfx_PrintStringXY("size", xpos, ypos);
-	LD	BC,(IX+-8)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,(IX+-2)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,L__139
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  485	            xpos += 75;
-	LD	IY,(IX+-2)
-	LEA	HL,IY+75
-	LD	(IX+-2),L
-	LD	(IX+-1),H
-;  486	            
-;  487	            while((tempread = ti_GetC(progdata)) != EOF){       // read out every byte of program
-	JR	L_157
-L_158:
-;  488	                checksum += tempread;          // add data at tempread to checksum
-	LD	A,(IX+-10)
-	SEXT	HL
-	LD	L,(IX+-10)
-	LD	BC,(IX+-13)
-	ADD	HL,BC
-	LD	(IX+-13),HL
-;  489	            }
-L_157:
-	LD	C,(IX+-9)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_GetC
-	POP	BC
-	LD	(IX+-10),L
-	LD	A,(IX+-10)
-	CP	A,-1
-	JR	NZ,L_158
-;  490	            if(program->checksum == checksum) gfx_SetTextFGColor(135);
-	LD	BC,(IX+-13)
-	LD	IY,(IX+-5)
-	LD	HL,(IY+12)
-	OR	A,A
-	SBC	HL,BC
-	JR	NZ,L_160
-	LD	BC,135
-	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-;  491	            else gfx_SetTextFGColor(192);
-	JR	L_162
-L_160:
-	LD	BC,192
-	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-L_162:
-;  492	            gfx_PrintStringXY("checksum", xpos, ypos);
-	LD	BC,(IX+-8)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,(IX+-2)
-	CALL	__stoiu
-	PUSH	HL
-	LD	BC,L__142
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  493	            ti_Close(progdata);
-	LD	C,(IX+-9)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  494	            free(program);
-	LD	BC,(IX+-5)
-	PUSH	BC
-	CALL	_free
-	POP	BC
-;  495	            xpos = 5;
-	LD	(IX+-2),5
-	LD	(IX+-1),0
-;  496	            ypos += 12;
-	LD	IY,(IX+-8)
-	LEA	HL,IY+12
-	LD	(IX+-8),L
-	LD	(IX+-7),H
-;  497	            if(ypos > 227){
-	LD	BC,(IX+-8)
-	LD.LIS	HL,227
-	OR	A,A
-	SBC.SIS	HL,BC
-	JR	NC,L_168
-;  498	                while(!os_GetCSC());
-L_163:
-	CALL	_os_GetCSC
-	OR	A,A
-	JR	Z,L_163
-;  499	                gfx_SetColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  500	                gfx_FillRectangle(0, 13, 320, 227);
-	LD	BC,227
-	PUSH	BC
-	LD	BC,320
-	PUSH	BC
-	LD	BC,13
-	PUSH	BC
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_FillRectangle
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  501	                ypos = 12;
-	LD	(IX+-8),12
-	LD	(IX+-7),0
-;  502	            }
-;  503	        }
-;  504	    }
-L_168:
-	LD	C,(IX+-6)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Tell
-	POP	BC
-	LD	C,(IX+-6)
-	LD	B,0
-	PUSH	BC
-	LD	BC,HL
-	LD	(IX+-16),BC
-	CALL	_ti_GetSize
-	LD	BC,(IX+-16)
-	POP	DE
-	LD	DE,HL
-	LD	HL,BC
-	OR	A,A
-	SBC.SIS	HL,DE
-	JR	C,L_169
-;  505	    while(!os_GetCSC());
-L_171:
-	CALL	_os_GetCSC
-	OR	A,A
-	JR	Z,L_171
-;  506	    ti_Close(avData);
-	LD	C,(IX+-6)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  507	    return 0;
-	XOR	A,A
-;  508	}
-L_174:
-	LD	SP,IX
-	POP	IX
-	RET	
-
-
-;**************************** _av_ValidateSaved ***************************
-;Name                         Addr/Register   Size   Type
-;_ti_Tell                            IMPORT  -----   function
-;_gfx_FillRectangle                  IMPORT  -----   function
-;_os_GetCSC                          IMPORT  -----   function
-;_free                               IMPORT  -----   function
-;_ti_Close                           IMPORT  -----   function
-;_ti_GetC                            IMPORT  -----   function
-;_ti_GetSize                         IMPORT  -----   function
-;_ti_OpenVar                         IMPORT  -----   function
-;_ti_Read                            IMPORT  -----   function
-;_memset                             IMPORT  -----   function
-;_gfx_SetTextFGColor                 IMPORT  -----   function
-;_malloc                             IMPORT  -----   function
-;_gfx_HorizLine                      IMPORT  -----   function
-;_gfx_SetColor                       IMPORT  -----   function
-;_gfx_PrintStringXY                  IMPORT  -----   function
-;_gfx_ZeroScreen                     IMPORT  -----   function
-;_ti_Seek                            IMPORT  -----   function
-;_ScanDB                             STATIC      3   variable
-;_ti_Open                            IMPORT  -----   function
-;_ti_CloseAll                        IMPORT  -----   function
-;checksum                             IX-13      3   variable
-;tempread                             IX-10      1   variable
-;progdata                              IX-9      1   variable
-;ypos                                  IX-8      2   variable
-;avData                                IX-6      1   variable
-;program                               IX-5      3   variable
-;xpos                                  IX-2      2   variable
-
-
-; Stack Frame Size: 23 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-	SEGMENT STRSECT
-L__132:
-	DB	"r"
-	DB	0
-L__135:
-	DB	"Verifying Checksums..."
-	DB	0
-L__136:
-	DB	"r"
-	DB	0
-L__139:
-	DB	"size"
-	DB	0
-L__142:
-	DB	"checksum"
-	DB	0
-	XREF _funcon_compressed:ROM
-	XREF _funcoff_compressed:ROM
-	XREF _warning_compressed:ROM
-	XREF _blast_logo_compressed:ROM
-	XREF _RemoveHook:ROM
-	XREF _SetHook:ROM
-	XREF _dzx7_Standard:ROM
-	XREF _ti_SetArchiveStatus:ROM
+.ENDFUNC "time_IsFileOutdated",430,"_time_IsFileOutdated"
+	XREF _tracking_icon_compressed:ROM
+	XREF _zx7_Decompress:ROM
+	XREF _gfx_SetClipRegion:ROM
+	XREF _gfx_TransparentSprite:ROM
+	XREF _gfx_SetTextTransparentColor:ROM
+	XREF _gfx_SetTextBGColor:ROM
+	XREF _gfx_SetTextFGColor:ROM
+	XREF _gfx_SetTextXY:ROM
+	XREF _gfx_PrintStringXY:ROM
+	XREF _gfx_PrintChar:ROM
+	XREF _gfx_SetTextScale:ROM
+	XREF _gfx_Blit:ROM
+	XREF _gfx_SetDraw:ROM
+	XREF _gfx_FillRectangle:ROM
+	XREF _gfx_FillScreen:ROM
+	XREF _gfx_SetTransparentColor:ROM
+	XREF _gfx_SetColor:ROM
+	XREF _gfx_End:ROM
+	XREF _gfx_Begin:ROM
+	XREF _gfx_AllocSprite:ROM
+	XREF _strcmp:ROM
+	XREF _strlen:ROM
+	XREF _strcpy:ROM
 	XREF _ti_GetSize:ROM
-	XREF _ti_Tell:ROM
+	XREF _ti_Rewind:ROM
 	XREF _ti_Seek:ROM
 	XREF _ti_GetC:ROM
 	XREF _ti_Read:ROM
@@ -3968,59 +6300,40 @@ L__142:
 	XREF _ti_OpenVar:ROM
 	XREF _ti_Open:ROM
 	XREF _ti_CloseAll:ROM
-	XREF _gfx_SetClipRegion:ROM
-	XREF _gfx_ScaleSprite:ROM
-	XREF _gfx_Sprite:ROM
-	XREF _gfx_SetTextBGColor:ROM
-	XREF _gfx_SetTextFGColor:ROM
-	XREF _gfx_SetTextConfig:ROM
-	XREF _gfx_SetTextXY:ROM
-	XREF _gfx_PrintStringXY:ROM
-	XREF _gfx_PrintString:ROM
-	XREF _gfx_PrintUInt:ROM
-	XREF _gfx_SetTextScale:ROM
-	XREF _gfx_FillCircle:ROM
-	XREF _gfx_FillRectangle:ROM
-	XREF _gfx_HorizLine:ROM
-	XREF _gfx_ZeroScreen:ROM
-	XREF _gfx_SetColor:ROM
-	XREF _gfx_End:ROM
-	XREF _gfx_Begin:ROM
-	XREF _gfx_AllocSprite:ROM
-	XREF _strcmp:ROM
-	XREF _strcpy:ROM
-	XREF _memset:ROM
-	XREF _free:ROM
 	XREF _malloc:ROM
 	XREF _asm_DrawStatusBar:ROM
 	XREF _asm_ClrLCDFull:ROM
 	XREF _asm_RunIndicOff:ROM
 	XREF _os_GetCSC:ROM
-	XREF _boot_GetTime:ROM
-	XREF _boot_SetTime:ROM
-	XREF _boot_GetDate:ROM
-	XREF _boot_SetDate:ROM
+	XREF __ladd:ROM
+	XREF __imulu:ROM
 	XREF __stoiu:ROM
-	XREF __ildix:ROM
-	XREF __istix:ROM
-	XREF __frameset:ROM
-	XDEF _av_ValidateSaved
+	XREF __itol:ROM
+	XREF __setflag:ROM
+	XREF __icmpzero:ROM
+	XREF __case8D:ROM
+	XREF __seqcaseD:ROM
+	XREF __imul_b:ROM
 	XDEF _time_IsFileOutdated
+	XDEF _pgrm_MainMenu
 	XDEF _pgrm_DrawSplashScreen
-	XDEF _showBoxes
-	XDEF _pgrm_SaveSettings
-	XDEF _pgrm_ApplySettings
-	XDEF _pgrm_DrawSettingsMenu
-	XDEF _av_ScanAll
-	XDEF _pgrm_DrawMainMenu
-	XDEF _av_CheckSumAll
+	XDEF _pgrm_DrawBackground
+	XDEF _pgrm_EraseContent
+	XDEF _av_CheckSumFile
+	XDEF _integ_IsFileTracked
+	XDEF _av_Integrity
+	XDEF _av_About
 	XDEF _main
 	XDEF _settingsSave
 	XDEF _systemtime
+	XDEF _sprites
+	XDEF _proglist
 	XDEF _Version
 	XDEF _SubName
 	XDEF _ProgName
+	XDEF _ProgEditHook
+	XDEF _ProgRunHook
 	XDEF _AVSettings
 	XDEF _VDefs
-	XDEF _ScanDB
+	XDEF _AttrDB
 	END

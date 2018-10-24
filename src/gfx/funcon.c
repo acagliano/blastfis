@@ -1,4 +1,4 @@
-// Converted using ConvPNG
+// convpng v6.8
 #include <stdint.h>
 #include "all_gfx.h"
 

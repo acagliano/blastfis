@@ -1,14 +1,15 @@
+include "equates.inc"
 .assume adl = 1
-XDEF _SetParserHook
+XDEF _InstallParserHook
 XDEF _RemoveParserHook
 
-_SetParserHook:
+_InstallParserHook:
     ld hl, ParsHookAppV
-    call 0020320h       ; mov9toOP1
-    call 002050Ch       ; chkfindsym
+    call _Mov9ToOP1
+    call _ChkFindSym
     jr nc, varexists
     ld hl, ParserHook_End-ParserHook
-    call 0021330h       ; CreateAppVar
+    call _CreateAppVar
     ex de, hl
     inc hl
     inc hl
@@ -17,29 +18,29 @@ _SetParserHook:
     ldir
     ld b, 0
     ld hl, ParsHookAppV
-    call 0020320h       ; mov9toOP1
-    call 0021448h       ; should move to archive
-    call 002050Ch       ; chkfindsym
+    call _Mov9ToOP1
+    call _Arc_Unarc
+    call _ChkFindSym
 varexists:
     ex de, hl
     inc hl
     inc hl
     ld a, b
-    call 002149Ch       ; setparserhook
+    call _SetParserHook
     ret
 
 _RemoveParserHook:
-    call 00214A0h       ; unset parser hook
+    call _ClrParserHook
     ld hl, ParsHookAppV
-    call 0020320h       ; mov9toOP1
-    call 002050Ch       ; chkfindsym
+    call _Mov9ToOP1
+    call _ChkFindSym
     ret c
-    call 0021434h       ; delvararc
+    call _DelVarArc
     ret
 
 
 ParsHookAppV:
-db 15h, "AVPars",0
+db 15h, "AVParsH",0
 
 
 ParserHook:
@@ -47,15 +48,15 @@ ParserHook:
     or a                ; Which condition?
     jr nz,ReturnZ
     ld hl, AppVName
-    call 0020320h           ; mov9toop1
-    call 002050Ch        ; check for virus defs
+    call _Mov9ToOP1           ; mov9toop1
+    call _ChkFindSym        ; check for virus defs
     jr c, ReturnZ           ; parse var if doesnt exist
     ex de, hl
     xor a
     cp b
     jr z, unarchived
-    call 0021448h
-    call 002050Ch
+    call _Arc_Unarc
+    call _ChkFindSym
     ex de, hl
 unarchived:
     ld c, (hl)
@@ -72,7 +73,7 @@ unarchived:
     ld bc, 4
     add hl, bc               ; jump past timestamp
 loopvdef:
-    ld de, 0D0231Ah                       ; set de to current place in var (curPC)
+    ld de, curPC                       ; set de to current place in var (curPC)
     ld a, (hl)
     ld c, a
     ld b, 0      ; get size of opcode string
@@ -99,7 +100,7 @@ match:
     or a
     jr z, ReturnNZ
     push bc
-    ld bc, 0D0231Dh             ; endPC
+    ld bc, endPC             ; endPC
     ex de, hl
     sbc hl, bc
     jr z, nextdef
@@ -130,8 +131,8 @@ ReturnZ:
     ret
 ReturnNZ:
     ld hl, AppVName
-    call 0020320h           ; mov9toop1
-    call 0021448h
+    call _Mov9ToOP1           ; mov9toop1
+    call _Arc_Unarc
     or 1
     ret
 AppVName:

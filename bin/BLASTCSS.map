@@ -1,906 +1,209 @@
-
-IEEE 695 OMF Linker Version 6.25 (11121301)
-Copyright (C) 1999-2008 Zilog, Inc. All Rights Reserved
-
-LINK MAP:
-
-DATE:      Sat Apr 21 11:06:11 2018
-PROCESSOR: assembler
-FILES:     obj/main.obj           obj/all_gfx.obj        
-           obj/blast_logo.obj
-           obj/funcoff.obj        obj/funcon.obj         obj/warning.obj        
-           obj/sethook_appchg.obj
-           obj/sethook_parser.obj
-           /Users/acagliano/CEdev/lib/ccleanup.obj
-           /Users/acagliano/CEdev/lib/cce.lib
-           /Users/acagliano/CEdev/lib/cshared.lib
-           /Users/acagliano/CEdev/lib/clinked.lib
-           /Users/acagliano/CEdev/lib/graphx.lib
-           /Users/acagliano/CEdev/lib/fileioc.lib
-           /Users/acagliano/CEdev/lib/graphx_header.obj
-           /Users/acagliano/CEdev/lib/fileioc_header.obj
-           /Users/acagliano/CEdev/lib/libheader.obj
-           /Users/acagliano/CEdev/lib/cstartup.obj
-           
-
-
-COMMAND LIST:
-=============
--FORMAT=INTEL32 -map -maxhexlen=64 -quiet -warnoverlap -xref -unresolved=fatal -sort ADDRESS=ascending -warn -NOdebug -NOigcase define __copy_code_to_ram = 0 range rom $000000 : $3FFFFF range ram $D00000 : $FFFFFF range bss $D031F6 : $D13FD6 change code is ram change data is ram change text is ram change strsect is text define __low_bss = base of bss define __len_bss = length of bss define __heaptop = (highaddr of bss) define __heapbot = (top of bss)+1 define __stack = $D1A87E locate .header at $D1A87F locate .launcher at (top of .header)+1 locate .libs at (top of .launcher)+1 locate .graphx_header at (top of .libs)+1 locate .graphx at (top of .graphx_header)+1 locate .fileioc_header at (top of .graphx+1) locate .fileioc at (top of .fileioc_header)+1 locate .startup at (top of .fileioc)+1 locate .cleanup at (top of .startup)+1 locate .exit at (top of .cleanup)+1 locate code at (top of .exit)+1 locate data at (top of code)+1 locate text at (top of data)+1 bin/BLASTCSS.hex = obj/main.obj,obj/all_gfx.obj,obj/blast_logo.obj,obj/funcoff.obj,obj/funcon.obj,obj/warning.obj,obj/sethook_appchg.obj,obj/sethook_parser.obj,/Users/acagliano/CEdev/lib/ccleanup.obj,/Users/acagliano/CEdev/lib/cce.lib,/Users/acagliano/CEdev/lib/cshared.lib,/Users/acagliano/CEdev/lib/clinked.lib,/Users/acagliano/CEdev/lib/graphx.lib,/Users/acagliano/CEdev/lib/fileioc.lib,/Users/acagliano/CEdev/lib/graphx_header.obj,/Users/acagliano/CEdev/lib/fileioc_header.obj,/Users/acagliano/CEdev/lib/libheader.obj,/Users/acagliano/CEdev/lib/cstartup.obj 
-
-SPACE ALLOCATION:
-=================
-
-Space                     Base         Top      Size      Used    Unused
------------------- ----------- ----------- --------- --------- ---------
-RAM                   D:D031F6    D:D1CC0F   300000H     239EH   2FDC62H
-                                          (  3145728      9118   3136610)
-
-
-SEGMENTS WITHIN SPACE:
-======================
-
-RAM                Type                Base        Top         Size
------------------- ------------------- ----------- ----------- ---------
-.cleanup           normal data            D:D1A99C    D:D1A9AF       14h
-.exit              normal data            D:D1A9B0    D:D1A9B7        8h
-.fileioc           normal data            D:D1A931    D:D1A960       30h
-.fileioc_header    normal data            D:D1A927    D:D1A930        ah
-.graphx            normal data            D:D1A8DB    D:D1A926       4ch
-.graphx_header     normal data            D:D1A8D2    D:D1A8DA        9h
-.header            normal data            D:D1A87F    D:D1A881        3h
-.launcher          normal data            D:D1A882    D:D1A8D1       50h
-.startup           normal data            D:D1A961    D:D1A99B       3bh
-BSS                normal data            D:D031F6    D:D03202        dh
-CODE               normal data            D:D1A9B8    D:D1C33A     1983h
-DATA               normal data            D:D1C33B    D:D1C701      3c7h
-TEXT               normal data            D:D1C702    D:D1CC0F      50eh
-
-SEGMENTS WITHIN MODULES:
-========================
-
-Module: ..\SRC\GFX\ALL_GFX.C (File: obj/all_gfx.obj) Version: 1:0 04/21/2018 09:17:34
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: DATA                              D:D1C35E    D:D1C55D      200h
-
-
-Module: ..\SRC\GFX\BLAST_LOGO.C (File: obj/blast_logo.obj) Version: 1:0 04/21/2018 09:17:35
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: DATA                              D:D1C55E    D:D1C6A6      149h
-
-
-Module: ..\SRC\GFX\FUNCOFF.C (File: obj/funcoff.obj) Version: 1:0 04/21/2018 09:17:35
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: DATA                              D:D1C6A7    D:D1C6AE        8h
-
-
-Module: ..\SRC\GFX\FUNCON.C (File: obj/funcon.obj) Version: 1:0 04/21/2018 09:17:35
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: DATA                              D:D1C6AF    D:D1C6B6        8h
-
-
-Module: ..\SRC\GFX\WARNING.C (File: obj/warning.obj) Version: 1:0 04/21/2018 09:17:35
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: DATA                              D:D1C6B7    D:D1C6DC       26h
-
-
-Module: ..\SRC\MAIN.C (File: obj/main.obj) Version: 1:0 04/21/2018 09:18:15
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: BSS                               D:D031F6    D:D031FC        7h
-    Segment: CODE                              D:D1A9B8    D:D1BF38     1581h
-    Segment: DATA                              D:D1C33B    D:D1C35D       23h
-    Segment: TEXT                              D:D1C702    D:D1C8D0      1cfh
-    Segment: TEXT (was STRSECT)                D:D1C8D1    D:D1CC0F      33fh
-
-
-Module: .\FREE.C (Library: /Users/acagliano/CEdev/lib/cshared.lib) Version: 1:0 08/16/2017 15:24:56
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1C0D1    D:D1C1C3       f3h
-
-
-Module: .\MALLOC.C (Library: /Users/acagliano/CEdev/lib/cshared.lib) Version: 1:0 08/16/2017 15:24:57
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: BSS                               D:D031FD    D:D03202        6h
-    Segment: CODE                              D:D1C1C4    D:D1C29C       d9h
-
-
-Module: fileioc_header.asm (File: /Users/acagliano/CEdev/lib/fileioc_header.obj) Version: 1:0 08/16/2017 15:24:25
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc_header                   D:D1A927    D:D1A930        ah
-
-
-Module: graphx_header.asm (File: /Users/acagliano/CEdev/lib/graphx_header.obj) Version: 1:0 08/16/2017 15:24:21
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx_header                    D:D1A8D2    D:D1A8DA        9h
-
-
-Module: Z:\Users\acagliano\CEdev\source\BlastAV\src\asm\sethook_appchg.asm (File: obj/sethook_appchg.obj) Version: 1:0 04/21/2018 09:17:36
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1BF39    D:D1BFE0       a8h
-
-
-Module: Z:\Users\acagliano\CEdev\source\BlastAV\src\asm\sethook_parser.asm (File: obj/sethook_parser.obj) Version: 1:0 04/21/2018 11:06:10
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1BFE1    D:D1C0D0       f0h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\ce\dzx7_standard.src (Library: /Users/acagliano/CEdev/lib/cce.lib) Version: 1:0 08/16/2017 15:24:26
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1C2E7    D:D1C33A       54h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Close.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:22
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A95D    D:D1A960        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_CloseAll.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:22
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A93D    D:D1A940        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_DetectVar.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:23
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A939    D:D1A93C        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_GetC.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:23
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A94D    D:D1A950        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_GetSize.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:23
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A955    D:D1A958        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Open.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:23
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A959    D:D1A95C        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_OpenVar.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:23
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A931    D:D1A934        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Read.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:24
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A951    D:D1A954        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Seek.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:24
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A949    D:D1A94C        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_SetArchiveStatus.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:24
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A941    D:D1A944        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Tell.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:24
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A945    D:D1A948        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Write.src (Library: /Users/acagliano/CEdev/lib/fileioc.lib) Version: 1:0 08/16/2017 15:24:25
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .fileioc                          D:D1A935    D:D1A938        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_AllocSprite.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:10
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A91B    D:D1A91E        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_Begin.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:10
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A90B    D:D1A90E        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_End.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:12
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A91F    D:D1A922        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_FillCircle.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:12
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A903    D:D1A906        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_FillRectangle.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:12
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8EB    D:D1A8EE        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_HorizLine.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:14
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8E3    D:D1A8E6        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_PrintString.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:15
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8F3    D:D1A8F6        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_PrintStringXY.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:15
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8E7    D:D1A8EA        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_PrintUInt.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:15
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8FB    D:D1A8FE        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_ScaleSprite.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:17
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A907    D:D1A90A        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetClipRegion.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:17
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A90F    D:D1A912        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetColor.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:17
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A913    D:D1A916        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextBGColor.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:18
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A923    D:D1A926        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextConfig.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:18
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8FF    D:D1A902        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextFGColor.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:19
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8DB    D:D1A8DE        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextScale.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:19
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A917    D:D1A91A        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextXY.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:19
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8EF    D:D1A8F2        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_Sprite.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:20
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8F7    D:D1A8FA        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_ZeroScreen.src (Library: /Users/acagliano/CEdev/lib/graphx.lib) Version: 1:0 08/16/2017 15:24:21
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .graphx                           D:D1A8DF    D:D1A8E2        4h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\startup\ccleanup.asm (File: /Users/acagliano/CEdev/lib/ccleanup.obj) Version: 1:0 08/16/2017 15:25:03
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .cleanup                          D:D1A99C    D:D1A9AF       14h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm (File: /Users/acagliano/CEdev/lib/cstartup.obj) Version: 1:0 08/16/2017 15:25:03
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .exit                             D:D1A9B0    D:D1A9B7        8h
-    Segment: .header                           D:D1A87F    D:D1A881        3h
-    Segment: .startup                          D:D1A961    D:D1A99B       3bh
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\startup\libheader.asm (File: /Users/acagliano/CEdev/lib/libheader.obj) Version: 1:0 08/16/2017 15:25:03
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: .launcher                         D:D1A882    D:D1A8D1       50h
-    Segment: DATA                              D:D1C6DD    D:D1C6FE       22h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\std\shared\frameset.src (Library: /Users/acagliano/CEdev/lib/cshared.lib) Version: 1:0 08/16/2017 15:24:40
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1C29D    D:D1C2AA        eh
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\std\shared\icmpzero.src (Library: /Users/acagliano/CEdev/lib/cshared.lib) Version: 1:0 08/16/2017 15:24:43
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1C2CB    D:D1C2CF        5h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\std\shared\memset.src (Library: /Users/acagliano/CEdev/lib/cshared.lib) Version: 1:0 08/16/2017 15:24:50
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1C2D0    D:D1C2E6       17h
-
-
-Module: Z:\Users\adriweb\Documents\toolchain\src\std\shared\sbrk.src (Library: /Users/acagliano/CEdev/lib/cshared.lib) Version: 1:0 08/16/2017 15:24:50
-
-    Name                                        Base        Top      Size
-    --------------------------------------- ----------- ----------- ---------
-    Segment: CODE                              D:D1C2AB    D:D1C2CA       20h
-    Segment: DATA                              D:D1C6FF    D:D1C701        3h
-
-EXTERNAL DEFINITIONS:
-=====================
-
-Symbol                             Address   Module          Segment
--------------------------------- ----------- --------------- --------------------------------
-__copy_code_to_ram                  00000000 (User Defined)
-__len_bss                           0000000D (User Defined)
-__low_bss                           00D031F6 (User Defined)
-__heapbot                           00D03203 (User Defined)
-__heaptop                           00D13FD6 (User Defined)
-__stack                             00D1A87E (User Defined)
-_boot_GetBootMajorVer               D:000080 tice            CODE                            
-_boot_GetHardwareVer                D:000084 tice            CODE                            
-_boot_GetBootMinorVer               D:00008C tice            CODE                            
-_boot_DebugPrintf                   D:0000B4 tice            CODE                            
-_strcmp                             D:0000C8 strcmp          CODE                            
-_strcpy                             D:0000CC strcpy          CODE                            
-__ildix                             D:000148 ildix           CODE                            
-__istix                             D:00018C istix           CODE                            
-__stoiu                             D:000264 stoiu           CODE                            
-_boot_ClearVRAM                     D:000374 tice            CODE                            
-_boot_TurnOff                       D:000388 tice            CODE                            
-_boot_NewLine                       D:000390 tice            CODE                            
-_boot_Set6MHzMode                   D:00039C tice            CODE                            
-_boot_Set48MHzMode                  D:0003A0 tice            CODE                            
-_boot_Set6MHzModeI                  D:0003A4 tice            CODE                            
-_boot_Set48MHzModeI                 D:0003A8 tice            CODE                            
-_boot_GetBatteryStatus              D:0003B0 tice            CODE                            
-_boot_WaitShort                     D:0003B4 tice            CODE                            
-_boot_CheckOnPressed                D:00057C tice            CODE                            
-_boot_SetDate                       D:000598 tice            CODE                            
-_boot_GetDate                       D:0005A8 tice            CODE                            
-_boot_GetTime                       D:0005B0 tice            CODE                            
-_boot_SetTime                       D:0005B4 tice            CODE                            
-_boot_IsAfterNoon                   D:0005C8 tice            CODE                            
-_asm_MoveDown                       D:0207F4 tice            CODE                            
-_asm_MoveUp                         D:020800 tice            CODE                            
-_asm_ClrLCDFull                     D:020808 tice            CODE                            
-_asm_ClrLCD                         D:02080C tice            CODE                            
-_asm_ClrTxtShd                      D:020818 tice            CODE                            
-_asm_HomeUp                         D:020828 tice            CODE                            
-_asm_RunIndicOn                     D:020844 tice            CODE                            
-_asm_RunIndicOff                    D:020848 tice            CODE                            
-_asm_DelRes                         D:020E5C tice            CODE                            
-_asm_DisableAPD                     D:021134 tice            CODE                            
-_asm_EnableAPD                      D:021138 tice            CODE                            
-_asm_DrawStatusBar                  D:021A3C tice            CODE                            
-_os_PushErrorHandler                D:021C78 tice            CODE                            
-_os_PopErrorHandler                 D:021C7C tice            CODE                            
-_os_ThrowError                      D:021C80 tice            CODE                            
-_os_RealCopy                        D:021C84 tice            CODE                            
-_os_RealAsinRad                     D:021C88 tice            CODE                            
-_os_RealAcosRad                     D:021C8C tice            CODE                            
-_os_RealAtanRad                     D:021C90 tice            CODE                            
-_os_RealAdd                         D:021C94 tice            CODE                            
-_os_CplxSquare                      D:021C98 tice            CODE                            
-_os_RealCompare                     D:021C9C tice            CODE                            
-_os_RealCosRad                      D:021CA0 tice            CODE                            
-_os_RealRadToDeg                    D:021CA4 tice            CODE                            
-_os_RealDiv                         D:021CA8 tice            CODE                            
-_os_RealExp                         D:021CAC tice            CODE                            
-_os_RealFloor                       D:021CB0 tice            CODE                            
-_os_RealToStr                       D:021CB4 tice            CODE                            
-_os_RealFrac                        D:021CB8 tice            CODE                            
-_os_RealGcd                         D:021CBC tice            CODE                            
-_os_RealRoundInt                    D:021CC0 tice            CODE                            
-_os_RealLcm                         D:021CC4 tice            CODE                            
-_os_RealLog                         D:021CC8 tice            CODE                            
-_os_RealMax                         D:021CCC tice            CODE                            
-_os_RealMin                         D:021CD0 tice            CODE                            
-_os_RealMul                         D:021CD4 tice            CODE                            
-_os_RealNcr                         D:021CD8 tice            CODE                            
-_os_RealNeg                         D:021CDC tice            CODE                            
-_os_RealNpr                         D:021CE0 tice            CODE                            
-_os_RealPow                         D:021CE4 tice            CODE                            
-_os_RealDegToRad                    D:021CE8 tice            CODE                            
-_os_RealRandInt                     D:021CEC tice            CODE                            
-_os_RealInv                         D:021CF0 tice            CODE                            
-_os_RealMod                         D:021CF4 tice            CODE                            
-_os_RealRound                       D:021CF8 tice            CODE                            
-_os_RealSinRad                      D:021CFC tice            CODE                            
-_os_RealSqrt                        D:021D00 tice            CODE                            
-_os_RealSub                         D:021D04 tice            CODE                            
-_os_RealTanRad                      D:021D08 tice            CODE                            
-_os_StrToReal                       D:021D0C tice            CODE                            
-_os_RealInt                         D:021D10 tice            CODE                            
-_os_SetFlagBits                     D:021D14 tice            CODE                            
-_os_ResetFlagBits                   D:021D18 tice            CODE                            
-_os_TestFlagBits                    D:021D1C tice            CODE                            
-_os_SetFlagByte                     D:021D20 tice            CODE                            
-_os_GetFlagByte                     D:021D24 tice            CODE                            
-_os_GetCursorPos                    D:021D28 tice            CODE                            
-_os_PutStrFull                      D:021D2C tice            CODE                            
-_os_PutStrLine                      D:021D30 tice            CODE                            
-_os_SetCursorPos                    D:021D34 tice            CODE                            
-_os_GetKey                          D:021D38 tice            CODE                            
-_os_GetCSC                          D:021D3C tice            CODE                            
-_os_AppInit                         D:021D40 tice            CODE                            
-_os_DisableCursor                   D:021DE4 tice            CODE                            
-_os_EnableCursor                    D:021DE8 tice            CODE                            
-_os_FontDrawText                    D:021E00 tice            CODE                            
-_os_FontGetHeight                   D:021E14 tice            CODE                            
-_os_FontGetWidth                    D:021E18 tice            CODE                            
-_os_InitDrawing                     D:021E1C tice            CODE                            
-_os_SetDrawBGColor                  D:021E20 tice            CODE                            
-_os_SetDrawFGColor                  D:021E24 tice            CODE                            
-_os_FontSelect                      D:021E28 tice            CODE                            
-_os_SetTimer1                       D:021EC8 tice            CODE                            
-_os_DisableTimer1                   D:021ECC tice            CODE                            
-_os_GetSystemStats                  D:021ED4 tice            CODE                            
-_os_GetDrawBGColor                  D:021EE4 tice            CODE                            
-_os_GetDrawFGColor                  D:021EE8 tice            CODE                            
-_os_FontGetID                       D:021EEC tice            CODE                            
-_os_RealToInt24                     D:021EF4 tice            CODE                            
-_os_Int24ToReal                     D:021EF8 tice            CODE                            
-_os_ForceCmdNoChar                  D:021FA8 tice            CODE                            
-_os_GetSymTablePtr                  D:021FB0 tice            CODE                            
-_os_NextSymEntry                    D:021FB4 tice            CODE                            
-_os_ChkFindSym                      D:021FB8 tice            CODE                            
-_os_MemChk                          D:021FF0 tice            CODE                            
-_asm_ArcChk                         D:022040 tice            CODE                            
-_os_SetTimer2                       D:022080 tice            CODE                            
-_os_DisableTimer2                   D:022084 tice            CODE                            
-_os_FloatToReal                     D:022170 tice            CODE                            
-_os_RealToFloat                     D:022174 tice            CODE                            
-_os_FontDrawTransText               D:022178 tice            CODE                            
-_os_CreateAppVar                    D:022184 tice            CODE                            
-_errno                              D:D008DC cstartup        CODE                            
-_systemtime                         D:D031F6 MAIN            BSS                             
-__alloc_base                        D:D031FD MALLOC          BSS                             
-_init                               D:D1A882 cstartup        .header                         
-_gfx_SetTextFGColor                 D:D1A8DB gfx_SetTextFGCo .graphx                         
-_gfx_ZeroScreen                     D:D1A8DF gfx_ZeroScreen  .graphx                         
-_gfx_HorizLine                      D:D1A8E3 gfx_HorizLine   .graphx                         
-_gfx_PrintStringXY                  D:D1A8E7 gfx_PrintString .graphx                         
-_gfx_FillRectangle                  D:D1A8EB gfx_FillRectang .graphx                         
-_gfx_SetTextXY                      D:D1A8EF gfx_SetTextXY   .graphx                         
-_gfx_PrintString                    D:D1A8F3 gfx_PrintString .graphx                         
-_gfx_Sprite                         D:D1A8F7 gfx_Sprite      .graphx                         
-_gfx_PrintUInt                      D:D1A8FB gfx_PrintUInt   .graphx                         
-_gfx_SetTextConfig                  D:D1A8FF gfx_SetTextConf .graphx                         
-_gfx_FillCircle                     D:D1A903 gfx_FillCircle  .graphx                         
-_gfx_ScaleSprite                    D:D1A907 gfx_ScaleSprite .graphx                         
-_gfx_Begin                          D:D1A90B gfx_Begin       .graphx                         
-_gfx_SetClipRegion                  D:D1A90F gfx_SetClipRegi .graphx                         
-_gfx_SetColor                       D:D1A913 gfx_SetColor    .graphx                         
-_gfx_SetTextScale                   D:D1A917 gfx_SetTextScal .graphx                         
-_gfx_AllocSprite                    D:D1A91B gfx_AllocSprite .graphx                         
-_gfx_End                            D:D1A91F gfx_End         .graphx                         
-_gfx_SetTextBGColor                 D:D1A923 gfx_SetTextBGCo .graphx                         
-_ti_OpenVar                         D:D1A931 ti_OpenVar      .fileioc                        
-_ti_Write                           D:D1A935 ti_Write        .fileioc                        
-_ti_DetectVar                       D:D1A939 ti_DetectVar    .fileioc                        
-_ti_CloseAll                        D:D1A93D ti_CloseAll     .fileioc                        
-_ti_SetArchiveStatus                D:D1A941 ti_SetArchiveSt .fileioc                        
-_ti_Tell                            D:D1A945 ti_Tell         .fileioc                        
-_ti_Seek                            D:D1A949 ti_Seek         .fileioc                        
-_ti_GetC                            D:D1A94D ti_GetC         .fileioc                        
-_ti_Read                            D:D1A951 ti_Read         .fileioc                        
-_ti_GetSize                         D:D1A955 ti_GetSize      .fileioc                        
-_ti_Open                            D:D1A959 ti_Open         .fileioc                        
-_ti_Close                           D:D1A95D ti_Close        .fileioc                        
-__exit                              D:D1A98E cstartup        .startup                        
-__errsp                             D:D1A98E cstartup        .startup                        
-_exit                               D:D1A9B2 cstartup        .exit                           
-_main                               D:D1A9B8 MAIN            CODE                            
-_av_CheckSumAll                     D:D1AC9F MAIN            CODE                            
-_av_ScanAll                         D:D1AF54 MAIN            CODE                            
-_av_ValidateSaved                   D:D1B291 MAIN            CODE                            
-_showBoxes                          D:D1B54C MAIN            CODE                            
-_pgrm_DrawMainMenu                  D:D1B67D MAIN            CODE                            
-_pgrm_DrawSettingsMenu              D:D1B85D MAIN            CODE                            
-_pgrm_DrawSplashScreen              D:D1BB06 MAIN            CODE                            
-_pgrm_ApplySettings                 D:D1BE11 MAIN            CODE                            
-_pgrm_SaveSettings                  D:D1BE29 MAIN            CODE                            
-_time_IsFileOutdated                D:D1BE8A MAIN            CODE                            
-_SetAppChgHook                      D:D1BF39 sethook_appchg  CODE                            
-_RemoveAppChgHook                   D:D1BF77 sethook_appchg  CODE                            
-_SetParserHook                      D:D1BFE1 sethook_parser  CODE                            
-_RemoveParserHook                   D:D1C01F sethook_parser  CODE                            
-_free                               D:D1C0D1 FREE            CODE                            
-_malloc                             D:D1C1F5 MALLOC          CODE                            
-__frameset                          D:D1C29D frameset        CODE                            
-__s_sbrk                            D:D1C2AB sbrk            CODE                            
-__icmpzero                          D:D1C2CB icmpzero        CODE                            
-_memset                             D:D1C2D0 memset          CODE                            
-_dzx7_Standard                      D:D1C2E7 dzx7_standard   CODE                            
-_ScanDB                             D:D1C33B MAIN            DATA                            
-_VDefs                              D:D1C33E MAIN            DATA                            
-_AVSettings                         D:D1C341 MAIN            DATA                            
-_ProgRunHook                        D:D1C344 MAIN            DATA                            
-_ProgEditHook                       D:D1C347 MAIN            DATA                            
-_ProgName                           D:D1C34A MAIN            DATA                            
-_SubName                            D:D1C34D MAIN            DATA                            
-_Version                            D:D1C350 MAIN            DATA                            
-_settingsSave                       D:D1C353 MAIN            DATA                            
-_all_gfx_pal                        D:D1C35E ALL_GFX         DATA                            
-_blast_logo_compressed              D:D1C55E BLAST_LOGO      DATA                            
-_funcoff_compressed                 D:D1C6A7 FUNCOFF         DATA                            
-_funcon_compressed                  D:D1C6AF FUNCON          DATA                            
-_warning_compressed                 D:D1C6B7 WARNING         DATA                            
-
-196 external symbol(s).
-
-SYMBOL CROSS REFERENCE:
-=======================
-Name                              Use         Module
---------------------------------- ----------- -------------------------
-__copy_code_to_ram                Defined     LINKER
-__len_bss                         Defined     LINKER
-                                  Referenced  Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-__low_bss                         Defined     LINKER
-                                  Referenced  Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-__heapbot                         Defined     LINKER
-                                  Referenced  Z:\Users\adriweb\Documents\toolchain\src\std\shared\sbrk.src
-__heaptop                         Defined     LINKER
-__stack                           Defined     LINKER
-_boot_GetBootMajorVer             Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_GetHardwareVer              Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_GetBootMinorVer             Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_DebugPrintf                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_strcmp                           Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\strcmp.src
-                                  Referenced  ..\SRC\MAIN.C
-_strcpy                           Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\strcpy.src
-                                  Referenced  ..\SRC\MAIN.C
-__ildix                           Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\ildix.src
-                                  Referenced  ..\SRC\MAIN.C
-__istix                           Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\istix.src
-                                  Referenced  ..\SRC\MAIN.C
-__stoiu                           Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\stoiu.src
-                                  Referenced  ..\SRC\MAIN.C
-_boot_ClearVRAM                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_TurnOff                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_NewLine                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_Set6MHzMode                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_Set48MHzMode                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_Set6MHzModeI                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_Set48MHzModeI               Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_GetBatteryStatus            Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_WaitShort                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_CheckOnPressed              Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_boot_SetDate                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_boot_GetDate                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_boot_GetTime                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_boot_SetTime                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_boot_IsAfterNoon                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_MoveDown                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_MoveUp                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_ClrLCDFull                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_asm_ClrLCD                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_ClrTxtShd                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_HomeUp                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_RunIndicOn                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_RunIndicOff                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_asm_DelRes                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_DisableAPD                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_EnableAPD                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_DrawStatusBar                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_os_PushErrorHandler              Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_PopErrorHandler               Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_ThrowError                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealCopy                      Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealAsinRad                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealAcosRad                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealAtanRad                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealAdd                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_CplxSquare                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealCompare                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealCosRad                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealRadToDeg                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealDiv                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealExp                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealFloor                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealToStr                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealFrac                      Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealGcd                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealRoundInt                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealLcm                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealLog                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealMax                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealMin                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealMul                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealNcr                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealNeg                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealNpr                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealPow                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealDegToRad                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealRandInt                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealInv                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealMod                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealRound                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealSinRad                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealSqrt                      Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealSub                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealTanRad                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_StrToReal                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealInt                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_SetFlagBits                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_ResetFlagBits                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_TestFlagBits                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_SetFlagByte                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetFlagByte                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetCursorPos                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_PutStrFull                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_PutStrLine                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_SetCursorPos                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetKey                        Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetCSC                        Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-                                  Referenced  ..\SRC\MAIN.C
-_os_AppInit                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_DisableCursor                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_EnableCursor                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_FontDrawText                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_FontGetHeight                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_FontGetWidth                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_InitDrawing                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_SetDrawBGColor                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_SetDrawFGColor                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_FontSelect                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_SetTimer1                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_DisableTimer1                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetSystemStats                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetDrawBGColor                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetDrawFGColor                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_FontGetID                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealToInt24                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_Int24ToReal                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_ForceCmdNoChar                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_GetSymTablePtr                Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_NextSymEntry                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_ChkFindSym                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_MemChk                        Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_asm_ArcChk                       Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_SetTimer2                     Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_DisableTimer2                 Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_FloatToReal                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_RealToFloat                   Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_FontDrawTransText             Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_os_CreateAppVar                  Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\tice.src
-_errno                            Defined     Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-_systemtime                       Defined     ..\SRC\MAIN.C
-__alloc_base                      Defined     .\MALLOC.C
-                                  Referenced  .\FREE.C
-_init                             Defined     Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-_gfx_SetTextFGColor               Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextFGColor.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_ZeroScreen                   Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_ZeroScreen.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_HorizLine                    Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_HorizLine.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_PrintStringXY                Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_PrintStringXY.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_FillRectangle                Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_FillRectangle.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_SetTextXY                    Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextXY.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_PrintString                  Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_PrintString.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_Sprite                       Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_Sprite.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_PrintUInt                    Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_PrintUInt.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_SetTextConfig                Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextConfig.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_FillCircle                   Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_FillCircle.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_ScaleSprite                  Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_ScaleSprite.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_Begin                        Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_Begin.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_SetClipRegion                Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetClipRegion.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_SetColor                     Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetColor.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_SetTextScale                 Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextScale.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_AllocSprite                  Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_AllocSprite.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_End                          Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_End.src
-                                  Referenced  ..\SRC\MAIN.C
-_gfx_SetTextBGColor               Defined     Z:\Users\adriweb\Documents\toolchain\src\graphx\gfx_SetTextBGColor.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_OpenVar                       Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_OpenVar.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_Write                         Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Write.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_DetectVar                     Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_DetectVar.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_CloseAll                      Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_CloseAll.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_SetArchiveStatus              Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_SetArchiveStatus.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_Tell                          Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Tell.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_Seek                          Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Seek.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_GetC                          Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_GetC.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_Read                          Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Read.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_GetSize                       Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_GetSize.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_Open                          Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Open.src
-                                  Referenced  ..\SRC\MAIN.C
-_ti_Close                         Defined     Z:\Users\adriweb\Documents\toolchain\src\fileioc\ti_Close.src
-                                  Referenced  ..\SRC\MAIN.C
-__exit                            Defined     Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-__errsp                           Defined     Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-_exit                             Defined     Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-_main                             Defined     ..\SRC\MAIN.C
-                                  Referenced  Z:\Users\adriweb\Documents\toolchain\src\startup\cstartup.asm
-_av_CheckSumAll                   Defined     ..\SRC\MAIN.C
-_av_ScanAll                       Defined     ..\SRC\MAIN.C
-_av_ValidateSaved                 Defined     ..\SRC\MAIN.C
-_showBoxes                        Defined     ..\SRC\MAIN.C
-_pgrm_DrawMainMenu                Defined     ..\SRC\MAIN.C
-_pgrm_DrawSettingsMenu            Defined     ..\SRC\MAIN.C
-_pgrm_DrawSplashScreen            Defined     ..\SRC\MAIN.C
-_pgrm_ApplySettings               Defined     ..\SRC\MAIN.C
-_pgrm_SaveSettings                Defined     ..\SRC\MAIN.C
-_time_IsFileOutdated              Defined     ..\SRC\MAIN.C
-_SetAppChgHook                    Defined     Z:\Users\acagliano\CEdev\source\BlastAV\src\asm\sethook_appchg.asm
-_RemoveAppChgHook                 Defined     Z:\Users\acagliano\CEdev\source\BlastAV\src\asm\sethook_appchg.asm
-_SetParserHook                    Defined     Z:\Users\acagliano\CEdev\source\BlastAV\src\asm\sethook_parser.asm
-                                  Referenced  ..\SRC\MAIN.C
-_RemoveParserHook                 Defined     Z:\Users\acagliano\CEdev\source\BlastAV\src\asm\sethook_parser.asm
-                                  Referenced  ..\SRC\MAIN.C
-_free                             Defined     .\FREE.C
-                                  Referenced  ..\SRC\MAIN.C
-_malloc                           Defined     .\MALLOC.C
-                                  Referenced  ..\SRC\MAIN.C
-__frameset                        Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\frameset.src
-                                  Referenced  ..\SRC\MAIN.C
-                                  Referenced  .\FREE.C
-                                  Referenced  .\MALLOC.C
-__s_sbrk                          Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\sbrk.src
-                                  Referenced  .\MALLOC.C
-__icmpzero                        Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\icmpzero.src
-                                  Referenced  .\FREE.C
-                                  Referenced  .\MALLOC.C
-_memset                           Defined     Z:\Users\adriweb\Documents\toolchain\src\std\shared\memset.src
-                                  Referenced  ..\SRC\MAIN.C
-_dzx7_Standard                    Defined     Z:\Users\adriweb\Documents\toolchain\src\ce\dzx7_standard.src
-                                  Referenced  ..\SRC\MAIN.C
-_ScanDB                           Defined     ..\SRC\MAIN.C
-_VDefs                            Defined     ..\SRC\MAIN.C
-_AVSettings                       Defined     ..\SRC\MAIN.C
-_ProgRunHook                      Defined     ..\SRC\MAIN.C
-_ProgEditHook                     Defined     ..\SRC\MAIN.C
-_ProgName                         Defined     ..\SRC\MAIN.C
-_SubName                          Defined     ..\SRC\MAIN.C
-_Version                          Defined     ..\SRC\MAIN.C
-_settingsSave                     Defined     ..\SRC\MAIN.C
-_all_gfx_pal                      Defined     ..\SRC\GFX\ALL_GFX.C
-_blast_logo_compressed            Defined     ..\SRC\GFX\BLAST_LOGO.C
-                                  Referenced  ..\SRC\MAIN.C
-_funcoff_compressed               Defined     ..\SRC\GFX\FUNCOFF.C
-                                  Referenced  ..\SRC\MAIN.C
-_funcon_compressed                Defined     ..\SRC\GFX\FUNCON.C
-                                  Referenced  ..\SRC\MAIN.C
-_warning_compressed               Defined     ..\SRC\GFX\WARNING.C
-                                  Referenced  ..\SRC\MAIN.C
-
-OUTPUT CHECKSUM
-===============
-bin/BLASTCSS.hex     108CE8
-
-
-
-END OF LINK MAP:
-================
-0 Errors
-0 Warnings
+Segment  Base   Top    High   Length
+-------- ------ ------ ------ -------
+bss      D031F6 D03206 D13FD6     10h
+header   D1A87F D1A882             3h
+icon     D1A882 D1A9A3           121h
+launcher D1A9A3 D1A9F3            50h
+libs     D1A9F3 D1AA7A            87h
+startup  D1AA7A D1AAB5            3Bh
+cleanup  D1AAB5 D1AAC9            14h
+exit     D1AAC9 D1AACF             6h
+code     D1AACF D1B5BD           AEEh
+data     D1B5BD D1C01F           A62h
+strsect  D1C01F D1C117            F8h
+text     D1C117 D1C27A           163h
+
+Label                          Value
+----------------------------   ------
+__findlibload                = D1A9A3
+__program_icon               = D1A887
+__program_description        = D1A989
+__ccleanup                   = D1AAB5
+_errno                       = D008DC
+_init                        = D1A882
+_exit                        = D1AACB
+__exit                       = D1AAA7
+__exitsp                     = D1AAA7
+__errsp                      = D1AAA7
+_tracking_icon_compressed    = D1B5DF
+_time_IsFileOutdated         = D1B3B7
+_pgrm_MainMenu               = D1B3A6
+_pgrm_DrawSplashScreen       = D1B259
+_pgrm_DrawBackground         = D1B163
+_pgrm_EraseContent           = D1B12F
+_av_CheckSumFile             = D1B097
+_integ_IsFileTracked         = D1B02F
+_av_Integrity                = D1AF33
+_av_About                    = D1AE6C
+_main                        = D1AACF
+_settingsSave                = D1C01A
+_systemtime                  = D031F9
+_sprites                     = D031F6
+_proglist                    = D1B61A
+_Version                     = D1B617
+_SubName                     = D1B614
+_ProgName                    = D1B611
+_ProgEditHook                = D1B60E
+_ProgRunHook                 = D1B60B
+_AVSettings                  = D1B608
+_VDefs                       = D1B605
+_AttrDB                      = D1B602
+__case8D                     = 000128
+__frameset                   = D1B445
+__icmpzero                   = D1B453
+__imul_b                     = 000158
+__imul_b                     = 000150
+__itol                       = 000194
+__ladd_b                     = 00019C
+__ladd_b                     = 0001A0
+_malloc                      = D1B489
+__alloc_base                 = D03200
+__s_sbrk                     = D1B531
+__seqcaseD                   = 000214
+__setflag                    = 000218
+__stoiu                      = 000264
+_strcmp                      = 0000C8
+_strcpy                      = 0000CC
+_strlen                      = 0000D4
+_boot_GetBootMajorVer        = 000080
+_boot_GetHardwareVer         = 000084
+_boot_GetBootMinorVer        = 00008C
+_boot_DebugPrintf            = 0000B4
+_boot_ClearVRAM              = 000374
+_boot_TurnOff                = 000388
+_boot_NewLine                = 000390
+_boot_Set6MHzMode            = 00039C
+_boot_Set48MHzMode           = 0003A0
+_boot_Set6MHzModeI           = 0003A4
+_boot_Set48MHzModeI          = 0003A8
+_boot_GetBatteryStatus       = 0003B0
+_boot_WaitShort              = 0003B4
+_boot_CheckOnPressed         = 00057C
+_boot_SetDate                = 000598
+_boot_GetDate                = 0005A8
+_boot_GetTime                = 0005B0
+_boot_SetTime                = 0005B4
+_boot_IsAfterNoon            = 0005C8
+_os_PushErrorHandler         = 021C78
+_os_PopErrorHandler          = 021C7C
+_os_ThrowError               = 021C80
+_os_RealCopy                 = 021C84
+_os_RealAsinRad              = 021C88
+_os_RealAcosRad              = 021C8C
+_os_RealAtanRad              = 021C90
+_os_RealAdd                  = 021C94
+_os_CplxSquare               = 021C98
+_os_RealCompare              = 021C9C
+_os_RealCosRad               = 021CA0
+_os_RealRadToDeg             = 021CA4
+_os_RealDiv                  = 021CA8
+_os_RealExp                  = 021CAC
+_os_RealFloor                = 021CB0
+_os_RealToStr                = 021CB4
+_os_RealFrac                 = 021CB8
+_os_RealGcd                  = 021CBC
+_os_RealRoundInt             = 021CC0
+_os_RealLcm                  = 021CC4
+_os_RealLog                  = 021CC8
+_os_RealMax                  = 021CCC
+_os_RealMin                  = 021CD0
+_os_RealMul                  = 021CD4
+_os_RealNcr                  = 021CD8
+_os_RealNeg                  = 021CDC
+_os_RealNpr                  = 021CE0
+_os_RealPow                  = 021CE4
+_os_RealDegToRad             = 021CE8
+_os_RealRandInt              = 021CEC
+_os_RealInv                  = 021CF0
+_os_RealMod                  = 021CF4
+_os_RealRound                = 021CF8
+_os_RealSinRad               = 021CFC
+_os_RealSqrt                 = 021D00
+_os_RealSub                  = 021D04
+_os_RealTanRad               = 021D08
+_os_StrToReal                = 021D0C
+_os_RealInt                  = 021D10
+_os_SetFlagBits              = 021D14
+_os_ResetFlagBits            = 021D18
+_os_TestFlagBits             = 021D1C
+_os_SetFlagByte              = 021D20
+_os_GetFlagByte              = 021D24
+_os_GetCursorPos             = 021D28
+_os_PutStrFull               = 021D2C
+_os_PutStrLine               = 021D30
+_os_SetCursorPos             = 021D34
+_os_AppInit                  = 021D40
+_os_GetKey                   = 021D38
+_os_GetCSC                   = 021D3C
+_os_DisableCursor            = 021DE4
+_os_EnableCursor             = 021DE8
+_os_FontDrawText             = 021E00
+_os_FontGetHeight            = 021E14
+_os_FontGetWidth             = 021E18
+_os_InitDrawing              = 021E1C
+_os_SetDrawBGColor           = 021E20
+_os_SetDrawFGColor           = 021E24
+_os_FontSelect               = 021E28
+_os_RclAns                   = 021E70
+_os_SetTimer1                = 021EC8
+_os_DisableTimer1            = 021ECC
+_os_GetSystemStats           = 021ED4
+_os_GetDrawBGColor           = 021EE4
+_os_GetDrawFGColor           = 021EE8
+_os_FontGetID                = 021EEC
+_os_RealToInt24              = 021EF4
+_os_Int24ToReal              = 021EF8
+_os_ForceCmdNoChar           = 021FA8
+_os_GetSymTablePtr           = 021FB0
+_os_NextSymEntry             = 021FB4
+_os_ChkFindSym               = 021FB8
+_os_MemChk                   = 021FF0
+_os_SetTimer2                = 022080
+_os_DisableTimer2            = 022084
+_os_FloatToReal              = 022170
+_os_RealToFloat              = 022174
+_os_FontDrawTransText        = 022178
+_os_CreateAppVar             = 022184
+_asm_MoveDown                = 0207F4
+_asm_MoveUp                  = 020800
+_asm_ClrLCDFull              = 020808
+_asm_ClrLCD                  = 02080C
+_asm_ClrTxtShd               = 020818
+_asm_HomeUp                  = 020828
+_asm_RunIndicOn              = 020844
+_asm_RunIndicOff             = 020848
+_asm_DelRes                  = 020E5C
+_asm_DisableAPD              = 021134
+_asm_EnableAPD               = 021138
+_asm_DrawStatusBar           = 021A3C
+_asm_ArcChk                  = 022040
+_zx7_Decompress              = D1B551
+_ti_CloseAll                 = D1A9FD
+_ti_Open                     = D1AA01
+_ti_OpenVar                  = D1AA05
+_ti_Close                    = D1AA09
+_ti_Write                    = D1AA0D
+_ti_Read                     = D1AA11
+_ti_GetC                     = D1AA15
+_ti_Seek                     = D1AA19
+_ti_Rewind                   = D1AA1D
+_ti_GetSize                  = D1AA21
+_ti_DetectVar                = D1AA25
+_gfx_Begin                   = D1AA32
+_gfx_End                     = D1AA36
+_gfx_SetColor                = D1AA3A
+_gfx_FillScreen              = D1AA3E
+_gfx_SetDraw                 = D1AA42
+_gfx_Blit                    = D1AA46
+_gfx_PrintChar               = D1AA4A
+_gfx_PrintStringXY           = D1AA4E
+_gfx_SetTextXY               = D1AA52
+_gfx_SetTextBGColor          = D1AA56
+_gfx_SetTextFGColor          = D1AA5A
+_gfx_SetTextTransparentColor = D1AA5E
+_gfx_FillRectangle           = D1AA62
+_gfx_SetClipRegion           = D1AA66
+_gfx_AllocSprite             = D1AA6A
+_gfx_TransparentSprite       = D1AA6E
+_gfx_SetTextScale            = D1AA72
+_gfx_SetTransparentColor     = D1AA76

@@ -1,14 +1,15 @@
+include "equates.inc"
 .assume adl = 1
-XDEF _SetAppChgHook
-XDEF _RemoveAppChgHook
+XDEF _InstallAppChangeHook
+XDEF _RemoveAppChangeHook
 
-_SetAppChgHook:
+_InstallAppChangeHook:
     ld hl, AppHookAppV
-    call 0020320h       ; mov9toOP1
-    call 002050Ch       ; chkfindsym
+    call _Mov9ToOP1       ; mov9toOP1
+    call _ChkFindSym       ; chkfindsym
     jr nc, varexists
     ld hl, AppChgHook_End-AppChgHook
-    call 0021330h       ; CreateAppVar
+    call _CreateAppVar       ; CreateAppVar
     ex de, hl
     inc hl
     inc hl
@@ -17,74 +18,83 @@ _SetAppChgHook:
     ldir
     ld b, 0
     ld hl, AppHookAppV
-    call 0020320h       ; mov9toOP1
-    call 0021448h       ; should move to archive
-    call 002050Ch       ; chkfindsym
+    call _Mov9ToOP1       ; mov9toOP1
+    call _Arc_Unarc      ; should move to archive
+    call _ChkFindSym       ; chkfindsym
     varexists:
     ex de, hl
     inc hl
     inc hl
     ld a, b
-    call 002149Ch       ; setparserhook
+    call _SetAppChangeHook
     ret
 
-_RemoveAppChgHook:
-    call 00214A0h       ; unset parser hook
+_RemoveAppChangeHook:
+    call _ClrAppChangeHook       ; unset parser hook
     ld hl, AppHookAppV
-    call 0020320h       ; mov9toOP1
-    call 002050Ch       ; chkfindsym
+    call _Mov9ToOP1       ; mov9toOP1
+    call _ChkFindSym       ; chkfindsym
     ret c
-    call 0021434h       ; delvararc
+    call _DelVarArc       ; delvararc
     ret
 
 AppHookAppV:
-db 15h, "AVEditP",0
+db 15h, "AVEditH",0
 
 
 AppChgHook:
-    db 83h             ; Required for all hooks
-    or a, a
-    ret z
-    push bc
-    ld b, a
-    ld a, (0D007E0h)    ; cxCurApp
-    cp 046h             ; cxPrgmEdit
-    pop bc
-    jr nz, notopeningeditor
-    ld de, 0D0EA1Fh     ; SaveSScreen
-    ld hl, 0D0065Bh     ; progToEdit
-    call 00202FCh       ; Mov9b
-notopeningeditor:
-    push af
-    ld a, b
-    cp 046h
-    jr z, closingeditor
-    pop af
-    ret
-closingeditor:
-    ld hl, 0D0EA1Fh
+    db 83h
     push hl
-    ld hl, AttrFile
-    call 0020320h
-    call 002050Ch
+    push af
+    call process
+    pop af
     pop hl
-    jr nc, exists
-    pop af
     ret
-exists:
-    ex de, hl
-    ld c, (hl)
+process:
+    cp 46h
+    jp z,openingeditor
+    ld c,a      ;need to preserve A on newer models
+    ld a,b
+    cp 46h
+    ld a,c      ;need to preserve A on newer models
+    ret nz
+closingeditor:
+    ld hl,56*256
+    ld (penCol),hl
+    ld hl,str0
+    call _VPutS
+    jp show
+openingeditor:
+    ld hl,56*256
+    ld (penCol),hl
+    ld hl,str1
+    call _VPutS
+show:
+    ld hl,84BFh
+    ld b,8
+charputloop:
+    ld a,(hl)
     inc hl
-    ld b, (hl)
-    inc hl
-    add hl, bc
-    push hl             ; address to end at on stack
-    sbc hl, bc
-; write routine to look for program name
-; write routine to checksum/size
-
-    pop af
+    or a
+    jr z,wait
+    call _VPutMap
+    djnz charputloop
+wait:
+    di
+    xor a
+    out (1),a
+waitkeypress:
+    in a,(1)
+    inc a
+    jr z,waitkeypress
+waitkeyrelease:
+    in a,(1)
+    inc a
+    jr nz,waitkeyrelease
+    ei
     ret
+str0: db "Closing ",0
+str1: db "Opening ",0
 
 AttrFile:
 db 15h, "AVData", 0

@@ -1,5 +1,5 @@
-// Converted using ConvPNG
-// This file contains all the graphics sources for easier inclusion in a project
+// convpng v6.8
+// this file contains all the graphics sources for easy inclusion in a project
 #ifndef __all_gfx__
 #define __all_gfx__
 #include <stdint.h>
@@ -20,6 +20,14 @@ extern uint8_t funcoff_compressed[8];
 #define funcon_height 8
 #define funcon_size 66
 extern uint8_t funcon_compressed[8];
+#define tracking_icon_width 9
+#define tracking_icon_height 9
+#define tracking_icon_size 83
+extern uint8_t tracking_icon_compressed[35];
+#define invert_icon_width 8
+#define invert_icon_height 8
+#define invert_icon_size 66
+extern uint8_t invert_icon_compressed[26];
 #define sizeof_all_gfx_pal 512
 extern uint16_t all_gfx_pal[256];
 

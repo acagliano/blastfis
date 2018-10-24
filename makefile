@@ -10,8 +10,8 @@
 NAME        ?= BLASTCSS
 DEBUGMODE   ?= NDEBUG
 COMPRESSED  ?= NO
-ICON        ?= 
-DESCRIPTION ?= "Star Trek Multiplayer"
+ICON        ?= iconc.png
+DESCRIPTION ?= "Calculator Security Suite"
 
 L ?= graphx fileioc
 
