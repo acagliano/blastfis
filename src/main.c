@@ -61,21 +61,21 @@ settings_save_t settingsSave = {0};
 
 void main(void) {
 	/* Fill in the body of the main function here */
-    ProgData_t *progdata;
     char option = 0, prior_option = 0, i;
     char proglist_selected = 0;
     char* progname;
     ti_var_t f_attributes;
     char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE};
-    int prognum = 0, integnum = 0;
+    int prognum = 0;
     sprites[0] = gfx_MallocSprite(tracking_icon_width, tracking_icon_height);
     zx7_Decompress(sprites[0], tracking_icon_compressed);
+    ti_CloseAll();
     if((f_attributes = ti_Open(AttrDB, "r+")))
         ;
     else if(f_attributes = ti_Open(AttrDB, "w+"))
         ;
     else return;
-        
+    ti_Rewind(f_attributes);
     for(i = 0; i < sizeof(searchtypes); i++){
         uint8_t *search_pos = NULL;
         while((progname = ti_DetectVar(&search_pos, NULL, searchtypes[i])) != NULL) {
@@ -92,24 +92,21 @@ void main(void) {
     gfx_SetTransparentColor(255);
     gfx_SetTextBGColor(33);
     gfx_SetClipRegion(0, 0, 320, 240);
-    ti_CloseAll();
     int_Disable();
     pgrm_DrawBackground();
     while(option != 6){
-        unsigned char key;
-        pgrm_DrawSplashScreen(option);
-        key = os_GetCSC();
+        unsigned char key = os_GetCSC();;
         if((key == sk_Up) && (option > 0)) option--;
         if((key == sk_Down) && (option < 5)) option++;
-        if(key == sk_Clear) option = 6;
+        if(key == sk_Clear) break;
         if(option == 1){
             if(key == sk_Stat) prior_option = 0;
             if((key == sk_Add) && (proglist_selected < (prognum-1))) {proglist_selected++; prior_option = 0;}
             if((key == sk_Sub) && (proglist_selected > 0)){proglist_selected--; prior_option = 0;}
             if(key == sk_Mode) {
                 if((integ_IsFileTracked(proglist[proglist_selected].progname, f_attributes)) == -1){
-                    ProgData_t source;
-                    strcpy(source.name, proglist[proglist_selected].progname);
+                    ProgData_t source = {0};
+                    strncpy(source.name, proglist[proglist_selected].progname, strlen(proglist[proglist_selected].progname));
                     source.type = proglist[proglist_selected].progtype;
                     source.checksum = av_CheckSumFile(proglist[proglist_selected].progname, source.type);
                     ti_Seek(0, SEEK_END, f_attributes);
@@ -119,16 +116,17 @@ void main(void) {
                 }
             }
         }
+        pgrm_DrawSplashScreen(option);
         switch(option){
             case 0:
                 if(option != prior_option) pgrm_EraseContent();
                 av_About();
                 break;
             case 1:
-                if(option != prior_option) pgrm_EraseContent();
-                av_Integrity(&proglist, f_attributes, proglist_selected, prognum, sprites);
-              //  if(key == sk_Sub && proglist_selected > 0) proglist_selected--;
-              //  if(key == sk_Add && proglist_selected < prognum) proglist_selected++;
+                if(option != prior_option){
+                    pgrm_EraseContent();
+                    av_Integrity(&proglist, f_attributes, proglist_selected, prognum, sprites);
+                }
                 break;
         }
         prior_option = option;
@@ -147,7 +145,7 @@ void main(void) {
 void av_About(void){
     int i;
     int x = 115, y = 75, xmax = 310;
-    char about[] = "Blast2 is a file integrity|and malware detection|software. It can detect|changes to programs on your|calc and scan them for harm-|ful things. Optionally this|program can quarantine|harmful programs and|take snapshots (backups)|of programs, allowing you|to revert changes to|programs at any time.||For more information,|visit:|http://clrhome.org/blastav";
+    static const char *about = "Blast2 is a file integrity|and malware detection|software. It can detect|changes to programs on your|calc and scan them for harm-|ful things. Optionally this|program can quarantine|harmful programs and|take snapshots (backups)|of programs, allowing you|to revert changes to|programs at any time.||For more information,|visit:|http://clrhome.org/blastav";
     gfx_SetTextFGColor(0);
     for(i = 0; i < strlen(about); i++) {
         if(about[i] == '|') {y += 9; x = 115;}
@@ -182,9 +180,10 @@ void av_Integrity(program_t* proglist, ti_var_t attributes, int selected, int ma
 
 int integ_IsFileTracked(char *progname, ti_var_t attributes){
     int response = -1, i = 0;
+    int test;
     ProgData_t check;
     while(ti_Read(&check, sizeof(ProgData_t), 1, attributes)){
-        if(!strcmp(progname, check.name)) {response = i; break;}
+        if(!strncmp(progname, check.name, 8)) {response = i; break;}
         i++;
     }
     return response;
@@ -369,13 +368,8 @@ void pgrm_DrawBackground(void){
 }
 
 void pgrm_DrawSplashScreen(char selected) {
-    // Draw splash screen
+    // Draw Menu w item selected
     char i;
-    gfx_sprite_t *uncompressed, *scaled;
-    ti_var_t avData;
-    uint16_t temp;
-    ti_CloseAll();
-    // Draw sidebar
     gfx_SetTextFGColor(0);
     for(i = 0; i < 6; i++){
         char *label;
@@ -414,12 +408,7 @@ void pgrm_DrawSplashScreen(char selected) {
 }
 
 
-char pgrm_MainMenu(char selected){
-   
-    return selected;
-}
-
-
+// currently unused but might be needed
 bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
     uint24_t systemdays, filedays;
     systemdays = (systemtime.year * 365) + (systemtime.month * 30) + systemtime.day;

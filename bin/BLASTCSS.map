@@ -8,10 +8,10 @@ libs     D1A9F3 D1AA7A            87h
 startup  D1AA7A D1AAB5            3Bh
 cleanup  D1AAB5 D1AAC9            14h
 exit     D1AAC9 D1AACF             6h
-code     D1AACF D1B5BD           AEEh
-data     D1B5BD D1C01F           A62h
-strsect  D1C01F D1C117            F8h
-text     D1C117 D1C27A           163h
+code     D1AACF D1B58D           ABEh
+data     D1B58D D1BFF2           A65h
+strsect  D1BFF2 D1C24B           259h
+text     D1C24B D1C25E            13h
 
 Label                          Value
 ----------------------------   ------
@@ -25,46 +25,47 @@ _exit                        = D1AACB
 __exit                       = D1AAA7
 __exitsp                     = D1AAA7
 __errsp                      = D1AAA7
-_tracking_icon_compressed    = D1B5DF
-_time_IsFileOutdated         = D1B3B7
-_pgrm_MainMenu               = D1B3A6
-_pgrm_DrawSplashScreen       = D1B259
-_pgrm_DrawBackground         = D1B163
-_pgrm_EraseContent           = D1B12F
-_av_CheckSumFile             = D1B097
-_integ_IsFileTracked         = D1B02F
-_av_Integrity                = D1AF33
-_av_About                    = D1AE6C
+_tracking_icon_compressed    = D1B5AF
+_time_IsFileOutdated         = D1B38A
+_pgrm_DrawSplashScreen       = D1B245
+_pgrm_DrawBackground         = D1B15C
+_pgrm_EraseContent           = D1B135
+_av_CheckSumFile             = D1B0A1
+_integ_IsFileTracked         = D1B038
+_av_Integrity                = D1AF43
+_av_About                    = D1AEA0
 _main                        = D1AACF
-_settingsSave                = D1C01A
+_settingsSave                = D1BFEA
 _systemtime                  = D031F9
 _sprites                     = D031F6
-_proglist                    = D1B61A
-_Version                     = D1B617
-_SubName                     = D1B614
-_ProgName                    = D1B611
-_ProgEditHook                = D1B60E
-_ProgRunHook                 = D1B60B
-_AVSettings                  = D1B608
-_VDefs                       = D1B605
-_AttrDB                      = D1B602
-__case8D                     = 000128
-__frameset                   = D1B445
-__icmpzero                   = D1B453
+_proglist                    = D1B5EA
+_Version                     = D1B5E7
+_SubName                     = D1B5E4
+_ProgName                    = D1B5E1
+_ProgEditHook                = D1B5DE
+_ProgRunHook                 = D1B5DB
+_AVSettings                  = D1B5D8
+_VDefs                       = D1B5D5
+_AttrDB                      = D1B5D2
+__case8                      = 000124
+__frameset                   = D1B415
+__icmpzero                   = D1B423
 __imul_b                     = 000158
 __imul_b                     = 000150
 __itol                       = 000194
 __ladd_b                     = 00019C
 __ladd_b                     = 0001A0
-_malloc                      = D1B489
+_malloc                      = D1B459
 __alloc_base                 = D03200
-__s_sbrk                     = D1B531
-__seqcaseD                   = 000214
+__s_sbrk                     = D1B501
+__seqcase                    = 000210
 __setflag                    = 000218
 __stoiu                      = 000264
 _strcmp                      = 0000C8
 _strcpy                      = 0000CC
 _strlen                      = 0000D4
+_strncmp                     = 0000DC
+_strncpy                     = 0000E0
 _boot_GetBootMajorVer        = 000080
 _boot_GetHardwareVer         = 000084
 _boot_GetBootMinorVer        = 00008C
@@ -177,7 +178,7 @@ _asm_DisableAPD              = 021134
 _asm_EnableAPD               = 021138
 _asm_DrawStatusBar           = 021A3C
 _asm_ArcChk                  = 022040
-_zx7_Decompress              = D1B551
+_zx7_Decompress              = D1B521
 _ti_CloseAll                 = D1A9FD
 _ti_Open                     = D1AA01
 _ti_OpenVar                  = D1AA05
