@@ -36,13 +36,13 @@
 char pgrm_MainMenu(char selected);
 char pgrm_IntegMenu(unsigned char selected, unsigned char max);
 void pgrm_EraseContent(void);
-void pgrm_DrawBackground(void);
+void pgrm_DrawBackground(gfx_sprite_t *icon);
 void pgrm_DrawSplashScreen(char selected);
 void gfx_custom_wrappedtext(char *text, int x, int width);
 bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge);
 
 void av_About(void);
-void av_Integrity(program_t* proglist, ti_var_t attributes, int selected, int max, gfx_sprite_t* sprites[]);
+void av_Integrity(program_t* proglist, ti_var_t attributes, char render_selection, int selected, int max, gfx_sprite_t* sprites[]);
 
 
 int integ_IsFileTracked(char *progname, ti_var_t attributes);
@@ -54,21 +54,30 @@ const char *SubName = "Calculator Security Suite";
 const char *Version = "0.91b";
 
 program_t proglist[256] = {0};
-gfx_sprite_t* sprites[1];
+gfx_sprite_t* sprites[4];
 
 time_struct_t systemtime;
 settings_save_t settingsSave = {0};
+#define LIST_MAIN 0
+#define LIST_INNER 1
 
 void main(void) {
 	/* Fill in the body of the main function here */
     char option = 0, prior_option = 0, i;
     char proglist_selected = 0;
+    char list_selected = 0;
     char* progname;
     ti_var_t f_attributes;
     char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE};
     int prognum = 0;
     sprites[0] = gfx_MallocSprite(tracking_icon_width, tracking_icon_height);
+    sprites[1] = gfx_MallocSprite(blast_icon_width, blast_icon_height);
+    sprites[2] = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
+    sprites[3] = gfx_MallocSprite(integ_fail_icon_width, integ_fail_icon_height);
     zx7_Decompress(sprites[0], tracking_icon_compressed);
+    zx7_Decompress(sprites[1], blast_icon_compressed);
+    zx7_Decompress(sprites[2], integ_pass_icon_compressed);
+    zx7_Decompress(sprites[3], integ_fail_icon_compressed);
     ti_CloseAll();
     if((f_attributes = ti_Open(AttrDB, "r+")))
         ;
@@ -89,22 +98,40 @@ void main(void) {
     gfx_Begin();
     gfx_SetDrawBuffer();
     gfx_SetTextTransparentColor(33);
-    gfx_SetTransparentColor(255);
+    gfx_SetTransparentColor(0);
     gfx_SetTextBGColor(33);
     gfx_SetClipRegion(0, 0, 320, 240);
     int_Disable();
-    pgrm_DrawBackground();
+    pgrm_DrawBackground(sprites[1]);
     while(option != 6){
-        unsigned char key = os_GetCSC();;
-        if((key == sk_Up) && (option > 0)) option--;
-        if((key == sk_Down) && (option < 5)) option++;
+        unsigned char key = os_GetCSC();
+        ti_Rewind(f_attributes);
+        if(key == sk_Up){
+            if(!list_selected) {
+                if(option > 0) option--;
+            }
+            else {
+                if(proglist_selected > 0) proglist_selected--;
+            }
+        }
+        if(key == sk_Down){
+            if(!list_selected) {
+                if(option < 5) option++;
+            }
+            else {
+                if(proglist_selected < (prognum-1)) proglist_selected++;
+            }
+        }
         if(key == sk_Clear) break;
+        if(option){
+            if(key == sk_Left) list_selected = 0;
+            if(key == sk_Right) list_selected = 1;
+        }
         if(option == 1){
-            if(key == sk_Stat) prior_option = 0;
-            if((key == sk_Add) && (proglist_selected < (prognum-1))) {proglist_selected++; prior_option = 0;}
-            if((key == sk_Sub) && (proglist_selected > 0)){proglist_selected--; prior_option = 0;}
             if(key == sk_Mode) {
-                if((integ_IsFileTracked(proglist[proglist_selected].progname, f_attributes)) == -1){
+                int index;
+                if((index = integ_IsFileTracked(proglist[proglist_selected].progname, f_attributes)) == -1){
+                    
                     ProgData_t source = {0};
                     strncpy(source.name, proglist[proglist_selected].progname, strlen(proglist[proglist_selected].progname));
                     source.type = proglist[proglist_selected].progtype;
@@ -112,7 +139,21 @@ void main(void) {
                     ti_Seek(0, SEEK_END, f_attributes);
                     ti_Write(&source, sizeof(ProgData_t), 1, f_attributes);
                     ti_Rewind(f_attributes);
-                    prior_option = 0;
+                }
+                else {
+                    ProgData_t *dest, *source, *end;
+                    int size;
+                    ti_Seek(sizeof(ProgData_t) * index, SEEK_SET, f_attributes);
+                    dest  = ti_GetDataPtr(f_attributes);    // PTR to dest
+                    if(ti_Seek(sizeof(ProgData_t), SEEK_CUR, f_attributes) != 'EOF'){
+                        source = ti_GetDataPtr(f_attributes);   // PTR to source
+                        ti_Seek(0, SEEK_END, f_attributes);
+                        end = ti_GetDataPtr(f_attributes);  // PTR to end
+                        size = end - source;
+                        memcpy(dest, source, size);
+                    }
+                    ti_Rewind(f_attributes);
+                    ti_Resize(ti_GetSize(f_attributes) - sizeof(ProgData_t), f_attributes);
                 }
             }
         }
@@ -123,14 +164,32 @@ void main(void) {
                 av_About();
                 break;
             case 1:
-                if(option != prior_option){
-                    pgrm_EraseContent();
-                    av_Integrity(&proglist, f_attributes, proglist_selected, prognum, sprites);
+                if(option != prior_option || key) pgrm_EraseContent();
+                if(key) av_Integrity(&proglist, f_attributes, list_selected, proglist_selected, prognum, sprites);
+                if(key == sk_Stat){
+                    int textx = 220, texty = 75;
+                    ti_Rewind(f_attributes);
+                    for(i = 0; i < prognum; i++){
+                        int index = -1;
+                        if((index = integ_IsFileTracked(proglist[i].progname, f_attributes)) != -1){
+                            ProgData_t check;
+                            ti_Seek(sizeof(ProgData_t) * index, SEEK_SET, f_attributes);
+                            ti_Read(&check, sizeof(ProgData_t), 1, f_attributes);
+                            if(check.checksum == av_CheckSumFile(proglist[i].progname, proglist[i].progtype))
+                                gfx_TransparentSprite(sprites[2], textx, texty-1);
+                            else
+                                gfx_TransparentSprite(sprites[3], textx, texty-1);
+                        }
+                        texty += 10;
+                    }
                 }
                 break;
         }
+        gfx_BlitBuffer();
         prior_option = option;
     }
+    free(sprites[0]);
+    free(sprites[1]);
     ti_CloseAll();
     gfx_End();
 	prgm_CleanUp();
@@ -155,15 +214,15 @@ void av_About(void){
             x+=7;
         }
     }
-    gfx_BlitBuffer();
 }
 
-void av_Integrity(program_t* proglist, ti_var_t attributes, int selected, int max, gfx_sprite_t* sprites[]){
+void av_Integrity(program_t* proglist, ti_var_t attributes, char render_selection, int selected, int max, gfx_sprite_t* sprites[]){
     char i = 0;
     int index;
     int textx = 140, texty = 75;
+    ti_Rewind(attributes);
     while( i < max ){
-        if(selected == i){
+        if(render_selection && (selected == i)){
             gfx_SetColor(139);
             gfx_FillRectangle(textx-25, texty-2, 318 - textx + 25, 11);
         }
@@ -174,14 +233,13 @@ void av_Integrity(program_t* proglist, ti_var_t attributes, int selected, int ma
         texty += 10;
         i++;
     }
-    gfx_BlitBuffer();
 }
     
 
 int integ_IsFileTracked(char *progname, ti_var_t attributes){
     int response = -1, i = 0;
-    int test;
-    ProgData_t check;
+    ProgData_t check = {0};
+    ti_Rewind(attributes);
     while(ti_Read(&check, sizeof(ProgData_t), 1, attributes)){
         if(!strncmp(progname, check.name, 8)) {response = i; break;}
         i++;
@@ -348,7 +406,7 @@ void pgrm_EraseContent(void){
     gfx_FillRectangle(111, 71, 319-111, 219-71);
 }
 
-void pgrm_DrawBackground(void){
+void pgrm_DrawBackground(gfx_sprite_t *icon){
     // draw background
     gfx_FillScreen(205);
     gfx_SetColor(0);
@@ -357,6 +415,7 @@ void pgrm_DrawBackground(void){
     gfx_FillRectangle(4, 4, 320-8, 70-8);
     gfx_SetTextFGColor(255);
     gfx_SetTextScale(3,3);
+    gfx_TransparentSprite(icon, 5, 5);
     gfx_PrintStringXY("B L A S T", 100, 20);
     gfx_SetTextScale(2,2);
     gfx_PrintStringXY("2", 265, 15);
@@ -364,7 +423,6 @@ void pgrm_DrawBackground(void){
     gfx_PrintStringXY("TI File Integrity Software", 100, 50);
     gfx_SetTextFGColor(0);
     gfx_PrintStringXY("(c) 2018 - Anthony Cagliano, ClrHome", 5, 228);
-    gfx_BlitBuffer();
 }
 
 void pgrm_DrawSplashScreen(char selected) {
@@ -404,7 +462,6 @@ void pgrm_DrawSplashScreen(char selected) {
         }
         gfx_PrintStringXY(label, 5, i * 25 + 79);
     }
-    gfx_BlitBuffer();
 }
 
 

@@ -2,13 +2,12 @@ opened convpng.ini
 
 --- all_gfx (C) ---
 using built-in xlibc palette ...
-6:
- blast_logo : converted! (4098 > 329 bytes)
+5:
  warning : converted! (123 > 38 bytes)
- funcoff : converted! (66 > 8 bytes)
- funcon : converted! (66 > 8 bytes)
  tracking_icon : converted! (83 > 35 bytes)
- invert_icon : converted! (66 > 26 bytes)
+ blast_icon : converted! (3602 > 384 bytes)
+ integ_pass_icon : converted! (83 > 31 bytes)
+ integ_fail_icon : converted! (83 > 33 bytes)
 
 converted in 0 s
 
