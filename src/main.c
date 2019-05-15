@@ -110,7 +110,7 @@ void main(void) {
             case TI_PRGM_TYPE:
             case TI_PPRGM_TYPE:
             case TI_APPVAR_TYPE:
-                if(!(!strcmp(var_name, "#") || !strcmp(var_name, "!"))) num_programs++;
+                if(!(!memcmp(var_name, "#", 8) || !memcmp(var_name, "!", 8))) num_programs++;
                 break;
         }
     prognames = (progname_t*)malloc(num_programs * sizeof(progname_t));
@@ -126,7 +126,7 @@ void main(void) {
                 if(!(!strcmp(var_name, "#") || !strcmp(var_name, "!"))){
                     progname_t* prog = &prognames[num_programs];
                     prog->type = type;
-                    strncpy(prog->name, var_name, 8);
+                    memcpy(prog->name, var_name, 8);
                     if(openfile = ti_OpenVar(prog->name, "r", type)){
                         int value = 0; unsigned long checksum = 0;
                         progsave_t read;
@@ -134,7 +134,7 @@ void main(void) {
                         prog->checksum = rc_crc32(0, ti_GetDataPtr(openfile), prog->size);
                         ti_Close(openfile);
                         while(ti_Read(&read, sizeof(progsave_t), 1, propfile) == 1){
-                            if((!strncmp(var_name, read.name, 8)) && (read.type == prog->type)){
+                            if((!memcmp(var_name, read.name, 8)) && (read.type == prog->type)){
                                 ti_Seek(-sizeof(progsave_t), SEEK_CUR, propfile);
                                 prog->prop_track = (unsigned int)ti_GetDataPtr(propfile) - (unsigned int)propstart;
                                 break;
@@ -383,7 +383,7 @@ void enable_PropTrack(progname_t* program){
     progsave_t temp = {0};      // zero temporary copy of program save
     if(dbfile = ti_Open(PropDB, "r+")){     // open file (will exist at this point and be either empty or not
         temp.type = program->type;              // save type to temp
-        strncpy(temp.name, program->name, 8);   // copy name to temp
+        memcpy(temp.name, program->name, 8);   // copy name to temp
         temp.checksum = program->checksum;      // copy checksum to temp
         temp.size = program->size;              // copy size to temp
         ti_Seek(0, SEEK_END, dbfile);           // seek to end of file (since disable ensures deleted entries removed
@@ -399,7 +399,7 @@ void disable_PropTrack(progname_t* program){
     bool found = false;
     if((filein = ti_Open(PropDB, "r+")) && (fileout = ti_Open(PropDB, "r+"))){  // open two file streams
         while(ti_Read(&read, sizeof(progsave_t), 1, fileout) == 1){     // while there's data to read
-            if((!strncmp(program->name, read.name, 8)) && (read.type == program->type)){    // if name found and type match
+            if((!memcmp(program->name, read.name, 8)) && (read.type == program->type)){    // if name found and type match
                 program->prop_track = 0;            // zero prop_track save (remove offset)
                 found = true;
                 break;                              // break with file read stream pointing to after match

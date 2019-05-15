@@ -6,10 +6,10 @@ libs     D1A9FB D1AA98            9Dh
 startup  D1AA98 D1AAD7            3Fh
 cleanup  D1AAD7 D1AAEB            14h
 exit     D1AAEB D1AAF1             6h
-code     D1AAF1 D1C077          1586h
-data     D1C077 D1C24D           1D6h
-strsect  D1C24D D1C403           1B6h
-text     D1C403 D1C594           191h
+code     D1AAF1 D1C083          1592h
+data     D1C083 D1C259           1D6h
+strsect  D1C259 D1C40F           1B6h
+text     D1C40F D1C5A0           191h
 bss      D031F6 D035FC D13FD6    406h
 header   D1A87F D1A882             3h
 
@@ -131,8 +131,6 @@ _asm_EnableAPD               = 021138
 _asm_DrawStatusBar           = 021A3C
 _asm_ArcChk                  = 022040
 _zx7_Decompress              = D1AB15
-_strncpy                     = 0000E0
-_strncmp                     = 0000DC
 __idvrmu                     = 000140
 __idvrmu                     = 000144
 __lnot                       = 0001D4
@@ -152,6 +150,8 @@ __stoiu                      = 000264
 __lcmpzero                   = 0001B0
 __s_sbrk                     = D1AB8F
 __frameset0                  = D1ABAF
+_memcpy                      = 0000A4
+_memcmp                      = 0000A0
 __icmpzero                   = D1ABBA
 __setflag                    = 000218
 _memset                      = D1ABBF
@@ -173,26 +173,26 @@ __exit                       = D1AAC6
 __exitsp                     = D1AAC6
 __errsp                      = D1AAC6
 _rc_crc32                    = D1AFB9
-_blast_icon_compressed       = D1C09F
-_integ_pass_icon_compressed  = D1C21F
-_av_ScanFile                 = D1C06E
-_av_ToggleVersControl        = D1C065
-_disable_PropTrack           = D1BF1D
-_enable_PropTrack            = D1BE66
-_av_TogglePropTrack          = D1BE3D
-_pgrm_DrawBackground         = D1BD45
-_pgrm_EraseContent           = D1BD1E
-_text_GetCenterX             = D1BCFE
-_num_len                     = D1BCC7
-_progsort                    = D1BC54
+_blast_icon_compressed       = D1C0AB
+_integ_pass_icon_compressed  = D1C22B
+_av_ScanFile                 = D1C07A
+_av_ToggleVersControl        = D1C071
+_disable_PropTrack           = D1BF29
+_enable_PropTrack            = D1BE72
+_av_TogglePropTrack          = D1BE49
+_pgrm_DrawBackground         = D1BD51
+_pgrm_EraseContent           = D1BD2A
+_text_GetCenterX             = D1BD0A
+_num_len                     = D1BCD3
+_progsort                    = D1BC60
 _main                        = D1B11B
-_desc                        = D1C449
-_strings                     = D1C403
-_AvDB                        = D1C24A
-_PropDB                      = D1C247
-_Version                     = D1C244
-_SubName                     = D1C241
-_ProgName                    = D1C23E
+_desc                        = D1C455
+_strings                     = D1C40F
+_AvDB                        = D1C256
+_PropDB                      = D1C253
+_Version                     = D1C250
+_SubName                     = D1C24D
+_ProgName                    = D1C24A
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17

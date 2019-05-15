@@ -670,21 +670,27 @@ L_3:
 L_4:
 ;  112	            case TI_APPVAR_TYPE:
 L_5:
-;  113	                if(!(!strcmp(var_name, "#") || !strcmp(var_name, "!"))) num_programs++;
+;  113	                if(!(!memcmp(var_name, "#", 8) || !memcmp(var_name, "!", 8))) num_programs++;
+	LD	BC,8
+	PUSH	BC
 	LD	BC,L__10
 	PUSH	BC
 	LD	BC,(IX+-18)
 	PUSH	BC
-	CALL	_strcmp
+	CALL	_memcmp
+	POP	BC
 	POP	BC
 	POP	BC
 	CALL	__icmpzero
 	JR	Z,L_10
+	LD	BC,8
+	PUSH	BC
 	LD	BC,L__12
 	PUSH	BC
 	LD	BC,(IX+-18)
 	PUSH	BC
-	CALL	_strcmp
+	CALL	_memcmp
+	POP	BC
 	POP	BC
 	POP	BC
 	CALL	__icmpzero
@@ -794,14 +800,14 @@ L_15:
 ;  128	                    prog->type = type;
 	LD	A,(IX+-22)
 	LD	IY,(IX+-21)
-;  129	                    strncpy(prog->name, var_name, 8);
+;  129	                    memcpy(prog->name, var_name, 8);
 	LD	BC,8
 	PUSH	BC
 	LD	(IY+0),A
 	LD	BC,(IX+-18)
 	PUSH	BC
 	PEA	IY+1
-	CALL	_strncpy
+	CALL	_memcpy
 	POP	BC
 	POP	BC
 	POP	BC
@@ -861,13 +867,13 @@ L_15:
 ;  136	                        while(ti_Read(&read, sizeof(progsave_t), 1, propfile) == 1){
 	JR	L_19
 L_20:
-;  137	                            if((!strncmp(var_name, read.name, 8)) && (read.type == prog->type)){
+;  137	                            if((!memcmp(var_name, read.name, 8)) && (read.type == prog->type)){
 	LD	BC,8
 	PUSH	BC
 	PEA	IX+-76
 	LD	BC,(IX+-18)
 	PUSH	BC
-	CALL	_strncmp
+	CALL	_memcmp
 	POP	BC
 	POP	BC
 	POP	BC
@@ -2049,16 +2055,16 @@ L_112:
 ;_qsort                              IMPORT  -----   function
 ;_ti_Read                            IMPORT  -----   function
 ;_ti_Seek                            IMPORT  -----   function
-;_strncmp                            IMPORT  -----   function
 ;_ti_Close                           IMPORT  -----   function
 ;_rc_crc32                           IMPORT  -----   function
 ;_ti_GetSize                         IMPORT  -----   function
 ;_ti_OpenVar                         IMPORT  -----   function
-;_strncpy                            IMPORT  -----   function
+;_memcpy                             IMPORT  -----   function
+;_strcmp                             IMPORT  -----   function
 ;_ti_Rewind                          IMPORT  -----   function
 ;_memset                             IMPORT  -----   function
 ;_ti_DetectAny                       IMPORT  -----   function
-;_strcmp                             IMPORT  -----   function
+;_memcmp                             IMPORT  -----   function
 ;_gfx_Blit                           IMPORT  -----   function
 ;_gfx_PrintStringXY                  IMPORT  -----   function
 ;_gfx_SetDraw                        IMPORT  -----   function
@@ -2646,12 +2652,12 @@ _enable_PropTrack:
 	LD	IY,(IX+6)
 	LD	A,(IY+0)
 	LD	(IX+-18),A
-;  386	        strncpy(temp.name, program->name, 8);   // copy name to temp
+;  386	        memcpy(temp.name, program->name, 8);   // copy name to temp
 	LD	BC,8
 	PUSH	BC
 	PEA	IY+1
 	PEA	IX+-17
-	CALL	_strncpy
+	CALL	_memcpy
 	POP	BC
 	POP	BC
 	POP	BC
@@ -2720,7 +2726,7 @@ L_138:
 ;_ti_Write                           IMPORT  -----   function
 ;_ti_Tell                            IMPORT  -----   function
 ;_ti_Seek                            IMPORT  -----   function
-;_strncpy                            IMPORT  -----   function
+;_memcpy                             IMPORT  -----   function
 ;_PropDB                             STATIC      3   variable
 ;_ti_Open                            IMPORT  -----   function
 ;_2temp136                           STATIC     17   variable
@@ -2786,13 +2792,13 @@ _disable_PropTrack:
 	JR	L_150
 ;  401	        while(ti_Read(&read, sizeof(progsave_t), 1, fileout) == 1){     // while there's data to read
 L_143:
-;  402	            if((!strncmp(program->name, read.name, 8)) && (read.type == program->type)){    // if name found and type match
+;  402	            if((!memcmp(program->name, read.name, 8)) && (read.type == program->type)){    // if name found and type match
 	LD	BC,8
 	PUSH	BC
 	PEA	IX+-19
 	LD	IY,(IX+6)
 	PEA	IY+1
-	CALL	_strncmp
+	CALL	_memcmp
 	POP	BC
 	POP	BC
 	POP	BC
@@ -2937,7 +2943,7 @@ L_150:
 ;_ti_Tell                            IMPORT  -----   function
 ;_ti_Seek                            IMPORT  -----   function
 ;_ti_Read                            IMPORT  -----   function
-;_strncmp                            IMPORT  -----   function
+;_memcmp                             IMPORT  -----   function
 ;_PropDB                             STATIC      3   variable
 ;_ti_Open                            IMPORT  -----   function
 ;read                                 IX-20     17   variable
@@ -3024,10 +3030,10 @@ _av_ScanFile:
 	XREF _gfx_End:ROM
 	XREF _gfx_Begin:ROM
 	XREF _gfx_AllocSprite:ROM
-	XREF _strncmp:ROM
 	XREF _strcmp:ROM
-	XREF _strncpy:ROM
+	XREF _memcmp:ROM
 	XREF _memset:ROM
+	XREF _memcpy:ROM
 	XREF _sprintf:ROM
 	XREF _ti_GetDataPtr:ROM
 	XREF _ti_Resize:ROM
