@@ -33,11 +33,12 @@
 /* Begin PBXLegacyTarget section */
 		85D422F9208A601D00A0852D /* BlastAV */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION)";
+			buildArgumentsString = "";
 			buildConfigurationList = 85D422FC208A601D00A0852D /* Build configuration list for PBXLegacyTarget "BlastAV" */;
 			buildPhases = (
 			);
-			buildToolPath = /usr/bin/make;
+			buildToolPath = /Users/acagliano/CEdev/source/BlastAV/make.sh;
+			buildWorkingDirectory = /Users/acagliano/CEdev/source/BlastAV;
 			dependencies = (
 			);
 			name = BlastAV;

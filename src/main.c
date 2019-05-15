@@ -26,381 +26,329 @@
 #include <compression.h>
 #include <intce.h>
 
-#include "typedefs.h"
-#include "files.h"
-#include "asmstuff.h"
+#include "attributes.h"
+#include "timestamps.h"
 #include "gfx/all_gfx.h"
+#include "crypto.h"
+#include "indexing.h"
+#include "menuopts.h"
 
 /* Put your function prototypes here */
 
-char pgrm_MainMenu(char selected);
-char pgrm_IntegMenu(unsigned char selected, unsigned char max);
 void pgrm_EraseContent(void);
 void pgrm_DrawBackground(gfx_sprite_t *icon);
-void pgrm_DrawSplashScreen(char selected);
-void gfx_custom_wrappedtext(char *text, int x, int width);
-bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge);
-
-void av_About(void);
-void av_Integrity(program_t* proglist, ti_var_t attributes, char render_selection, int selected, int max, gfx_sprite_t* sprites[]);
 
 
-int integ_IsFileTracked(char *progname, ti_var_t attributes);
-unsigned long av_CheckSumFile(char* progname, unsigned char type);
+int text_GetCenterX(char* string, int width);
+int num_len(int num);
+int progsort(const void* a, const void* b);
+void av_TogglePropTrack(progname_t* program);
+void enable_PropTrack(progname_t* program);
+void disable_PropTrack(progname_t* program);
+void av_ToggleVersControl(progname_t* program);
+void av_ScanFile(progname_t* program);
 
 /* Put all your globals here. */
 const char *ProgName = "Blast";
 const char *SubName = "Calculator Security Suite";
 const char *Version = "0.91b";
 
-program_t proglist[256] = {0};
-gfx_sprite_t* sprites[4];
+/* Supporting Files */
+const char *PropDB = "AVPropDB";
+const char *AvDB = "AVDefsDB";
 
-time_struct_t systemtime;
-settings_save_t settingsSave = {0};
-#define LIST_MAIN 0
-#define LIST_INNER 1
+const char strings[][14] = {"File Options", "System Scans", "Settings", "About", "Quit"};
+const char desc[][60] = {"View and modify file data.",
+    "Scan all RAM, Archive, or OS sectors.",
+    "Change how this program works.",
+    "View information about this program.",
+    "Exit the program."};
+
+
+
+#define OS_START 0x02000h
+#define CERT_START 0x3B0000h
+#define ARCH_START 0x0C0000h
+#define RAM_START 0xD00000h
+#define ui_textstart_y 75
+#define ui_progdata_out 175
 
 void main(void) {
-	/* Fill in the body of the main function here */
-    char option = 0, prior_option = 0, i;
-    char proglist_selected = 0;
-    char list_selected = 0;
-    char* progname;
-    ti_var_t f_attributes;
-    char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE};
-    int prognum = 0;
-    sprites[0] = gfx_MallocSprite(tracking_icon_width, tracking_icon_height);
-    sprites[1] = gfx_MallocSprite(blast_icon_width, blast_icon_height);
-    sprites[2] = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
-    sprites[3] = gfx_MallocSprite(integ_fail_icon_width, integ_fail_icon_height);
-    zx7_Decompress(sprites[0], tracking_icon_compressed);
-    zx7_Decompress(sprites[1], blast_icon_compressed);
-    zx7_Decompress(sprites[2], integ_pass_icon_compressed);
-    zx7_Decompress(sprites[3], integ_fail_icon_compressed);
+    bool progRun = true, firstLoop = true;
+    char i;
+    char screen = MAIN;
+    char *var_name;
+    ti_var_t openfile;
+    ti_var_t propfile;
+    unsigned int propstart;
+    uint8_t *search_pos;
+    progname_t* prognames = NULL;
+    int num_programs = 0;
+    unsigned char type;
+    gfx_sprite_t* logo = gfx_MallocSprite(blast_icon_width, blast_icon_height);
+    gfx_sprite_t* integ_pass = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
+    gfx_sprite_t* integ_fail = gfx_MallocSprite(integ_fail_icon_width, integ_fail_icon_height);
+    selected_t selected = {0};
+    //allocate memory
+   // int_Disable();
+    zx7_Decompress(logo, blast_icon_compressed);
+    zx7_Decompress(integ_pass, integ_pass_icon_compressed);
+    zx7_Decompress(integ_fail, integ_pass_icon_compressed);
     ti_CloseAll();
-    if((f_attributes = ti_Open(AttrDB, "r+")))
-        ;
-    else if(f_attributes = ti_Open(AttrDB, "w+"))
-        ;
-    else return;
-    ti_Rewind(f_attributes);
-    for(i = 0; i < sizeof(searchtypes); i++){
-        uint8_t *search_pos = NULL;
-        while((progname = ti_DetectVar(&search_pos, NULL, searchtypes[i])) != NULL) {
-            if (strcmp(progname, "#") && strcmp(progname, "!")){
-                proglist[prognum].progtype = searchtypes[i];
-                strcpy(proglist[prognum++].progname, progname);
-            }
-        }
-    }
-    asm_RunIndicOff();
+    if(!(propfile = ti_Open(PropDB, "r+")))
+        propfile = ti_Open(PropDB, "w+");
+    propstart = (unsigned int)ti_GetDataPtr(propfile);
     gfx_Begin();
+    gfx_SetTextTransparentColor(1);
+    gfx_SetTextBGColor(1);
     gfx_SetDrawBuffer();
-    gfx_SetTextTransparentColor(33);
-    gfx_SetTransparentColor(0);
-    gfx_SetTextBGColor(33);
-    gfx_SetClipRegion(0, 0, 320, 240);
-    int_Disable();
-    pgrm_DrawBackground(sprites[1]);
-    while(option != 6){
-        unsigned char key = os_GetCSC();
-        ti_Rewind(f_attributes);
-        if(key == sk_Up){
-            if(!list_selected) {
-                if(option > 0) option--;
-            }
-            else {
-                if(proglist_selected > 0) proglist_selected--;
-            }
-        }
-        if(key == sk_Down){
-            if(!list_selected) {
-                if(option < 5) option++;
-            }
-            else {
-                if(proglist_selected < (prognum-1)) proglist_selected++;
-            }
-        }
-        if(key == sk_Clear) break;
-        if(option){
-            if(key == sk_Left) list_selected = 0;
-            if(key == sk_Right) list_selected = 1;
-        }
-        if(option == 1){
-            if(key == sk_Mode) {
-                int index;
-                if((index = integ_IsFileTracked(proglist[proglist_selected].progname, f_attributes)) == -1){
-                    
-                    ProgData_t source = {0};
-                    strncpy(source.name, proglist[proglist_selected].progname, strlen(proglist[proglist_selected].progname));
-                    source.type = proglist[proglist_selected].progtype;
-                    source.checksum = av_CheckSumFile(proglist[proglist_selected].progname, source.type);
-                    ti_Seek(0, SEEK_END, f_attributes);
-                    ti_Write(&source, sizeof(ProgData_t), 1, f_attributes);
-                    ti_Rewind(f_attributes);
-                }
-                else {
-                    ProgData_t *dest, *source, *end;
-                    int size;
-                    ti_Seek(sizeof(ProgData_t) * index, SEEK_SET, f_attributes);
-                    dest  = ti_GetDataPtr(f_attributes);    // PTR to dest
-                    if(ti_Seek(sizeof(ProgData_t), SEEK_CUR, f_attributes) != 'EOF'){
-                        source = ti_GetDataPtr(f_attributes);   // PTR to source
-                        ti_Seek(0, SEEK_END, f_attributes);
-                        end = ti_GetDataPtr(f_attributes);  // PTR to end
-                        size = end - source;
-                        memcpy(dest, source, size);
-                    }
-                    ti_Rewind(f_attributes);
-                    ti_Resize(ti_GetSize(f_attributes) - sizeof(ProgData_t), f_attributes);
-                }
-            }
-        }
-        pgrm_DrawSplashScreen(option);
-        switch(option){
-            case 0:
-                if(option != prior_option) pgrm_EraseContent();
-                av_About();
-                break;
-            case 1:
-                if(option != prior_option || key) pgrm_EraseContent();
-                if(key) av_Integrity(&proglist, f_attributes, list_selected, proglist_selected, prognum, sprites);
-                if(key == sk_Stat){
-                    int textx = 220, texty = 75;
-                    ti_Rewind(f_attributes);
-                    for(i = 0; i < prognum; i++){
-                        int index = -1;
-                        if((index = integ_IsFileTracked(proglist[i].progname, f_attributes)) != -1){
-                            ProgData_t check;
-                            ti_Seek(sizeof(ProgData_t) * index, SEEK_SET, f_attributes);
-                            ti_Read(&check, sizeof(ProgData_t), 1, f_attributes);
-                            if(check.checksum == av_CheckSumFile(proglist[i].progname, proglist[i].progtype))
-                                gfx_TransparentSprite(sprites[2], textx, texty-1);
-                            else
-                                gfx_TransparentSprite(sprites[3], textx, texty-1);
-                        }
-                        texty += 10;
-                    }
-                }
+    gfx_PrintStringXY("Indexing device contents...", 5, 5); gfx_BlitBuffer();
+    // loop save names of all files on device
+    search_pos = NULL;
+    while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL)
+        switch(type){
+            case TI_PRGM_TYPE:
+            case TI_PPRGM_TYPE:
+            case TI_APPVAR_TYPE:
+                if(!(!strcmp(var_name, "#") || !strcmp(var_name, "!"))) num_programs++;
                 break;
         }
-        gfx_BlitBuffer();
-        prior_option = option;
-    }
-    free(sprites[0]);
-    free(sprites[1]);
-    ti_CloseAll();
-    gfx_End();
-	prgm_CleanUp();
-    int_Enable();
-    asm_ClrLCDFull();
-    asm_DrawStatusBar();
-    return;
-}
-
-/* Put other functions here */
-
-void av_About(void){
-    int i;
-    int x = 115, y = 75, xmax = 310;
-    static const char *about = "Blast2 is a file integrity|and malware detection|software. It can detect|changes to programs on your|calc and scan them for harm-|ful things. Optionally this|program can quarantine|harmful programs and|take snapshots (backups)|of programs, allowing you|to revert changes to|programs at any time.||For more information,|visit:|http://clrhome.org/blastav";
-    gfx_SetTextFGColor(0);
-    for(i = 0; i < strlen(about); i++) {
-        if(about[i] == '|') {y += 9; x = 115;}
-        else{
-            gfx_SetTextXY(x, y);
-            gfx_PrintChar(about[i]);
-            x+=7;
-        }
-    }
-}
-
-void av_Integrity(program_t* proglist, ti_var_t attributes, char render_selection, int selected, int max, gfx_sprite_t* sprites[]){
-    char i = 0;
-    int index;
-    int textx = 140, texty = 75;
-    ti_Rewind(attributes);
-    while( i < max ){
-        if(render_selection && (selected == i)){
-            gfx_SetColor(139);
-            gfx_FillRectangle(textx-25, texty-2, 318 - textx + 25, 11);
-        }
-        gfx_PrintStringXY(proglist[i].progname, textx, texty);
-        //gfx_TransparentSprite(tracking_uncompressed, textx-14, texty-1);
-        if((index = integ_IsFileTracked(proglist[i].progname, attributes)) != -1)
-            gfx_TransparentSprite(sprites[0], textx-14, texty-1);
-        texty += 10;
-        i++;
-    }
-}
-    
-
-int integ_IsFileTracked(char *progname, ti_var_t attributes){
-    int response = -1, i = 0;
-    ProgData_t check = {0};
-    ti_Rewind(attributes);
-    while(ti_Read(&check, sizeof(ProgData_t), 1, attributes)){
-        if(!strncmp(progname, check.name, 8)) {response = i; break;}
-        i++;
-    }
-    return response;
-}
-       
-unsigned long av_CheckSumFile(char* progname, unsigned char type){
-    ti_var_t temp = ti_OpenVar(progname, "r", type);
-    uint16_t size = ti_GetSize(temp);
-    uint16_t i;
-    unsigned long checksum = 0;
-    for(i = 0; i < size; i++)
-        checksum += ti_GetC(temp);
-    ti_Close(temp);
-    return checksum;
-}
-/*
-void av_CheckSumAll(void){
-    time_struct_short_t modified;
-    uint16_t ypos = 0;
-    
-    // when called, destroys the pre-existing checksums database
-    // recreates it and saves new values
-    // for each installed program variable, we save:
-    //      up to 9 bytes for name + type
-    //      24-bit (3-byte) checksum
-    //      date of last checksum also written
-    boot_GetDate(&modified.day, &modified.month, &modified.year);
-    ti_Write(&modified, sizeof(time_struct_short_t), 1, avData);
-    gfx_ZeroScreen();
-    gfx_PrintStringXY("Checksumming Programs...", 10, ypos);
-    gfx_SetColor(135);
-    gfx_HorizLine(0, 10, 320);
-    gfx_SetColor(0);
-    ypos += 13;
-    
-   
-            // repeat until ti_DetectVar returns NULL
-            // ti_DetectVar returns program name
-                ProgData_t *program = malloc(sizeof(ProgData_t));      // init zero'd program data structure
-                ti_var_t progdata = ti_OpenVar(progname, "r", TI_PRGM_TYPE);    // open var slot for program
-                gfx_PrintStringXY(progname, 5, ypos);
-                memset(program, '\0', sizeof(ProgData_t));
-                program->type = TI_PRGM_TYPE;
-                program->size = ti_GetSize(progdata);
-                strcpy(program->name, progname);     // copy progname to struct
-                while((tempread = ti_GetC(progdata)) != EOF){       // read out every byte of program
-                    program->checksum += tempread;          // add data at tempread to checksum
-                }
-                if(ti_Write(program, sizeof(ProgData_t), 1, avData) == 1) gfx_PrintStringXY("success", 150, ypos);
-                else gfx_PrintStringXY("failed", 150, ypos);
-                ti_Close(progdata);
-                free(program);
-                ypos += 12;
-                if(ypos > 227){
-                    while(!os_GetCSC());
-                    gfx_SetColor(0);
-                    gfx_FillRectangle(0, 13, 320, 227);
-                    ypos = 13;
-                }
-            }
-        }
-    }
-    ti_SetArchiveStatus(true, avData);
-    ti_Close(avData);
-    free(progname);
-    while(!os_GetCSC());
-}
-
-
-
-
-char av_ScanAll(void){
-    char *progname, key, i;
-    ti_var_t avDefs;
-    int opstrsize, descsize;
-    ti_CloseAll();
-    if( !(avDefs = ti_Open(VDefs, "r")) ) return 1;
-    if(ti_Seek(4, SEEK_SET, avDefs) == EOF) return 2;
-    gfx_SetTextConfig(gfx_text_clip);
-    while((opstrsize = ti_GetC(avDefs)) != EOF){
-        int xpos = 0, ypos = 0;
-        char searchtypes[2] = {TI_PRGM_TYPE, TI_PPRGM_TYPE}, i;
-        opitem_t optemp = {0};
-        gfx_ZeroScreen();
-        gfx_PrintStringXY("Press [Clear] to abort at any time.",0, 228);
-        // this should loop until EOF reached
-        // tempread should have size of current byte sequence to scan for, or EOF
-        ti_Read(&optemp.opcodestr, opstrsize, 1, avDefs);
-        gfx_PrintStringXY(optemp.opcodestr, xpos, ypos);
-        optemp.opcodesize = ti_GetC(avDefs);
-        ti_Read(&optemp.opcodehex, optemp.opcodesize, 1, avDefs);
-        descsize = ti_GetC(avDefs);
-      //  ti_Read(&optemp.desc, descsize, 1, avDefs);
-        gfx_PrintString("h");
-     //   gfx_PrintStringXY(optemp.desc, xpos, ypos+12);
-        gfx_SetColor(135);
-        gfx_HorizLine(0, 24, 320);
-        gfx_SetColor(0);
-        ypos += 18;
-        // Print on screen what byte sequence we are scanning for
-        for(i = 0; i < sizeof(searchtypes); i++){
-            uint8_t *search_pos = NULL;
-            int tempread = 0;
-            while((progname = ti_DetectVar(&search_pos, NULL, searchtypes[i])) != NULL) {
-                if (strcmp(progname, "#") && strcmp(progname, "!") && strcmp(progname, "BLASTCSS")){
-                    char *searchloc = &optemp.opcodehex;
-                    uint8_t hits = 0;
-                    ti_var_t tempfile = ti_OpenVar(progname, "r", searchtypes[i]);
-                    while((tempread = ti_GetC(tempfile)) != EOF){
-                        if((key = os_GetCSC()) == sk_Clear) {
-                            ti_CloseAll();
-                            break;
-                        }
-                        if((char)tempread == *searchloc){
-                            hits++;
-                            if(hits == optemp.opcodesize){
-                                uint16_t position = ti_Tell(tempfile) - optemp.opcodesize;
-                                char hextemp[7];
-                                ypos += 12;
-                                gfx_PrintStringXY(progname, xpos, ypos);
-                                gfx_PrintStringXY("offset: ", xpos+90, ypos);
-                                gfx_PrintUInt(position, 1 + (position > 9) + (position > 99) + (position > 999) + (position > 9999));
-                                gfx_PrintString(", addr: 0x");
-                                sprintf(hextemp, "%06X", ti_GetDataPtr(tempfile));
-                                gfx_PrintString(hextemp);
-                                gfx_PrintString("h");
+    prognames = (progname_t*)malloc(num_programs * sizeof(progname_t));
+    memset(prognames, 0, sizeof(progname_t) * num_programs);
+    num_programs = 0;
+    search_pos = NULL;
+    while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
+        switch(type){
+            case TI_PRGM_TYPE:
+            case TI_PPRGM_TYPE:
+            case TI_APPVAR_TYPE:
+                ti_Rewind(propfile);
+                if(!(!strcmp(var_name, "#") || !strcmp(var_name, "!"))){
+                    progname_t* prog = &prognames[num_programs];
+                    prog->type = type;
+                    strncpy(prog->name, var_name, 8);
+                    if(openfile = ti_OpenVar(prog->name, "r", type)){
+                        int value = 0; unsigned long checksum = 0;
+                        progsave_t read;
+                        prog->size = ti_GetSize(openfile);
+                        prog->checksum = rc_crc32(0, ti_GetDataPtr(openfile), prog->size);
+                        ti_Close(openfile);
+                        while(ti_Read(&read, sizeof(progsave_t), 1, propfile) == 1){
+                            if((!strncmp(var_name, read.name, 8)) && (read.type == prog->type)){
+                                ti_Seek(-sizeof(progsave_t), SEEK_CUR, propfile);
+                                prog->prop_track = (unsigned int)ti_GetDataPtr(propfile) - (unsigned int)propstart;
                                 break;
                             }
-                            searchloc++;
-                        } else {
-                            searchloc = &optemp.opcodehex;
-                            hits = 0;
                         }
                     }
-                    if(key == sk_Clear) break;
-                    // repeat until ti_DetectVar returns NULL
-                    // ti_DetectVar returns program name
-                    // should simply output any filename containing byte sequence
-                    ti_Close(tempfile);
+                    num_programs++;
                 }
-            }
-            if(key == sk_Clear) break;
+                break;
         }
-        if(key == sk_Clear) break;
-        ypos += 10;
-        gfx_PrintStringXY("Search complete. Any key to proceed...", xpos, ypos);
-        while(!os_GetCSC());    // wait for keypress, hopefully give user time to write down
     }
-    ti_SetArchiveStatus(true, avDefs);
-    ti_Close(avDefs);
-    gfx_SetTextConfig(gfx_text_noclip);
+    qsort(prognames, num_programs, sizeof(progname_t), progsort);
+    ti_Close(propfile);
+    // decompress all graphics
+    do {
+        unsigned char key = os_GetCSC();
+        char i;
+        char progheap, heapoffset;
+        bool refresh = firstLoop;
+        unsigned long checksum = 0;
+        char cs_string[11] = {'\0'};
+        progname_t* prog;
+        if(key == sk_Down){
+            switch(screen){
+                case MAIN:
+                    if(selected.menu < QUIT) selected.menu++;
+                    break;
+                case FILE_OPTS:
+                    if(!selected.progopt) {
+                        if(selected.program < (num_programs-1)) selected.program++;
+                    }else{
+                        if(selected.progopt < SCAN) selected.progopt++;}
+                    break;
+            }
+        }
+        if(key == sk_Up){
+            switch(screen){
+                case MAIN:
+                    if(selected.menu > 0) selected.menu--;
+                    break;
+                case FILE_OPTS:
+                    if(!selected.progopt) {
+                        if(selected.program > 0) selected.program--;
+                    }else{
+                        if(selected.progopt > 1) selected.progopt--;}
+                    break;
+            }
+        }
+       /* if(key == sk_Left){
+            switch(screen){
+               
+            }
+        }
+        if(key == sk_Right){
+            switch(screen){
+                
+            }
+        } */
+        
+        if(key == sk_Enter) {
+            if(screen == MAIN) screen = selected.menu;
+            else if(screen == FILE_OPTS){
+                if(!selected.progopt) selected.progopt = 1;
+                else if(selected.progopt == 1)
+                    av_TogglePropTrack(&prognames[selected.program]);
+                else if(selected.progopt == 2)
+                    av_ToggleVersControl(&prognames[selected.program]);
+                else if(selected.progopt == 3)
+                    av_ScanFile(&prognames[selected.program]);
+            }
+        }
+        if(key == sk_Clear){
+            if(screen == MAIN) progRun = false;
+            if(screen == FILE_OPTS){
+                if(selected.progopt) selected.progopt = 0;
+                else screen = MAIN;
+            }
+            else screen = MAIN;
+        }
+        if(key) refresh = true;
+        if(refresh) {
+            pgrm_DrawBackground(logo);
+            switch(screen){
+                case MAIN:
+                    gfx_SetTextFGColor(0);
+                    gfx_SetColor(40); gfx_FillRectangle(90, selected.menu * 25 + 74, 130, 22);
+                    for(i = 0; i < NUM_SCREENS; i++){
+                        gfx_SetColor(0);
+                        gfx_FillRectangle(100, i * 25 + ui_textstart_y, 110, 20);
+                        gfx_SetColor(172);
+                        gfx_FillRectangle(102, i * 25 + ui_textstart_y + 2, 106, 16);
+                        gfx_PrintStringXY(strings[i], 102 + text_GetCenterX(strings[i], 106), i * 25 + ui_textstart_y + 6);
+                    }
+                    gfx_PrintStringXY(desc[selected.menu], text_GetCenterX(desc[selected.menu], LCD_WIDTH), 205);
+                    break;
+                case FILE_OPTS:
+                    pgrm_EraseContent();
+                    gfx_SetTextScale(2,2);
+                    gfx_PrintStringXY("FILE OPTIONS", 5, 75);
+                    gfx_SetTextScale(1,1);
+                    progheap = selected.program / 13 * 13;
+                    for(i = progheap; i < (progheap + 14); i++){
+                        heapoffset = i - progheap;
+                        gfx_SetTextFGColor(0);
+                        if(i < num_programs){
+                            prog = &prognames[i];
+                            if(i == selected.program){
+                                gfx_SetColor(40); gfx_SetTextFGColor(255);
+                                gfx_FillRectangle(3, heapoffset * 10 + ui_textstart_y + 18, 70, 11);
+                            }
+                            gfx_PrintStringXY(&prog->name[0], 5, heapoffset * 10 + ui_textstart_y + 20);
+                        }
+                    }
+                    gfx_SetTextFGColor(0);
+                    prog = &prognames[selected.program];
+                    gfx_PrintStringXY("File: ", 100, ui_textstart_y + 20);
+                    gfx_PrintUInt(selected.program + 1, num_len(selected.program + 1));
+                    gfx_PrintString(" / ");
+                    gfx_PrintUInt(num_programs, num_len(num_programs));
+                    gfx_PrintStringXY("File Name: ", 100, ui_textstart_y + 35);
+                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                    gfx_PrintString(&prog->name[0]/*, 10, 9 * i + 75*/);
+                    gfx_PrintStringXY("File Type: ", 100, ui_textstart_y + 45);
+                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                    if(prog->type == TI_PRGM_TYPE || prog->type == TI_PPRGM_TYPE)
+                        gfx_PrintString("Program");
+                    else gfx_PrintString("AppVar");
+                    gfx_PrintStringXY("File Size: ", 100, ui_textstart_y + 60);
+                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                    gfx_PrintUInt(prog->size, num_len(prog->size));
+                    gfx_PrintStringXY("CRC-32 CS: ", 100, ui_textstart_y + 70);
+                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                    sprintf(cs_string, "%xh", prog->checksum);
+                    gfx_PrintString(cs_string);
+                    gfx_PrintStringXY("Attr Tracking: ", 100, ui_textstart_y + 80);
+                    gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
+                    if(prog->prop_track) {
+                        ti_var_t propdb = ti_Open(PropDB, "r+");
+                        progsave_t* save = prog->prop_track + ti_GetDataPtr(propdb);
+                        ti_Close(propdb);
+                        gfx_PrintString("enabled");
+                        if(save->checksum == prog->checksum)
+                            gfx_TransparentSprite(integ_pass, ui_progdata_out + 85, ui_textstart_y + 78);
+                        else
+                            gfx_TransparentSprite(integ_fail, ui_progdata_out + 85, ui_textstart_y + 78);
+                    }
+                    else gfx_PrintString("disabled");
+                    gfx_PrintStringXY("Vers Tracking: ", 100, ui_textstart_y + 90);
+                    gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
+                    if(prog->vers_track) gfx_PrintString("enabled");
+                    else gfx_PrintString("disabled");
+                    if(selected.progopt){
+                        gfx_SetColor(140);
+                        gfx_FillRectangle(116, (selected.progopt - 1) * 10 + ui_textstart_y + 99, 160, 10);
+                    }
+                    gfx_PrintStringXY("Toggle Attr Tracking", 120, ui_textstart_y + 100);
+                    gfx_PrintStringXY("Toggle Vers Tracking", 120, ui_textstart_y + 110);
+                    gfx_PrintStringXY("Verify Attributes", 120, ui_textstart_y + 120);
+                    gfx_PrintStringXY("Scan File", 120, ui_textstart_y + 130);
+                    break;
+                case QUIT:
+                    progRun = false;
+                    break;
+                default:
+                    pgrm_EraseContent();
+                    gfx_PrintStringXY("Option Not Implemented", 10, 75);
+            }
+        }
+        gfx_BlitBuffer();
+        firstLoop = false;
+    } while(progRun);
+    
+	/* Fill in the body of the main function here */
+    free(logo);
+    free(prognames);
+    free(integ_pass);
+    free(integ_fail);
+    gfx_End();
+    pgrm_CleanUp();
+}
+
+
+int progsort(const void* a, const void* b){
+    char i;
+    char a_letter, b_letter;
+    char diff;
+    progname_t* pa = (progname_t*)a;
+    progname_t* pb = (progname_t*)b;
+    for(i = 0; i < 8; i++){
+        a_letter = pa->name[i];
+        b_letter = pb->name[i];
+        diff = a_letter - b_letter;
+        if ((diff != 0) && (diff != 32) && (diff != -32)) return diff;
+    }
     return 0;
 }
 
 
-char av_ValidateSaved(void){
-   
+int num_len(int num){
+    int count = 0;
+    while(num != 0)
+    {
+        // n = n/10
+        num /= 10;
+        ++count;
+    }
+    return count;
 }
-*/
+
+int text_GetCenterX(char* string, int width){
+    return (width - gfx_GetStringWidth(string)) / 2;
+}
+
+
 void pgrm_EraseContent(void){
     gfx_SetColor(205);
     gfx_FillRectangle(111, 71, 319-111, 219-71);
@@ -422,51 +370,69 @@ void pgrm_DrawBackground(gfx_sprite_t *icon){
     gfx_SetTextScale(1,1);
     gfx_PrintStringXY("TI File Integrity Software", 100, 50);
     gfx_SetTextFGColor(0);
-    gfx_PrintStringXY("(c) 2018 - Anthony Cagliano, ClrHome", 5, 228);
+    gfx_PrintStringXY("(c) 2019 - Anthony Cagliano, ClrHome", 5, 228);
 }
 
-void pgrm_DrawSplashScreen(char selected) {
-    // Draw Menu w item selected
-    char i;
-    gfx_SetTextFGColor(0);
-    for(i = 0; i < 6; i++){
-        char *label;
-        gfx_SetColor(0);
-        gfx_FillRectangle(0, i * 25 + 70, 110, 25);
-        if(selected == i) gfx_SetColor(139);
-        else gfx_SetColor(172);
-        gfx_FillRectangle(2, i * 25 + 72, 106, 21);
-        switch(i){
-            case 0:
-                label = "About Blast2";
-                break;
-            case 1:
-                label = "File Checking";
-                break;
-            case 2:
-                label = "Quarantine";
-                break;
-            case 3:
-                label = "Snapshots";
-                break;
-            case 4:
-                label = "Settings";
-                break;
-            case 5:
-                label = "Program Help";
-                break;
-            default:
-                label = "Unimplemented";
-                break;
-                
+void av_TogglePropTrack(progname_t* program){
+    if(program->prop_track == 0) enable_PropTrack(program);
+    else disable_PropTrack(program);
+}
+
+void enable_PropTrack(progname_t* program){
+    ti_var_t dbfile;
+    progsave_t temp = {0};      // zero temporary copy of program save
+    if(dbfile = ti_Open(PropDB, "r+")){     // open file (will exist at this point and be either empty or not
+        temp.type = program->type;              // save type to temp
+        strncpy(temp.name, program->name, 8);   // copy name to temp
+        temp.checksum = program->checksum;      // copy checksum to temp
+        temp.size = program->size;              // copy size to temp
+        ti_Seek(0, SEEK_END, dbfile);           // seek to end of file (since disable ensures deleted entries removed
+        program->prop_track = ti_Tell(dbfile);      // save offset to location of item in program index
+        ti_Write(&temp, sizeof(progsave_t), 1, dbfile); // write temp to the database file (should be appending)
+        ti_Close(dbfile);               // close file  (Would opening in append mode perhaps be better here?)
+    }
+}
+
+void disable_PropTrack(progname_t* program){
+    ti_var_t filein, fileout;               // open two file streams, one to read, one to write
+    progsave_t read;                        // create temp intermediary copy of save
+    bool found = false;
+    if((filein = ti_Open(PropDB, "r+")) && (fileout = ti_Open(PropDB, "r+"))){  // open two file streams
+        while(ti_Read(&read, sizeof(progsave_t), 1, fileout) == 1){     // while there's data to read
+            if((!strncmp(program->name, read.name, 8)) && (read.type == program->type)){    // if name found and type match
+                program->prop_track = 0;            // zero prop_track save (remove offset)
+                found = true;
+                break;                              // break with file read stream pointing to after match
+            }
         }
-        gfx_PrintStringXY(label, 5, i * 25 + 79);
+        if(found){
+            ti_Seek(ti_Tell(fileout) - sizeof(progsave_t), SEEK_SET, filein);   // set file write stream to read offset - sizeof a progsave
+            while(ti_Read(&read, sizeof(progsave_t), 1, fileout) == 1)  // read from read stream
+                ti_Write(&read, sizeof(progsave_t), 1, filein);     // write to write stream
+        }       // read stream should always be one block ahead of write stream
+        ti_Close(fileout);      // close read stream
+        ti_Resize(ti_GetSize(filein) - sizeof(progsave_t), filein); // decrease file size by 1 progsave block
+        ti_Close(filein);       // close write stream
     }
 }
 
 
+
+void av_ToggleVersControl(progname_t* program){
+    
+}
+
+void av_ScanFile(progname_t* program){
+    
+}
+
+
+
+
+
+
 // currently unused but might be needed
-bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
+/*bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
     uint24_t systemdays, filedays;
     systemdays = (systemtime.year * 365) + (systemtime.month * 30) + systemtime.day;
     filedays = (file->year * 365) + (file->month * 30) + file->day;
@@ -474,5 +440,6 @@ bool time_IsFileOutdated(time_struct_short_t *file, uint8_t maxAge){
     return 0;
     
 }
+*/
 
 

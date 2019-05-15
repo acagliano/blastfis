@@ -2,21 +2,21 @@ Segment  Base   Top    High   Length
 -------- ------ ------ ------ -------
 icon     D1A882 D1A9A3           121h
 launcher D1A9A3 D1A9FB            58h
-libs     D1A9FB D1AA94            99h
-startup  D1AA94 D1AAD3            3Fh
-cleanup  D1AAD3 D1AAE7            14h
-exit     D1AAE7 D1AAED             6h
-code     D1AAED D1B9E7           EFAh
-data     D1B9E7 D1C60C           C25h
-strsect  D1C60C D1C867           25Bh
-text     D1C867 D1C88B            24h
-bss      D031F6 D0320F D13FD6     19h
+libs     D1A9FB D1AA98            9Dh
+startup  D1AA98 D1AAD7            3Fh
+cleanup  D1AAD7 D1AAEB            14h
+exit     D1AAEB D1AAF1             6h
+code     D1AAF1 D1C077          1586h
+data     D1C077 D1C24D           1D6h
+strsect  D1C24D D1C403           1B6h
+text     D1C403 D1C594           191h
+bss      D031F6 D035FC D13FD6    406h
 header   D1A87F D1A882             3h
 
 Label                          Value
 ----------------------------   ------
-_os_DisableHomeTextBuffer    = D1AAED
-_os_EnableHomeTextBuffer     = D1AAFF
+_os_DisableHomeTextBuffer    = D1AAF1
+_os_EnableHomeTextBuffer     = D1AB03
 _boot_GetBootMajorVer        = 000080
 _boot_GetHardwareVer         = 000084
 _boot_GetBootMinorVer        = 00008C
@@ -130,94 +130,98 @@ _asm_DisableAPD              = 021134
 _asm_EnableAPD               = 021138
 _asm_DrawStatusBar           = 021A3C
 _asm_ArcChk                  = 022040
-_zx7_Decompress              = D1AB11
+_zx7_Decompress              = D1AB15
 _strncpy                     = 0000E0
-__ladd_b                     = 00019C
-__ladd_b                     = 0001A0
 _strncmp                     = 0000DC
-__seqcase                    = 000210
+__idvrmu                     = 000140
+__idvrmu                     = 000144
+__lnot                       = 0001D4
 _strcmp                      = 0000C8
+_sprintf                     = 0000BC
 __imul_b                     = 000158
 __imul_b                     = 000150
+__lmulu                      = 0001CC
 __idivs                      = 00013C
-_strlen                      = 0000D4
-_strcpy                      = 0000CC
-__frameset                   = D1AB7D
+__frameset                   = D1AB81
+__ishru_b                    = 000184
+__ishru_b                    = 000188
 __itol                       = 000194
+__lshru                      = 0001EC
+__lxor                       = 0001FC
 __stoiu                      = 000264
-__s_sbrk                     = D1AB8B
-__frameset0                  = D1ABAB
-_memcpy                      = 0000A4
-__icmpzero                   = D1ABB6
+__lcmpzero                   = 0001B0
+__s_sbrk                     = D1AB8F
+__frameset0                  = D1ABAF
+__icmpzero                   = D1ABBA
 __setflag                    = 000218
+_memset                      = D1ABBF
+__indcall                    = 00015C
 __case8                      = 000124
 __lcmpu                      = 0001AC
-_malloc                      = D1ABEC
+_malloc                      = D1AC07
 __alloc_base                 = D031F6
-_free                        = D1AC94
+_qsort                       = D1ACFB
+_free                        = D1AEBB
 __findlibload                = D1A9A3
 __program_icon               = D1A887
 __program_description        = D1A989
-__ccleanup                   = D1AAD3
+__ccleanup                   = D1AAD7
 _errno                       = D008DC
 _init                        = D1A882
-_exit                        = D1AAE9
-__exit                       = D1AAC2
-__exitsp                     = D1AAC2
-__errsp                      = D1AAC2
-_blast_icon_compressed       = D1BA0C
-_integ_fail_icon_compressed  = D1BB8C
-_integ_pass_icon_compressed  = D1BBAD
-_tracking_icon_compressed    = D1BBCC
-_time_IsFileOutdated         = D1B95C
-_pgrm_DrawSplashScreen       = D1B821
-_pgrm_DrawBackground         = D1B729
-_pgrm_EraseContent           = D1B702
-_av_CheckSumFile             = D1B66E
-_integ_IsFileTracked         = D1B5ED
-_av_Integrity                = D1B4F5
-_av_About                    = D1B45C
-_main                        = D1AD92
-_settingsSave                = D1C607
-_systemtime                  = D03208
-_sprites                     = D031FC
-_proglist                    = D1BC07
-_Version                     = D1BC04
-_SubName                     = D1BC01
-_ProgName                    = D1BBFE
-_ProgEditHook                = D1BBFB
-_ProgRunHook                 = D1BBF8
-_AVSettings                  = D1BBF5
-_VDefs                       = D1BBF2
-_AttrDB                      = D1BBEF
+_exit                        = D1AAED
+__exit                       = D1AAC6
+__exitsp                     = D1AAC6
+__errsp                      = D1AAC6
+_rc_crc32                    = D1AFB9
+_blast_icon_compressed       = D1C09F
+_integ_pass_icon_compressed  = D1C21F
+_av_ScanFile                 = D1C06E
+_av_ToggleVersControl        = D1C065
+_disable_PropTrack           = D1BF1D
+_enable_PropTrack            = D1BE66
+_av_TogglePropTrack          = D1BE3D
+_pgrm_DrawBackground         = D1BD45
+_pgrm_EraseContent           = D1BD1E
+_text_GetCenterX             = D1BCFE
+_num_len                     = D1BCC7
+_progsort                    = D1BC54
+_main                        = D1B11B
+_desc                        = D1C449
+_strings                     = D1C403
+_AvDB                        = D1C24A
+_PropDB                      = D1C247
+_Version                     = D1C244
+_SubName                     = D1C241
+_ProgName                    = D1C23E
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17
 _ti_Close                    = D1AA1B
 _ti_Write                    = D1AA1F
 _ti_Read                     = D1AA23
-_ti_GetC                     = D1AA27
-_ti_Seek                     = D1AA2B
-_ti_Resize                   = D1AA2F
+_ti_Seek                     = D1AA27
+_ti_Resize                   = D1AA2B
+_ti_Tell                     = D1AA2F
 _ti_Rewind                   = D1AA33
 _ti_GetSize                  = D1AA37
 _ti_GetDataPtr               = D1AA3B
-_ti_DetectVar                = D1AA3F
+_ti_DetectAny                = D1AA3F
 _gfx_Begin                   = D1AA4C
 _gfx_End                     = D1AA50
 _gfx_SetColor                = D1AA54
 _gfx_FillScreen              = D1AA58
 _gfx_SetDraw                 = D1AA5C
 _gfx_Blit                    = D1AA60
-_gfx_PrintChar               = D1AA64
-_gfx_PrintStringXY           = D1AA68
-_gfx_SetTextXY               = D1AA6C
-_gfx_SetTextBGColor          = D1AA70
-_gfx_SetTextFGColor          = D1AA74
-_gfx_SetTextTransparentColor = D1AA78
-_gfx_FillRectangle           = D1AA7C
-_gfx_SetClipRegion           = D1AA80
-_gfx_AllocSprite             = D1AA84
-_gfx_TransparentSprite       = D1AA88
-_gfx_SetTextScale            = D1AA8C
-_gfx_SetTransparentColor     = D1AA90
+_gfx_PrintUInt               = D1AA64
+_gfx_PrintString             = D1AA68
+_gfx_PrintStringXY           = D1AA6C
+_gfx_SetTextXY               = D1AA70
+_gfx_SetTextBGColor          = D1AA74
+_gfx_SetTextFGColor          = D1AA78
+_gfx_SetTextTransparentColor = D1AA7C
+_gfx_GetStringWidth          = D1AA80
+_gfx_GetTextY                = D1AA84
+_gfx_FillRectangle           = D1AA88
+_gfx_AllocSprite             = D1AA8C
+_gfx_TransparentSprite       = D1AA90
+_gfx_SetTextScale            = D1AA94
