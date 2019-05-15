@@ -77,14 +77,9 @@ void main(void) {
     bool progRun = true, firstLoop = true;
     char i;
     char screen = MAIN;
-    char *var_name;
-    ti_var_t openfile;
-    ti_var_t propfile;
-    unsigned int propstart;
     uint8_t *search_pos;
     progname_t* prognames = NULL;
-    int num_programs = 0;
-    unsigned char type;
+    int num_program = av_GetNumFiles();
     gfx_sprite_t* logo = gfx_MallocSprite(blast_icon_width, blast_icon_height);
     gfx_sprite_t* integ_pass = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
     gfx_sprite_t* integ_fail = gfx_MallocSprite(integ_fail_icon_width, integ_fail_icon_height);
@@ -97,57 +92,17 @@ void main(void) {
     ti_CloseAll();
     if(!(propfile = ti_Open(PropDB, "r+")))
         propfile = ti_Open(PropDB, "w+");
-    propstart = (unsigned int)ti_GetDataPtr(propfile);
+    ti_Close(propfile);
     gfx_Begin();
     gfx_SetTextTransparentColor(1);
     gfx_SetTextBGColor(1);
     gfx_SetDrawBuffer();
     gfx_PrintStringXY("Indexing device contents...", 5, 5); gfx_BlitBuffer();
     // loop save names of all files on device
-    search_pos = NULL;
-    while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL)
-        switch(type){
-            case TI_PRGM_TYPE:
-            case TI_PPRGM_TYPE:
-            case TI_APPVAR_TYPE:
-                if(!(!memcmp(var_name, "#", 8) || !memcmp(var_name, "!", 8))) num_programs++;
-                break;
-        }
     prognames = (progname_t*)malloc(num_programs * sizeof(progname_t));
     memset(prognames, 0, sizeof(progname_t) * num_programs);
-    num_programs = 0;
-    search_pos = NULL;
-    while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
-        switch(type){
-            case TI_PRGM_TYPE:
-            case TI_PPRGM_TYPE:
-            case TI_APPVAR_TYPE:
-                ti_Rewind(propfile);
-                if(!(!strcmp(var_name, "#") || !strcmp(var_name, "!"))){
-                    progname_t* prog = &prognames[num_programs];
-                    prog->type = type;
-                    memcpy(prog->name, var_name, 8);
-                    if(openfile = ti_OpenVar(prog->name, "r", type)){
-                        int value = 0; unsigned long checksum = 0;
-                        progsave_t read;
-                        prog->size = ti_GetSize(openfile);
-                        prog->checksum = rc_crc32(0, ti_GetDataPtr(openfile), prog->size);
-                        ti_Close(openfile);
-                        while(ti_Read(&read, sizeof(progsave_t), 1, propfile) == 1){
-                            if((!memcmp(var_name, read.name, 8)) && (read.type == prog->type)){
-                                ti_Seek(-sizeof(progsave_t), SEEK_CUR, propfile);
-                                prog->prop_track = (unsigned int)ti_GetDataPtr(propfile) - (unsigned int)propstart;
-                                break;
-                            }
-                        }
-                    }
-                    num_programs++;
-                }
-                break;
-        }
-    }
-    qsort(prognames, num_programs, sizeof(progname_t), progsort);
-    ti_Close(propfile);
+    av_GenerateFileIndex(prognames);
+  
     // decompress all graphics
     do {
         unsigned char key = os_GetCSC();
