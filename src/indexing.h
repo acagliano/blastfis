@@ -1,6 +1,7 @@
 #ifndef indexing_h
 #define indexing_h
 
+
 typedef struct {
     char type;
     char name[9];

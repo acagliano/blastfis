@@ -26,12 +26,12 @@
 #include <compression.h>
 #include <intce.h>
 
-#include "attributes.h"
 #include "timestamps.h"
 #include "gfx/all_gfx.h"
 #include "crypto.h"
 #include "indexing.h"
 #include "menuopts.h"
+#include "avfuncs.h"
 
 /* Put your function prototypes here */
 
@@ -42,9 +42,6 @@ void pgrm_DrawBackground(gfx_sprite_t *icon);
 int text_GetCenterX(char* string, int width);
 int num_len(int num);
 int progsort(const void* a, const void* b);
-void av_TogglePropTrack(progname_t* program);
-void enable_PropTrack(progname_t* program);
-void disable_PropTrack(progname_t* program);
 void av_ToggleVersControl(progname_t* program);
 void av_ScanFile(progname_t* program);
 
@@ -54,8 +51,7 @@ const char *SubName = "Calculator Security Suite";
 const char *Version = "0.91b";
 
 /* Supporting Files */
-const char *PropDB = "AVPropDB";
-const char *AvDB = "AVDefsDB";
+
 
 const char strings[][14] = {"File Options", "System Scans", "Settings", "About", "Quit"};
 const char desc[][60] = {"View and modify file data.",
@@ -79,7 +75,8 @@ void main(void) {
     char screen = MAIN;
     uint8_t *search_pos;
     progname_t* prognames = NULL;
-    int num_program = av_GetNumFiles();
+    ti_var_t propfile;
+    int num_programs = av_GetNumFiles();
     gfx_sprite_t* logo = gfx_MallocSprite(blast_icon_width, blast_icon_height);
     gfx_sprite_t* integ_pass = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
     gfx_sprite_t* integ_fail = gfx_MallocSprite(integ_fail_icon_width, integ_fail_icon_height);
@@ -101,7 +98,7 @@ void main(void) {
     // loop save names of all files on device
     prognames = (progname_t*)malloc(num_programs * sizeof(progname_t));
     memset(prognames, 0, sizeof(progname_t) * num_programs);
-    av_GenerateFileIndex(prognames);
+    av_GenerateFileIndex(prognames, num_programs);
   
     // decompress all graphics
     do {
@@ -272,21 +269,6 @@ void main(void) {
 }
 
 
-int progsort(const void* a, const void* b){
-    char i;
-    char a_letter, b_letter;
-    char diff;
-    progname_t* pa = (progname_t*)a;
-    progname_t* pb = (progname_t*)b;
-    for(i = 0; i < 8; i++){
-        a_letter = pa->name[i];
-        b_letter = pb->name[i];
-        diff = a_letter - b_letter;
-        if ((diff != 0) && (diff != 32) && (diff != -32)) return diff;
-    }
-    return 0;
-}
-
 
 int num_len(int num){
     int count = 0;
@@ -328,32 +310,6 @@ void pgrm_DrawBackground(gfx_sprite_t *icon){
     gfx_PrintStringXY("(c) 2019 - Anthony Cagliano, ClrHome", 5, 228);
 }
 
-void av_TogglePropTrack(progname_t* program){
-    if(program->prop_track == 0) enable_PropTrack(program);
-    else disable_PropTrack(program);
-}
-
-void enable_PropTrack(progname_t* program){
-    ti_var_t dbfile;
-    progsave_t temp = {0};      // zero temporary copy of program save
-    if(dbfile = ti_Open(PropDB, "r+")){     // open file (will exist at this point and be either empty or not
-        temp.type = program->type;              // save type to temp
-        memcpy(temp.name, program->name, 8);   // copy name to temp
-        temp.checksum = program->checksum;      // copy checksum to temp
-        temp.size = program->size;              // copy size to temp
-        ti_Seek(0, SEEK_END, dbfile);           // seek to end of file (since disable ensures deleted entries removed
-        program->prop_track = ti_Tell(dbfile);      // save offset to location of item in program index
-        ti_Write(&temp, sizeof(progsave_t), 1, dbfile); // write temp to the database file (should be appending)
-        ti_Close(dbfile);               // close file  (Would opening in append mode perhaps be better here?)
-    }
-}
-
-void disable_PropTrack(progname_t* program){
-    progsave_t* ref;
-    if((ref = av_LocateFileInDB(program)) != NULL){
-        av_CollapseDB(ref);
-    }
-}
 
 
 
