@@ -110,8 +110,8 @@ void av_CollapseDB(progsave_t* delete){
     ti_Close(dbfile_write);
 }
 
-void* av_FileGetPtr(char *name, int *Len){
-    ti_var_t fp = ti_Open(name, "r+");
+void* av_FileGetPtr(char *name, uint8_t type, int *Len){
+    ti_var_t fp = ti_OpenVar(name, "r+", type);
     void* addr;
     if(!fp) return NULL;
     *Len = ti_GetSize(fp);
@@ -120,24 +120,21 @@ void* av_FileGetPtr(char *name, int *Len){
     return addr;
 }
 
+size_t av_ResizeFile(char *name, uint8_t type, int sizealt){
+    ti_var_t fp = ti_OpenVar(name, "r+", type);
+    ti_Resize(sizealt, fp);
+    return;
+}
+
+
 void av_TogglePropTrack(progname_t* program){
     if(program->prop_track == 0) enable_PropTrack(program);
     else disable_PropTrack(program);
 }
 
 void enable_PropTrack(progname_t* program){
-    ti_var_t dbfile;
-    progsave_t temp = {0};      // zero temporary copy of program save
-    if(dbfile = ti_Open(PropDB, "r+")){     // open file (will exist at this point and be either empty or not
-        temp.type = program->type;              // save type to temp
-        memcpy(temp.name, program->name, 8);   // copy name to temp
-        temp.checksum = program->checksum;      // copy checksum to temp
-        temp.size = program->size;              // copy size to temp
-        ti_Seek(0, SEEK_END, dbfile);           // seek to end of file (since disable ensures deleted entries removed
-        program->prop_track = ti_Tell(dbfile);      // save offset to location of item in program index
-        ti_Write(&temp, sizeof(progsave_t), 1, dbfile); // write temp to the database file (should be appending)
-        ti_Close(dbfile);               // close file  (Would opening in append mode perhaps be better here?)
-    }
+    size_t db_size;
+    progsave_t db_data = av_FileGetPtr(PropDB, &db_size);
 }
 
 void disable_PropTrack(progname_t* program){
