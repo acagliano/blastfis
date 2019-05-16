@@ -21,7 +21,7 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
     char* var_name;
     progsave_t* db_data;
     size_t db_size;
-    if(!(dbfile = ti_Open(PropDB, "r+"))) return 1;
+    if(!(dbfile = ti_Open(PropDB, "r+"))) return 0;
     db_data = (progsave_t*)ti_GetDataPtr(dbfile);
     db_size = ti_GetSize(dbfile);
     ti_Close(dbfile);
@@ -33,7 +33,7 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
             case TI_PPRGM_TYPE:
             case TI_APPVAR_TYPE:
                 ti_Rewind();
-                if(!(!strcmp(var_name, "#") || !strcmp(var_name, "!"))){
+                if(!(!memcmp(var_name, "#") || !memcmp(var_name, "!"))){
                     progname_t* prog = &prognames[num_programs];
                     prog->type = type;
                     memcpy(prog->name, var_name, 8);
@@ -49,11 +49,44 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
                                 break;
                             }
                             size_instance -= sizeof(progsave_t);
-                            db_instance += sizeof(progsave_t);
+                            db_instance++
                         }
                     }
                 }
         }
     }
     qsort(prognames, num_programs, sizeof(progname_t), progsort);
+    return 1;
+}
+
+progsave_t* av_LocateFileInDB(progname_t* program){
+    ti_var_t dbfile;
+    progsave_t* db_data;
+    size_t db_size;
+    if(!(dbfile = ti_Open(PropDB, "r+"))) return NULL;
+    db_data = (progsave_t*)ti_GetDataPtr(dbfile);
+    db_size = ti_GetSize(dbfile);
+    ti_Close(dbfile);
+    while(db_size){
+        if(!memcmp(db_data->name, program->name, 8)) return db_data;
+        db_size -= sizeof(progsave_t);
+        db_data++;
+    }
+    return NULL;
+}
+
+void av_CollapseDB(progsave_t* delete){
+    ti_var_t dbfile_read, dbfile_write;
+    size_t db_size, db_offset;
+    if(!(dbfile_read = ti_Open(PropDB, "r+"))) return;
+    if(!(dbfile_write = ti_Open(PropDB, "r+"))) return;
+    db_size = ti_GetSize(dbfile_read);
+    db_offset = delete - db_size;
+    ti_Seek(db_offset, SEEK_SET, dbfile_write);
+    ti_Seek(db_offset + sizeof(progsave_t), SEEK_SET, dbfile_read);
+    while(ti_Write(ti_GetDataPtr(dbfile_write), sizeof(progsave_t), 1, dbfile_read)){
+        ti_Seek(sizeof(progsave_t), SEEK_CUR, dbfile_write);
+    }
+    ti_Close(dbfile_read);
+    ti_Close(dbfile_write);
 }

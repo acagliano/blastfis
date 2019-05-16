@@ -349,25 +349,9 @@ void enable_PropTrack(progname_t* program){
 }
 
 void disable_PropTrack(progname_t* program){
-    ti_var_t filein, fileout;               // open two file streams, one to read, one to write
-    progsave_t read;                        // create temp intermediary copy of save
-    bool found = false;
-    if((filein = ti_Open(PropDB, "r+")) && (fileout = ti_Open(PropDB, "r+"))){  // open two file streams
-        while(ti_Read(&read, sizeof(progsave_t), 1, fileout) == 1){     // while there's data to read
-            if((!memcmp(program->name, read.name, 8)) && (read.type == program->type)){    // if name found and type match
-                program->prop_track = 0;            // zero prop_track save (remove offset)
-                found = true;
-                break;                              // break with file read stream pointing to after match
-            }
-        }
-        if(found){
-            ti_Seek(ti_Tell(fileout) - sizeof(progsave_t), SEEK_SET, filein);   // set file write stream to read offset - sizeof a progsave
-            while(ti_Read(&read, sizeof(progsave_t), 1, fileout) == 1)  // read from read stream
-                ti_Write(&read, sizeof(progsave_t), 1, filein);     // write to write stream
-        }       // read stream should always be one block ahead of write stream
-        ti_Close(fileout);      // close read stream
-        ti_Resize(ti_GetSize(filein) - sizeof(progsave_t), filein); // decrease file size by 1 progsave block
-        ti_Close(filein);       // close write stream
+    progsave_t* ref;
+    if((ref = av_LocateFileInDB(program)) != NULL){
+        av_CollapseDB(ref);
     }
 }
 
