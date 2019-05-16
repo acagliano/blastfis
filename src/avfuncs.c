@@ -122,8 +122,10 @@ void* av_FileGetPtr(char *name, uint8_t type, int *Len){
 
 size_t av_ResizeFile(char *name, uint8_t type, int sizealt){
     ti_var_t fp = ti_OpenVar(name, "r+", type);
+    size_t fp_size;
     ti_Resize(sizealt, fp);
-    return;
+    fp_size = ti_GetSize(fp);
+    return fp_size;
 }
 
 
