@@ -6,10 +6,10 @@ libs     D1A9FB D1AA8C            91h
 startup  D1AA8C D1AACB            3Fh
 cleanup  D1AACB D1AADF            14h
 exit     D1AADF D1AAE5             6h
-code     D1AAE5 D1C10F          162Ah
-data     D1C10F D1C2E5           1D6h
-strsect  D1C2E5 D1C49E           1B9h
-text     D1C49E D1C62F           191h
+code     D1AAE5 D1C10A          1625h
+data     D1C10A D1C2E0           1D6h
+strsect  D1C2E0 D1C499           1B9h
+text     D1C499 D1C619           180h
 bss      D031F6 D035FC D13FD6    406h
 header   D1A87F D1A882             3h
 
@@ -171,39 +171,40 @@ _exit                        = D1AAE1
 __exit                       = D1AABA
 __exitsp                     = D1AABA
 __errsp                      = D1AABA
-_disable_PropTrack           = D1B4E1
-_enable_PropTrack            = D1B42A
-_av_TogglePropTrack          = D1B401
-_av_FileGetPtr               = D1B3A7
-_av_CollapseDB               = D1B2C9
-_av_LocateFileInDB           = D1B267
+_disable_PropTrack           = D1B4DC
+_enable_PropTrack            = D1B4B7
+_av_TogglePropTrack          = D1B48E
+_av_ResizeFile               = D1B42E
+_av_FileGetPtr               = D1B3CD
+_av_CollapseDB               = D1B2D8
+_av_LocateFileInDB           = D1B270
 _av_GenerateFileIndex        = D1B0B0
 _av_GetNumFiles              = D1B020
 _progsort                    = D1AFAD
-_AvDB                        = D1C137
-_PropDB                      = D1C134
-_rc_crc32                    = D1B509
-_blast_icon_compressed       = D1C13D
-_integ_pass_icon_compressed  = D1C2BD
-_av_ScanFile                 = D1C106
-_av_ToggleVersControl        = D1C0FD
-_pgrm_DrawBackground         = D1C005
-_pgrm_EraseContent           = D1BFDE
-_text_GetCenterX             = D1BFBE
-_num_len                     = D1BF87
-_main                        = D1B66B
-_desc                        = D1C4F5
-_strings                     = D1C4AF
-_Version                     = D1C2E2
-_SubName                     = D1C2DF
-_ProgName                    = D1C2DC
+_AvDB                        = D1C132
+_PropDB                      = D1C12F
+_rc_crc32                    = D1B504
+_blast_icon_compressed       = D1C138
+_integ_pass_icon_compressed  = D1C2B8
+_av_ScanFile                 = D1C101
+_av_ToggleVersControl        = D1C0F8
+_pgrm_DrawBackground         = D1C000
+_pgrm_EraseContent           = D1BFD9
+_text_GetCenterX             = D1BFB9
+_num_len                     = D1BF82
+_main                        = D1B666
+_desc                        = D1C4DF
+_strings                     = D1C499
+_Version                     = D1C2DD
+_SubName                     = D1C2DA
+_ProgName                    = D1C2D7
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17
 _ti_Close                    = D1AA1B
 _ti_Write                    = D1AA1F
 _ti_Seek                     = D1AA23
-_ti_Tell                     = D1AA27
+_ti_Resize                   = D1AA27
 _ti_GetSize                  = D1AA2B
 _ti_GetDataPtr               = D1AA2F
 _ti_DetectAny                = D1AA33

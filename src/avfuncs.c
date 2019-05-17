@@ -48,10 +48,10 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
     uint8_t *search_pos = NULL;
     size_t db_size;
     uint8_t type;
-    progsave_t* db_data = av_FileGetPtr(PropDB, &db_size);
+    progsave_t* db_data = av_FileGetPtr(PropDB, TI_APPVAR_TYPE, &db_size);
+    progsave_t* db_end = db_data + db_size;
     while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
         progsave_t* db_instance = db_data;
-        size_t size_instance = db_size;
         switch(type){
             case TI_PRGM_TYPE:
             case TI_PPRGM_TYPE:
@@ -66,12 +66,11 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
                         prog->size = ti_GetSize(openfile);
                         prog->checksum = rc_crc32(0, ti_GetDataPtr(openfile), prog->size);
                         ti_Close(openfile);
-                        while(size_instance){
+                        while(db_instance < db_end){
                             if(!memcmp(db_instance->name, var_name, 8)){
                                 prog->prop_track = db_instance - db_data;
                                 break;
                             }
-                            size_instance -= sizeof(progsave_t);
                             db_instance++;
                         }
                     }
@@ -85,7 +84,7 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
 progsave_t* av_LocateFileInDB(progname_t* program){
     ti_var_t dbfile;
     size_t db_size;
-    progsave_t* db_data = av_FileGetPtr(program->name, &db_size);
+    progsave_t* db_data = av_FileGetPtr(program->name, TI_APPVAR_TYPE, &db_size);
     while(db_size){
         if(!memcmp(db_data->name, program->name, 8)) return db_data;
         db_size -= sizeof(progsave_t);
@@ -108,9 +107,10 @@ void av_CollapseDB(progsave_t* delete){
     while(ti_Write(collapse, sizeof(progsave_t), 1, dbfile_read)) collapse++;
     ti_Close(dbfile_read);
     ti_Close(dbfile_write);
+    av_ResizeFile(PropDB, TI_APPVAR_TYPE, -sizeof(progsave_t));
 }
 
-void* av_FileGetPtr(char *name, uint8_t type, int *Len){
+void* av_FileGetPtr(const char *name, uint8_t type, int *Len){
     ti_var_t fp = ti_OpenVar(name, "r+", type);
     void* addr;
     if(!fp) return NULL;
@@ -120,11 +120,15 @@ void* av_FileGetPtr(char *name, uint8_t type, int *Len){
     return addr;
 }
 
-size_t av_ResizeFile(char *name, uint8_t type, int sizealt){
-    ti_var_t fp = ti_OpenVar(name, "r+", type);
-    size_t fp_size;
-    ti_Resize(sizealt, fp);
-    fp_size = ti_GetSize(fp);
+size_t av_ResizeFile(const char *name, uint8_t type, int sizealt){
+    ti_var_t fp;
+    size_t fp_size = 0;
+    if(fp = ti_OpenVar(name, "r+", type)){
+        if((fp_size = ti_Resize(sizealt, fp)) > 0){
+            return fp_size;
+        }
+        ti_Close(fp);
+    }
     return fp_size;
 }
 
@@ -136,7 +140,7 @@ void av_TogglePropTrack(progname_t* program){
 
 void enable_PropTrack(progname_t* program){
     size_t db_size;
-    progsave_t db_data = av_FileGetPtr(PropDB, &db_size);
+    progsave_t* db_data = av_FileGetPtr(PropDB, TI_APPVAR_TYPE, &db_size);
 }
 
 void disable_PropTrack(progname_t* program){
