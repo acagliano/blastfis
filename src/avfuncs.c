@@ -1,5 +1,6 @@
 
 #include <string.h>
+#include <debug.h>
 #include <fileioc.h>
 #include "indexing.h"
 #include "crypto.h"
@@ -50,6 +51,8 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
     uint8_t type;
     progsave_t* db_data = av_FileGetPtr(PropDB, TI_APPVAR_TYPE, &db_size);
     progsave_t* db_end = db_data + db_size;
+    dbg_sprintf(dbgout, "File Start: %p\n", db_data);
+    dbg_sprintf(dbgout, "File End: %p\n", db_end);
     while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
         progsave_t* db_instance = db_data;
         switch(type){
@@ -66,7 +69,10 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
                         prog->size = ti_GetSize(openfile);
                         prog->checksum = rc_crc32(0, ti_GetDataPtr(openfile), prog->size);
                         ti_Close(openfile);
+                        dbg_sprintf(dbgout, "Checking address: %p\n", db_instance);
+                        dbg_sprintf(dbgout, "Ending address: %p\n", db_end);
                         while(db_instance < db_end){
+                            dbg_sprintf(dbgout, "Checking address: %p\n", db_instance);
                             if(!memcmp(db_instance->name, var_name, 8)){
                                 prog->prop_track = db_instance - db_data;
                                 break;

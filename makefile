@@ -8,7 +8,7 @@
 # ----------------------------
 
 NAME        ?= BLASTCSS
-DEBUGMODE   ?= NDEBUG
+DEBUGMODE   ?= DEBUG
 COMPRESSED  ?= NO
 ICON        ?= iconc.png
 DESCRIPTION ?= "Calculator Security Suite"

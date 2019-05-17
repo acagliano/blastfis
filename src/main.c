@@ -17,6 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <debug.h>
 
 /* Other available headers */
 // stdarg.h, setjmp.h, assert.h, ctype.h, float.h, iso646.h, limits.h, errno.h, debug.h
@@ -83,6 +84,7 @@ void main(void) {
     selected_t selected = {0};
     //allocate memory
    // int_Disable();
+    dbg_sprintf(dbgout, "Testing\n");
     zx7_Decompress(logo, blast_icon_compressed);
     zx7_Decompress(integ_pass, integ_pass_icon_compressed);
     zx7_Decompress(integ_fail, integ_pass_icon_compressed);
@@ -96,7 +98,7 @@ void main(void) {
     gfx_SetDrawBuffer();
     gfx_PrintStringXY("Indexing device contents...", 5, 5); gfx_BlitBuffer();
     // loop save names of all files on device
-    prognames = (progname_t*)malloc(num_programs * sizeof(progname_t));
+    prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
     memset(prognames, 0, sizeof(progname_t) * num_programs);
     av_GenerateFileIndex(prognames, num_programs);
   

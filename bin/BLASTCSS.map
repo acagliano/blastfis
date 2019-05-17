@@ -6,10 +6,10 @@ libs     D1A9FB D1AA8C            91h
 startup  D1AA8C D1AACB            3Fh
 cleanup  D1AACB D1AADF            14h
 exit     D1AADF D1AAE5             6h
-code     D1AAE5 D1C10A          1625h
-data     D1C10A D1C2E0           1D6h
-strsect  D1C2E0 D1C499           1B9h
-text     D1C499 D1C619           180h
+code     D1AAE5 D1C1DB          16F6h
+data     D1C1DB D1C3B1           1D6h
+strsect  D1C3B1 D1C5D3           222h
+text     D1C5D3 D1C753           180h
 bss      D031F6 D035FC D13FD6    406h
 header   D1A87F D1A882             3h
 
@@ -134,12 +134,14 @@ _zx7_Decompress              = D1AB09
 __idvrmu                     = 000140
 __idvrmu                     = 000144
 __lnot                       = 0001D4
+__case8D                     = 000128
 _sprintf                     = 0000BC
 __imul_b                     = 000158
 __imul_b                     = 000150
 __lmulu                      = 0001CC
 __idivs                      = 00013C
 __frameset                   = D1AB75
+_calloc                      = D1AB83
 __ishru_b                    = 000184
 __ishru_b                    = 000188
 __itol                       = 000194
@@ -147,20 +149,18 @@ __lshru                      = 0001EC
 __lxor                       = 0001FC
 __stoiu                      = 000264
 __lcmpzero                   = 0001B0
-__s_sbrk                     = D1AB83
-__frameset0                  = D1ABA3
+__s_sbrk                     = D1ABA1
 _memcpy                      = 0000A4
 _memcmp                      = 0000A0
-__icmpzero                   = D1ABAE
+__icmpzero                   = D1ABC1
 __setflag                    = 000218
-_memset                      = D1ABB3
+_memset                      = D1ABC6
 __indcall                    = 00015C
-__case8                      = 000124
 __lcmpu                      = 0001AC
-_malloc                      = D1ABFB
+_malloc                      = D1AC0E
 __alloc_base                 = D031F6
-_qsort                       = D1ACEF
-_free                        = D1AEAF
+_qsort                       = D1AD02
+_free                        = D1AEC2
 __findlibload                = D1A9A3
 __program_icon               = D1A887
 __program_description        = D1A989
@@ -171,33 +171,33 @@ _exit                        = D1AAE1
 __exit                       = D1AABA
 __exitsp                     = D1AABA
 __errsp                      = D1AABA
-_disable_PropTrack           = D1B4DC
-_enable_PropTrack            = D1B4B7
-_av_TogglePropTrack          = D1B48E
-_av_ResizeFile               = D1B42E
-_av_FileGetPtr               = D1B3CD
-_av_CollapseDB               = D1B2D8
-_av_LocateFileInDB           = D1B270
-_av_GenerateFileIndex        = D1B0B0
-_av_GetNumFiles              = D1B020
-_progsort                    = D1AFAD
-_AvDB                        = D1C132
-_PropDB                      = D1C12F
-_rc_crc32                    = D1B504
-_blast_icon_compressed       = D1C138
-_integ_pass_icon_compressed  = D1C2B8
-_av_ScanFile                 = D1C101
-_av_ToggleVersControl        = D1C0F8
-_pgrm_DrawBackground         = D1C000
-_pgrm_EraseContent           = D1BFD9
-_text_GetCenterX             = D1BFB9
-_num_len                     = D1BF82
-_main                        = D1B666
-_desc                        = D1C4DF
-_strings                     = D1C499
-_Version                     = D1C2DD
-_SubName                     = D1C2DA
-_ProgName                    = D1C2D7
+_disable_PropTrack           = D1B57D
+_enable_PropTrack            = D1B555
+_av_TogglePropTrack          = D1B527
+_av_ResizeFile               = D1B4C4
+_av_FileGetPtr               = D1B460
+_av_CollapseDB               = D1B366
+_av_LocateFileInDB           = D1B2FB
+_av_GenerateFileIndex        = D1B0CC
+_av_GetNumFiles              = D1B036
+_progsort                    = D1AFC0
+_AvDB                        = D1C203
+_PropDB                      = D1C200
+_rc_crc32                    = D1B5A7
+_blast_icon_compressed       = D1C209
+_integ_pass_icon_compressed  = D1C389
+_av_ScanFile                 = D1C1CD
+_av_ToggleVersControl        = D1C1BF
+_pgrm_DrawBackground         = D1C0C2
+_pgrm_EraseContent           = D1C08E
+_text_GetCenterX             = D1C069
+_num_len                     = D1C030
+_main                        = D1B70E
+_desc                        = D1C619
+_strings                     = D1C5D3
+_Version                     = D1C3AE
+_SubName                     = D1C3AB
+_ProgName                    = D1C3A8
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17
