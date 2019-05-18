@@ -17,7 +17,6 @@ typedef struct {
     unsigned long checksum;
     int size;
     unsigned int prop_track;
-    bool snapshot;
 } progname_t;
 
 typedef struct {

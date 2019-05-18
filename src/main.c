@@ -102,7 +102,6 @@ void main(void) {
     gfx_SetTextTransparentColor(1);
     gfx_SetTextBGColor(1);
     gfx_SetDrawBuffer();
-    gfx_PrintStringXY("Indexing device contents...", 5, 5); gfx_BlitBuffer();
     // loop save names of all files on device
     prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
     if(prognames == NULL) exit(1);
@@ -144,6 +143,13 @@ void main(void) {
                         if(selected.progopt > 1) selected.progopt--;}
                     break;
             }
+        }
+        if(key == sk_Stat){
+            progname_t* newmem;
+            num_programs = av_GetNumFiles();
+            newmem = realloc(prognames, num_programs * sizeof(progname_t));
+            if(newmem) prognames = newmem;
+            av_GenerateFileIndex(prognames, num_programs);
         }
        /* if(key == sk_Left){
             switch(screen){
