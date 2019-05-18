@@ -7,8 +7,8 @@
 # ** Add all shared library names to L **
 # ----------------------------
 
-NAME        ?= BLASTCSS
-DEBUGMODE   ?= DEBUG
+NAME        ?= BLASTFIS
+DEBUGMODE   ?= NDEBUG
 COMPRESSED  ?= NO
 ICON        ?= iconc.png
 DESCRIPTION ?= "Calculator Security Suite"

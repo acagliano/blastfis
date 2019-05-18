@@ -397,6 +397,32 @@ _desc:
 	DB	0
 	DB	0
 	DB	0
+	SEGMENT DATA
+_progopt_yvals:
+	DW	0
+	DB	0
+	DW	0
+	DB	0
+	DW	96
+	DB	0
+	DW	120
+	DB	0
+	DW	96
+	DB	0
+	DW	155
+	DB	0
+	DW	106
+	DB	0
+	DW	170
+	DB	0
+	DW	106
+	DB	0
+	DW	180
+	DB	0
+	DW	106
+	DB	0
+	DW	190
+	DB	0
 ;    1	//--------------------------------------
 ;    2	// Program Name:
 ;    3	// Author:
@@ -416,32 +442,32 @@ _desc:
 ;   17	#include <stdio.h>
 ;   18	#include <stdlib.h>
 ;   19	#include <string.h>
-;   20	
-;   21	/* Other available headers */
-;   22	// stdarg.h, setjmp.h, assert.h, ctype.h, float.h, iso646.h, limits.h, errno.h, debug.h
-;   23	#define FORCE_INTERRUPTS
-;   24	#include <graphx.h>
-;   25	#include <fileioc.h>
-;   26	#include <compression.h>
-;   27	#include <intce.h>
-;   28	
-;   29	#include "timestamps.h"
-;   30	#include "gfx/all_gfx.h"
-;   31	#include "crypto.h"
-;   32	#include "indexing.h"
-;   33	#include "menuopts.h"
-;   34	#include "avfuncs.h"
-;   35	
-;   36	/* Put your function prototypes here */
-;   37	
-;   38	void pgrm_EraseContent(void);
-;   39	void pgrm_DrawBackground(gfx_sprite_t *icon);
-;   40	
+;   20	#include <debug.h>
+;   21	
+;   22	/* Other available headers */
+;   23	// stdarg.h, setjmp.h, assert.h, ctype.h, float.h, iso646.h, limits.h, errno.h, debug.h
+;   24	#define FORCE_INTERRUPTS
+;   25	#include <graphx.h>
+;   26	#include <fileioc.h>
+;   27	#include <compression.h>
+;   28	#include <intce.h>
+;   29	
+;   30	#include "timestamps.h"
+;   31	#include "gfx/all_gfx.h"
+;   32	#include "crypto.h"
+;   33	#include "indexing.h"
+;   34	#include "menuopts.h"
+;   35	#include "avfuncs.h"
+;   36	
+;   37	/* Put your function prototypes here */
+;   38	
+;   39	void pgrm_EraseContent(void);
+;   40	void pgrm_DrawBackground(gfx_sprite_t *icon);
 ;   41	
-;   42	int text_GetCenterX(char* string, int width);
-;   43	int num_len(int num);
-;   44	int progsort(const void* a, const void* b);
-;   45	void av_ToggleVersControl(progname_t* program);
+;   42	
+;   43	int text_GetCenterX(char* string, int width);
+;   44	int num_len(int num);
+;   45	int progsort(const void* a, const void* b);
 ;   46	void av_ScanFile(progname_t* program);
 ;   47	
 ;   48	/* Put all your globals here. */
@@ -451,43 +477,48 @@ _desc:
 ;   52	
 ;   53	/* Supporting Files */
 ;   54	
-;   55	
-;   56	const char strings[][14] = {"File Options", "System Scans", "Settings", "About", "Quit"};
-;   57	const char desc[][60] = {"View and modify file data.",
+;   55	#define OS_START 0x02000h
+;   56	#define CERT_START 0x3B0000h
+;   57	#define ARCH_START 0x0C0000h
+;   58	#define RAM_START 0xD00000h
+;   59	#define ui_textstart_y 75
+;   60	#define ui_progdata_out 175
+;   61	
+;   62	const char strings[][14] = {"File Options", "System Scans", "Settings", "About", "Quit"};
+;   63	const char desc[][60] = {"View and modify file data.",
+;   64	    "Scan all RAM, Archive, or OS sectors.",
+;   65	    "Change how this program works.",
+;   66	    "View information about this program.",
+;   67	    "Exit the program."};
+;   68	progopt_t progopt_yvals[] = {
 	SEGMENT CODE
-;   58	    "Scan all RAM, Archive, or OS sectors.",
-;   59	    "Change how this program works.",
-;   60	    "View information about this program.",
-;   61	    "Exit the program."};
-;   62	
-;   63	
-;   64	
-;   65	#define OS_START 0x02000h
-;   66	#define CERT_START 0x3B0000h
-;   67	#define ARCH_START 0x0C0000h
-;   68	#define RAM_START 0xD00000h
-;   69	#define ui_textstart_y 75
-;   70	#define ui_progdata_out 175
-;   71	
-;   72	void main(void) {
+;   69	    {0, 0},
+;   70	    {96, ui_textstart_y + 45},
+;   71	    {96, ui_textstart_y + 80},
+;   72	    {106, ui_textstart_y + 95},
+;   73	    {106, ui_textstart_y + 105},
+;   74	    {106, ui_textstart_y + 115}
+;   75	};
+;   76	
+;   77	void main(void) {
 _main:
-	LD	HL,-52
+	LD	HL,-74
 	CALL	__frameset
-;   73	    bool progRun = true, firstLoop = true;
-	LD	(IX+-18),1
-	LD	(IX+-23),1
-;   74	    char i;
-;   75	    char screen = MAIN;
+;   78	    bool progRun = true, firstLoop = true;
+	LD	(IX+-15),1
+	LD	(IX+-28),1
+;   79	    char i;
+;   80	    char screen = MAIN;
 	LD	(IX+-5),6
-;   76	    uint8_t *search_pos;
-;   77	    progname_t* prognames = NULL;
+;   81	    uint8_t *search_pos;
+;   82	    progname_t* prognames = NULL;
 	LD	BC,0
-	LD	(IX+-11),BC
-;   78	    ti_var_t propfile;
-;   79	    int num_programs = av_GetNumFiles();
+	LD	(IX+-8),BC
+;   83	    ti_var_t propfile;
+;   84	    int num_programs = av_GetNumFiles();
 	CALL	_av_GetNumFiles
-	LD	(IX+-14),HL
-;   80	    gfx_sprite_t* logo = gfx_MallocSprite(blast_icon_width, blast_icon_height);
+	LD	(IX+-21),HL
+;   85	    gfx_sprite_t* logo = gfx_MallocSprite(blast_icon_width, blast_icon_height);
 	LD	BC,_malloc
 	PUSH	BC
 	LD	BC,60
@@ -497,8 +528,8 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-	LD	(IX+-32),HL
-;   81	    gfx_sprite_t* integ_pass = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
+	LD	(IX+-31),HL
+;   86	    gfx_sprite_t* integ_pass = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
 	LD	BC,_malloc
 	PUSH	BC
 	LD	BC,9
@@ -508,8 +539,8 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-	LD	(IX+-26),HL
-;   82	    gfx_sprite_t* integ_fail = gfx_MallocSprite(integ_fail_icon_width, integ_fail_icon_height);
+	LD	(IX+-24),HL
+;   87	    gfx_sprite_t* integ_fail = gfx_MallocSprite(integ_fail_icon_width, integ_fail_icon_height);
 	LD	BC,_malloc
 	PUSH	BC
 	LD	BC,9
@@ -519,47 +550,47 @@ _main:
 	POP	BC
 	POP	BC
 	POP	BC
-	LD	(IX+-29),HL
-;   83	    selected_t selected = {0};
+	LD	(IX+-27),HL
+;   88	    selected_t selected = {0};
 	LEA	DE,IX+-3
 	LD	HL,_1temp0
 	LD	BC,3
-;   84	    //allocate memory
-;   85	   // int_Disable();
-;   86	    zx7_Decompress(logo, blast_icon_compressed);
-	LD	(IX+-49),HL	; spill
+;   89	    //allocate memory
+;   90	   // int_Disable();
+;   91	    zx7_Decompress(logo, blast_icon_compressed);
+	LD	(IX+-71),HL	; spill
 	LD	HL,_blast_icon_compressed
-	LD	(IX+-52),HL	; spill
-	LD	HL,(IX+-49)	; unspill
-	LD	(IX+-49),HL	; spill
-	LD	HL,(IX+-52)	; unspill
+	LD	(IX+-74),HL	; spill
+	LD	HL,(IX+-71)	; unspill
+	LD	(IX+-71),HL	; spill
+	LD	HL,(IX+-74)	; unspill
 	PUSH	HL
-	LD	HL,(IX+-49)	; unspill
+	LD	HL,(IX+-71)	; unspill
 	LDIR	
-	LD	BC,(IX+-32)
+	LD	BC,(IX+-31)
 	PUSH	BC
 	CALL	_zx7_Decompress
 	POP	BC
 	POP	BC
-;   87	    zx7_Decompress(integ_pass, integ_pass_icon_compressed);
+;   92	    zx7_Decompress(integ_pass, integ_pass_icon_compressed);
 	LD	BC,_integ_pass_icon_compressed
 	PUSH	BC
-	LD	BC,(IX+-26)
+	LD	BC,(IX+-24)
 	PUSH	BC
 	CALL	_zx7_Decompress
 	POP	BC
 	POP	BC
-;   88	    zx7_Decompress(integ_fail, integ_pass_icon_compressed);
-	LD	BC,_integ_pass_icon_compressed
+;   93	    zx7_Decompress(integ_fail, integ_fail_icon_compressed);
+	LD	BC,_integ_fail_icon_compressed
 	PUSH	BC
-	LD	BC,(IX+-29)
+	LD	BC,(IX+-27)
 	PUSH	BC
 	CALL	_zx7_Decompress
 	POP	BC
 	POP	BC
-;   89	    ti_CloseAll();
+;   94	    ti_CloseAll();
 	CALL	_ti_CloseAll
-;   90	    if(!(propfile = ti_Open(PropDB, "r+")))
+;   95	    if(!(propfile = ti_Open(PropDB, "r+")))
 	LD	BC,L__3
 	PUSH	BC
 	LD	BC,(_PropDB)
@@ -567,10 +598,10 @@ _main:
 	CALL	_ti_Open
 	POP	BC
 	POP	BC
-	LD	(IX+-16),A
+	LD	(IX+-12),A
 	OR	A,A
 	JR	NZ,L_2
-;   91	        propfile = ti_Open(PropDB, "w+");
+;   96	        propfile = ti_Open(PropDB, "w+");
 	LD	BC,L__5
 	PUSH	BC
 	LD	BC,(_PropDB)
@@ -578,36 +609,63 @@ _main:
 	CALL	_ti_Open
 	POP	BC
 	POP	BC
-	LD	(IX+-16),A
+	LD	(IX+-12),A
 L_2:
-;   92	    ti_Close(propfile);
-	LD	C,(IX+-16)
+;   97	    ti_Close(propfile);
+	LD	C,(IX+-12)
 	LD	B,0
 	PUSH	BC
 	CALL	_ti_Close
 	POP	BC
-;   93	    gfx_Begin();
+;   98	    if(!(propfile = ti_Open(SnapDB, "r+")))
+	LD	BC,L__6
+	PUSH	BC
+	LD	BC,(_SnapDB)
+	PUSH	BC
+	CALL	_ti_Open
+	POP	BC
+	POP	BC
+	LD	(IX+-12),A
+	OR	A,A
+	JR	NZ,L_4
+;   99	        propfile = ti_Open(SnapDB, "w+");
+	LD	BC,L__8
+	PUSH	BC
+	LD	BC,(_SnapDB)
+	PUSH	BC
+	CALL	_ti_Open
+	POP	BC
+	POP	BC
+	LD	(IX+-12),A
+L_4:
+;  100	    ti_Close(propfile);
+	LD	C,(IX+-12)
+	LD	B,0
+	PUSH	BC
+	CALL	_ti_Close
+	POP	BC
+;  101	    gfx_Begin();
 	CALL	_gfx_Begin
-;   94	    gfx_SetTextTransparentColor(1);
+;  102	    gfx_SetTextTransparentColor(1);
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_SetTextTransparentColor
 	POP	BC
-;   95	    gfx_SetTextBGColor(1);
+;  103	    gfx_SetTextBGColor(1);
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_SetTextBGColor
 	POP	BC
-;   96	    gfx_SetDrawBuffer();
+;  104	    gfx_SetDrawBuffer();
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_SetDraw
 	POP	BC
-;   97	    gfx_PrintStringXY("Indexing device contents...", 5, 5); gfx_BlitBuffer();
+;  105	    gfx_PrintStringXY("Indexing device contents...", 5, 5); gfx_BlitBuffer();
 	LD	BC,5
 	PUSH	BC
 	PUSH	BC
-	LD	BC,L__6
+	LD	BC,L__9
 	PUSH	BC
 	CALL	_gfx_PrintStringXY
 	POP	BC
@@ -617,319 +675,351 @@ L_2:
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;   98	    // loop save names of all files on device
-;   99	    prognames = (progname_t*)malloc(num_programs * sizeof(progname_t));
-	LD	HL,(IX+-14)
-	LD	A,23
-	CALL	__imul_b
-	PUSH	HL
-	CALL	_malloc
-	POP	BC
-	LD	(IX+-11),HL
-;  100	    memset(prognames, 0, sizeof(progname_t) * num_programs);
-	LD	HL,(IX+-14)
-	LD	A,23
-	CALL	__imul_b
-	PUSH	HL
-	LD	BC,0
+;  106	    // loop save names of all files on device
+;  107	    prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
+	LD	BC,21
 	PUSH	BC
-	LD	BC,(IX+-11)
+	LD	BC,(IX+-21)
 	PUSH	BC
-	CALL	_memset
+	CALL	_calloc
 	POP	BC
 	POP	BC
-	POP	BC
-;  101	    av_GenerateFileIndex(prognames, num_programs);
-	LD	BC,(IX+-14)
+	LD	(IX+-8),HL
+;  108	    if(prognames == NULL) exit(1);
+	CALL	__icmpzero
+	JR	NZ,L_6
+	LD	BC,1
 	PUSH	BC
-	LD	BC,(IX+-11)
+	CALL	_exit
+	POP	BC
+L_6:
+;  109	    av_GenerateFileIndex(prognames, num_programs);
+	LD	BC,(IX+-21)
+	PUSH	BC
+	LD	BC,(IX+-8)
 	PUSH	BC
 	CALL	_av_GenerateFileIndex
 	POP	BC
 	POP	BC
-;  102	  
-;  103	    // decompress all graphics
-;  104	    do {
-L_87:
-;  105	        unsigned char key = os_GetCSC();
+;  110	  
+;  111	    // decompress all graphics
+;  112	    do {
+L_98:
+;  113	        unsigned char key = os_GetCSC();
 	CALL	_os_GetCSC
-	LD	(IX+-15),A
-;  106	        char i;
-;  107	        char progheap, heapoffset;
-;  108	        bool refresh = firstLoop;
-	LD	A,(IX+-23)
-	LD	(IX+-22),A
-;  109	        unsigned long checksum = 0;
-;  110	        char cs_string[11] = {'\0'};
-	LEA	DE,IX+-46
-	LD	HL,_0temp3
+	LD	(IX+-13),A
+;  114	        char i;
+;  115	        char progheap, heapoffset;
+;  116	        bool refresh = firstLoop;
+	LD	A,(IX+-28)
+	LD	(IX+-18),A
+;  117	        progsave_t* current;
+;  118	        snapshot_t* snap;
+;  119	        unsigned long checksum = 0;
+;  120	        char cs_string[11] = {'\0'};
+	LEA	DE,IX+-54
+	LD	HL,_0temp7
 	LD	BC,11
 	LDIR	
-;  111	        progname_t* prog;
-;  112	        if(key == sk_Down){
-	LD	A,(IX+-15)
+;  121	        progname_t* prog;
+;  122	        if(key == sk_Down){
+	LD	A,(IX+-13)
 	CP	A,1
-	JR	NZ,L_30
-;  113	            switch(screen){
+	JR	NZ,L_34
+;  123	            switch(screen){
 	LD	A,(IX+-5)
 	SEXT	HL
 	LD	L,(IX+-5)
 	CALL	__case8
-L__8:
+L__12:
 	DW	2
 	DB	0
-	DW24	L_8	
+	DW24	L_12	
 
 	DB	6
-	DW24	L_4	
+	DW24	L_8	
 
-	DW24	L_30	
+	DW24	L_34	
 
-;  114	                case MAIN:
-L_4:
-;  115	                    if(selected.menu < QUIT) selected.menu++;
+;  124	                case MAIN:
+L_8:
+;  125	                    if(selected.menu < QUIT) selected.menu++;
 	LD	A,(IX+-3)
 	CP	A,4
-	JR	NC,L_30
+	JR	NC,L_34
 	INC	(IX+-3)
-;  116	                    break;
-	JR	L_30
-;  117	                case FILE_OPTS:
-L_8:
-;  118	                    if(!selected.progopt) {
+;  126	                    break;
+	JR	L_34
+;  127	                case FILE_OPTS:
+L_12:
+;  128	                    if(!selected.progopt) {
 	LD	A,(IX+-1)
 	OR	A,A
-	JR	NZ,L_14
-;  119	                        if(selected.program < (num_programs-1)) selected.program++;
+	JR	NZ,L_18
+;  129	                        if(selected.program < (num_programs-1)) selected.program++;
 	LD	A,(IX+-2)
 	UEXT	HL
-	LD	BC,(IX+-14)
+	LD	BC,(IX+-21)
 	DEC	BC
 	OR	A,A
 	LD	L,A
 	SBC	HL,BC
-	JP	P,L_30
+	JP	P,L_34
 	INC	(IX+-2)
-;  120	                    }else{
-	JR	L_30
-L_14:
-;  121	                        if(selected.progopt < SCAN) selected.progopt++;}
+;  130	                    }else{
+	JR	L_34
+L_18:
+;  131	                        if(selected.progopt < TRACK_UPD) selected.progopt++;}
 	LD	A,(IX+-1)
 	CP	A,3
-	JR	NC,L_30
+	JR	NC,L_34
 	INC	(IX+-1)
-;  122	                    break;
-;  123	            }
-;  124	        }
-L_30:
-;  125	        if(key == sk_Up){
-	LD	A,(IX+-15)
+;  132	                    break;
+;  133	            }
+;  134	        }
+L_34:
+;  135	        if(key == sk_Up){
+	LD	A,(IX+-13)
 	CP	A,4
-	JR	NZ,L_42
-;  126	            switch(screen){
+	JR	NZ,L_50
+;  136	            switch(screen){
 	LD	A,(IX+-5)
 	SEXT	HL
 	LD	L,(IX+-5)
 	CALL	__case8
-L__14:
+L__18:
 	DW	2
 	DB	0
-	DW24	L_21	
+	DW24	L_25	
 
 	DB	6
-	DW24	L_17	
+	DW24	L_21	
 
-	DW24	L_42	
+	DW24	L_50	
 
-;  127	                case MAIN:
-L_17:
-;  128	                    if(selected.menu > 0) selected.menu--;
+;  137	                case MAIN:
+L_21:
+;  138	                    if(selected.menu > 0) selected.menu--;
 	XOR	A,A
 	CP	A,(IX+-3)
-	JR	NC,L_42
+	JR	NC,L_50
 	DEC	(IX+-3)
-;  129	                    break;
-	JR	L_42
-;  130	                case FILE_OPTS:
-L_21:
-;  131	                    if(!selected.progopt) {
+;  139	                    break;
+	JR	L_50
+;  140	                case FILE_OPTS:
+L_25:
+;  141	                    if(!selected.progopt) {
 	LD	A,(IX+-1)
 	OR	A,A
-	JR	NZ,L_27
-;  132	                        if(selected.program > 0) selected.program--;
+	JR	NZ,L_31
+;  142	                        if(selected.program > 0) selected.program--;
 	XOR	A,A
 	CP	A,(IX+-2)
-	JR	NC,L_42
+	JR	NC,L_50
 	DEC	(IX+-2)
-;  133	                    }else{
-	JR	L_42
-L_27:
-;  134	                        if(selected.progopt > 1) selected.progopt--;}
+;  143	                    }else{
+	JR	L_50
+L_31:
+;  144	                        if(selected.progopt > 1) selected.progopt--;}
 	LD	A,1
 	CP	A,(IX+-1)
-	JR	NC,L_42
+	JR	NC,L_50
 	DEC	(IX+-1)
-;  135	                    break;
-;  136	            }
-;  137	        }
-L_42:
-;  138	       /* if(key == sk_Left){
-;  139	            switch(screen){
-;  140	               
-;  141	            }
-;  142	        }
-;  143	        if(key == sk_Right){
-;  144	            switch(screen){
-;  145	                
+;  145	                    break;
 ;  146	            }
-;  147	        } */
-;  148	        
-;  149	        if(key == sk_Enter) {
-	LD	A,(IX+-15)
+;  147	        }
+L_50:
+;  148	       /* if(key == sk_Left){
+;  149	            switch(screen){
+;  150	               
+;  151	            }
+;  152	        }
+;  153	        if(key == sk_Right){
+;  154	            switch(screen){
+;  155	                
+;  156	            }
+;  157	        } */
+;  158	        
+;  159	        if(key == sk_Enter) {
+	LD	A,(IX+-13)
 	CP	A,9
-	JR	NZ,L_50
-;  150	            if(screen == MAIN) screen = selected.menu;
+	JR	NZ,L_58
+;  160	            if(screen == MAIN) screen = selected.menu;
 	LD	A,(IX+-5)
 	CP	A,6
-	JR	NZ,L_40
+	JR	NZ,L_48
 	LD	A,(IX+-3)
 	LD	(IX+-5),A
-;  151	            else if(screen == FILE_OPTS){
-	JR	L_50
-L_40:
+;  161	            else if(screen == FILE_OPTS){
+	JR	L_58
+L_48:
 	LD	A,(IX+-5)
 	OR	A,A
-	JR	NZ,L_50
-;  152	                if(!selected.progopt) selected.progopt = 1;
+	JR	NZ,L_58
+;  162	                if(!selected.progopt) selected.progopt = 1;
 	LD	A,(IX+-1)
 	OR	A,A
-	JR	NZ,L_37
+	JR	NZ,L_45
 	LD	(IX+-1),1
-;  153	                else if(selected.progopt == 1)
-	JR	L_50
-L_37:
+;  163	                else if(selected.progopt == TRACK_TOGG)
+	JR	L_58
+L_45:
 	LD	A,(IX+-1)
 	CP	A,1
-	JR	NZ,L_35
-;  154	                    av_TogglePropTrack(&prognames[selected.program]);
+	JR	NZ,L_43
+;  164	                    av_TogglePropTrack(&prognames[selected.program]);
 	LD	A,(IX+-2)
 	UEXT	HL
 	LD	L,A
-	LD	A,23
+	LD	A,21
 	CALL	__imul_b
-	LD	BC,(IX+-11)
+	LD	BC,(IX+-8)
 	ADD	HL,BC
 	PUSH	HL
 	CALL	_av_TogglePropTrack
 	POP	BC
-;  155	                else if(selected.progopt == 2)
-	JR	L_50
-L_35:
-	LD	A,(IX+-1)
-	CP	A,2
-	JR	NZ,L_33
-;  156	                    av_ToggleVersControl(&prognames[selected.program]);
-	LD	A,(IX+-2)
-	UEXT	HL
-	LD	L,A
-	LD	A,23
-	CALL	__imul_b
-	LD	BC,(IX+-11)
-	ADD	HL,BC
-	PUSH	HL
-	CALL	_av_ToggleVersControl
-	POP	BC
-;  157	                else if(selected.progopt == 3)
-	JR	L_50
-L_33:
+;  165	                else if(selected.progopt == TRACK_UPD)
+	JR	L_58
+L_43:
 	LD	A,(IX+-1)
 	CP	A,3
-	JR	NZ,L_50
-;  158	                    av_ScanFile(&prognames[selected.program]);
+	JR	NZ,L_41
+;  166	                    av_UpdateAttributes(&prognames[selected.program]);
 	LD	A,(IX+-2)
 	UEXT	HL
 	LD	L,A
-	LD	A,23
+	LD	A,21
 	CALL	__imul_b
-	LD	BC,(IX+-11)
+	LD	BC,(IX+-8)
+	ADD	HL,BC
+	PUSH	HL
+	CALL	_av_UpdateAttributes
+	POP	BC
+;  167	                else if(selected.progopt == SNAP_TOGG)
+	JR	L_58
+L_41:
+	LD	A,(IX+-1)
+	CP	A,2
+	JR	NZ,L_39
+;  168	                    av_ToggleSnapshot(&prognames[selected.program]);
+	LD	A,(IX+-2)
+	UEXT	HL
+	LD	L,A
+	LD	A,21
+	CALL	__imul_b
+	LD	BC,(IX+-8)
+	ADD	HL,BC
+	PUSH	HL
+	CALL	_av_ToggleSnapshot
+	POP	BC
+;  169	                else if(selected.progopt == SNAP_UPD)
+	JR	L_58
+L_39:
+	LD	A,(IX+-1)
+	CP	A,4
+	JR	NZ,L_37
+;  170	                    av_UpdateSnapshot(&prognames[selected.program]);
+	LD	A,(IX+-2)
+	UEXT	HL
+	LD	L,A
+	LD	A,21
+	CALL	__imul_b
+	LD	BC,(IX+-8)
+	ADD	HL,BC
+	PUSH	HL
+	CALL	_av_UpdateSnapshot
+	POP	BC
+;  171	                else if(selected.progopt == SCAN)
+	JR	L_58
+L_37:
+	LD	A,(IX+-1)
+	CP	A,5
+	JR	NZ,L_58
+;  172	                    av_ScanFile(&prognames[selected.program]);
+	LD	A,(IX+-2)
+	UEXT	HL
+	LD	L,A
+	LD	A,21
+	CALL	__imul_b
+	LD	BC,(IX+-8)
 	ADD	HL,BC
 	PUSH	HL
 	CALL	_av_ScanFile
 	POP	BC
-;  159	            }
-;  160	        }
-L_50:
-;  161	        if(key == sk_Clear){
-	LD	A,(IX+-15)
+;  173	            }
+;  174	        }
+L_58:
+;  175	        if(key == sk_Clear){
+	LD	A,(IX+-13)
 	CP	A,15
-	JR	NZ,L_52
-;  162	            if(screen == MAIN) progRun = false;
+	JR	NZ,L_60
+;  176	            if(screen == MAIN) progRun = false;
 	LD	A,(IX+-5)
 	CP	A,6
-	JR	NZ,L_48
-	LD	(IX+-18),0
-L_48:
-;  163	            if(screen == FILE_OPTS){
+	JR	NZ,L_56
+	LD	(IX+-15),0
+L_56:
+;  177	            if(screen == FILE_OPTS){
 	LD	A,(IX+-5)
 	OR	A,A
-	JR	NZ,L_47
-;  164	                if(selected.progopt) selected.progopt = 0;
+	JR	NZ,L_55
+;  178	                if(selected.progopt) selected.progopt = 0;
 	LD	A,(IX+-1)
 	OR	A,A
-	JR	Z,L_45
+	JR	Z,L_53
 	LD	(IX+-1),0
-;  165	                else screen = MAIN;
-	JR	L_52
-L_45:
+;  179	                else screen = MAIN;
+	JR	L_60
+L_53:
 	LD	(IX+-5),6
-;  166	            }
-;  167	            else screen = MAIN;
-	JR	L_52
-L_47:
+;  180	            }
+;  181	            else screen = MAIN;
+	JR	L_60
+L_55:
 	LD	(IX+-5),6
-;  168	        }
-L_52:
-;  169	        if(key) refresh = true;
-	LD	A,(IX+-15)
+;  182	        }
+L_60:
+;  183	        if(key) refresh = true;
+	LD	A,(IX+-13)
 	OR	A,A
-	JR	Z,L_85
-	LD	(IX+-22),1
-L_85:
-;  170	        if(refresh) {
-	LD	A,(IX+-22)
+	JR	Z,L_96
+	LD	(IX+-18),1
+L_96:
+;  184	        if(refresh) {
+	LD	A,(IX+-18)
 	OR	A,A
-	JR	Z,L_86
-;  171	            pgrm_DrawBackground(logo);
-	LD	BC,(IX+-32)
+	JR	Z,L_97
+;  185	            pgrm_DrawBackground(logo);
+	LD	BC,(IX+-31)
 	PUSH	BC
 	CALL	_pgrm_DrawBackground
 	POP	BC
-;  172	            switch(screen){
+;  186	            switch(screen){
 	LD	A,(IX+-5)
 	SEXT	HL
 	LD	L,(IX+-5)
 	CALL	__case8
-L__32:
+L__38:
 	DW	3
 	DB	0
-	DW24	L_59	
+	DW24	L_67	
 
 	DB	4
-	DW24	L_82	
+	DW24	L_93	
 
 	DB	6
-	DW24	L_53	
+	DW24	L_61	
 
-	DW24	L_83	
+	DW24	L_94	
 
-;  173	                case MAIN:
-L_53:
-;  174	                    gfx_SetTextFGColor(0);
+;  187	                case MAIN:
+L_61:
+;  188	                    gfx_SetTextFGColor(0);
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;  175	                    gfx_SetColor(40); gfx_FillRectangle(90, selected.menu * 25 + 74, 130, 22);
+;  189	                    gfx_SetColor(40); gfx_FillRectangle(90, selected.menu * 25 + 74, 130, 22);
 	LD	BC,40
 	PUSH	BC
 	CALL	_gfx_SetColor
@@ -953,16 +1043,16 @@ L_53:
 	POP	BC
 	POP	BC
 	POP	BC
-;  176	                    for(i = 0; i < NUM_SCREENS; i++){
+;  190	                    for(i = 0; i < NUM_SCREENS; i++){
 	LD	(IX+-4),0
-	JR	L_57
-L_55:
-;  177	                        gfx_SetColor(0);
+	JR	L_65
+L_63:
+;  191	                        gfx_SetColor(0);
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  178	                        gfx_FillRectangle(100, i * 25 + ui_textstart_y, 110, 20);
+;  192	                        gfx_FillRectangle(100, i * 25 + ui_textstart_y, 110, 20);
 	LD	BC,20
 	PUSH	BC
 	LD	BC,110
@@ -982,12 +1072,12 @@ L_55:
 	POP	BC
 	POP	BC
 	POP	BC
-;  179	                        gfx_SetColor(172);
+;  193	                        gfx_SetColor(172);
 	LD	BC,172
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  180	                        gfx_FillRectangle(102, i * 25 + ui_textstart_y + 2, 106, 16);
+;  194	                        gfx_FillRectangle(102, i * 25 + ui_textstart_y + 2, 106, 16);
 	LD	BC,16
 	PUSH	BC
 	LD	BC,106
@@ -1007,7 +1097,7 @@ L_55:
 	POP	BC
 	POP	BC
 	POP	BC
-;  181	                        gfx_PrintStringXY(strings[i], 102 + text_GetCenterX(strings[i], 106), i * 25 + ui_textstart_y + 6);
+;  195	                        gfx_PrintStringXY(strings[i], 102 + text_GetCenterX(strings[i], 106), i * 25 + ui_textstart_y + 6);
 	LD	A,(IX+-4)
 	SEXT	HL
 	LD	L,(IX+-4)
@@ -1045,12 +1135,12 @@ L_55:
 	POP	BC
 	POP	BC
 	INC	(IX+-4)
-;  182	                    }
-L_57:
+;  196	                    }
+L_65:
 	LD	A,(IX+-4)
 	CP	A,5
-	JP	M,L_55
-;  183	                    gfx_PrintStringXY(desc[selected.menu], text_GetCenterX(desc[selected.menu], LCD_WIDTH), 205);
+	JP	M,L_63
+;  197	                    gfx_PrintStringXY(desc[selected.menu], text_GetCenterX(desc[selected.menu], LCD_WIDTH), 205);
 	LD	BC,205
 	PUSH	BC
 	LD	BC,320
@@ -1079,38 +1169,38 @@ L_57:
 	POP	BC
 	POP	BC
 	POP	BC
-;  184	                    break;
-	JR	L_86
-;  185	                case FILE_OPTS:
-L_59:
-;  186	                    pgrm_EraseContent();
+;  198	                    break;
+	JR	L_97
+;  199	                case FILE_OPTS:
+L_67:
+;  200	                    pgrm_EraseContent();
 	CALL	_pgrm_EraseContent
-;  187	                    gfx_SetTextScale(2,2);
+;  201	                    gfx_SetTextScale(2,2);
 	LD	BC,2
 	PUSH	BC
 	PUSH	BC
 	CALL	_gfx_SetTextScale
 	POP	BC
 	POP	BC
-;  188	                    gfx_PrintStringXY("FILE OPTIONS", 5, 75);
+;  202	                    gfx_PrintStringXY("FILE OPTIONS", 5, 75);
 	LD	BC,75
 	PUSH	BC
 	LD	BC,5
 	PUSH	BC
-	LD	BC,L__34
+	LD	BC,L__40
 	PUSH	BC
 	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-;  189	                    gfx_SetTextScale(1,1);
+;  203	                    gfx_SetTextScale(1,1);
 	LD	BC,1
 	PUSH	BC
 	PUSH	BC
 	CALL	_gfx_SetTextScale
 	POP	BC
 	POP	BC
-;  190	                    progheap = selected.program / 13 * 13;
+;  204	                    progheap = selected.program / 13 * 13;
 	LD	A,(IX+-2)
 	UEXT	HL
 	LD	L,A
@@ -1118,40 +1208,40 @@ L_59:
 	CALL	__idivs
 	LD	A,13
 	CALL	__imul_b
-	LD	(IX+-17),L
-;  191	                    for(i = progheap; i < (progheap + 14); i++){
-	LD	A,(IX+-17)
+	LD	(IX+-14),L
+;  205	                    for(i = progheap; i < (progheap + 14); i++){
+	LD	A,(IX+-14)
 	LD	(IX+-4),A
-	JR	L_66
-L_64:
-;  192	                        heapoffset = i - progheap;
+	JR	L_74
+L_72:
+;  206	                        heapoffset = i - progheap;
 	LD	A,(IX+-4)
-	SUB	A,(IX+-17)
-	LD	(IX+-19),A
-;  193	                        gfx_SetTextFGColor(0);
+	SUB	A,(IX+-14)
+	LD	(IX+-16),A
+;  207	                        gfx_SetTextFGColor(0);
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;  194	                        if(i < num_programs){
+;  208	                        if(i < num_programs){
 	LD	A,(IX+-4)
 	SEXT	HL
 	LD	L,(IX+-4)
 	OR	A,A
-	LD	BC,(IX+-14)
+	LD	BC,(IX+-21)
 	SBC	HL,BC
 	CALL	__setflag
-	JP	P,L_65
-;  195	                            prog = &prognames[i];
+	JP	P,L_73
+;  209	                            prog = &prognames[i];
 	LD	A,(IX+-4)
 	SEXT	HL
 	LD	L,(IX+-4)
-	LD	A,23
+	LD	A,21
 	CALL	__imul_b
-	LD	BC,(IX+-11)
+	LD	BC,(IX+-8)
 	ADD	HL,BC
-	LD	(IX+-8),HL
-;  196	                            if(i == selected.program){
+	LD	(IX+-11),HL
+;  210	                            if(i == selected.program){
 	LD	A,(IX+-2)
 	UEXT	HL
 	LD	L,A
@@ -1163,8 +1253,8 @@ L_64:
 	LD	HL,BC
 	OR	A,A
 	SBC	HL,DE
-	JR	NZ,L_62
-;  197	                                gfx_SetColor(40); gfx_SetTextFGColor(255);
+	JR	NZ,L_70
+;  211	                                gfx_SetColor(40); gfx_SetTextFGColor(255);
 	LD	BC,40
 	PUSH	BC
 	CALL	_gfx_SetColor
@@ -1173,14 +1263,14 @@ L_64:
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;  198	                                gfx_FillRectangle(3, heapoffset * 10 + ui_textstart_y + 18, 70, 11);
+;  212	                                gfx_FillRectangle(3, heapoffset * 10 + ui_textstart_y + 18, 70, 11);
 	LD	BC,11
 	PUSH	BC
 	LD	BC,70
 	PUSH	BC
-	LD	A,(IX+-19)
+	LD	A,(IX+-16)
 	SEXT	HL
-	LD	L,(IX+-19)
+	LD	L,(IX+-16)
 	LD	A,10
 	CALL	__imul_b
 	LD	IY,HL
@@ -1193,12 +1283,12 @@ L_64:
 	POP	BC
 	POP	BC
 	POP	BC
-;  199	                            }
-L_62:
-;  200	                            gfx_PrintStringXY(&prog->name[0], 5, heapoffset * 10 + ui_textstart_y + 20);
-	LD	A,(IX+-19)
+;  213	                            }
+L_70:
+;  214	                            gfx_PrintStringXY(&prog->name[0], 5, heapoffset * 10 + ui_textstart_y + 20);
+	LD	A,(IX+-16)
 	SEXT	HL
-	LD	L,(IX+-19)
+	LD	L,(IX+-16)
 	LD	A,10
 	CALL	__imul_b
 	LD	IY,HL
@@ -1206,20 +1296,20 @@ L_62:
 	PUSH	BC
 	LD	BC,5
 	PUSH	BC
-	LD	IY,(IX+-8)
+	LD	IY,(IX+-11)
 	PEA	IY+1
 	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-;  201	                        }
-;  202	                    }
-L_65:
+;  215	                        }
+;  216	                    }
+L_73:
 	INC	(IX+-4)
-L_66:
-	LD	A,(IX+-17)
+L_74:
+	LD	A,(IX+-14)
 	SEXT	HL
-	LD	L,(IX+-17)
+	LD	L,(IX+-14)
 	LD	IY,HL
 	LD	A,(IX+-4)
 	SEXT	HL
@@ -1228,81 +1318,87 @@ L_66:
 	LEA	BC,IY+14
 	SBC	HL,BC
 	CALL	__setflag
-	JP	M,L_64
-;  203	                    gfx_SetTextFGColor(0);
+	JP	M,L_72
+;  217	                    gfx_SetTextFGColor(0);
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;  204	                    prog = &prognames[selected.program];
+;  218	                    prog = &prognames[selected.program];
 	LD	A,(IX+-2)
 	UEXT	HL
 	LD	L,A
-	LD	A,23
+	LD	A,21
 	CALL	__imul_b
-	LD	BC,(IX+-11)
+	LD	BC,(IX+-8)
 	ADD	HL,BC
-	LD	(IX+-8),HL
-;  205	                    gfx_PrintStringXY("File: ", 100, ui_textstart_y + 20);
+	LD	(IX+-11),HL
+;  219	                    if(selected.progopt){
+	LD	A,(IX+-1)
+	OR	A,A
+	JR	Z,L_77
+;  220	                        int x = progopt_yvals[selected.progopt].x;
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+;  221	                        int y = progopt_yvals[selected.progopt].y - 1;
+;  222	                        gfx_SetColor(140);
+	LD	DE,140
+	LD	BC,HL
+	ADD	HL,HL
+	ADD	HL,HL
+	ADD	HL,BC
+	ADD	HL,BC
+	LD	BC,_progopt_yvals
+	ADD	HL,BC
+	LD	IY,HL
+	LD	BC,(IY+0)
+	LD	(IX+-40),BC
+	LD	A,(IX+-1)
+	UEXT	HL
+	LD	L,A
+	LD	BC,HL
+	ADD	HL,HL
+	ADD	HL,HL
+	ADD	HL,BC
+	ADD	HL,BC
+	LD	BC,_progopt_yvals
+	ADD	HL,BC
+	LD	IY,HL
+	LD	BC,(IY+3)
+	DEC	BC
+	LD	(IX+-43),BC
+	PUSH	DE
+	CALL	_gfx_SetColor
+	POP	BC
+;  223	                        gfx_FillRectangle(x, y, 160, 10);
+	LD	BC,10
+	PUSH	BC
+	LD	BC,160
+	PUSH	BC
+	LD	BC,(IX+-43)
+	PUSH	BC
+	LD	BC,(IX+-40)
+	PUSH	BC
+	CALL	_gfx_FillRectangle
+	POP	BC
+	POP	BC
+	POP	BC
+	POP	BC
+;  224	                    }
+L_77:
+;  225	                    gfx_PrintStringXY("File Name: ", 100, ui_textstart_y + 20);
 	LD	BC,95
 	PUSH	BC
 	LD	BC,100
 	PUSH	BC
-	LD	BC,L__38
+	LD	BC,L__45
 	PUSH	BC
 	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-;  206	                    gfx_PrintUInt(selected.program + 1, num_len(selected.program + 1));
-	LD	A,(IX+-2)
-	UEXT	HL
-	LD	L,A
-	INC	HL
-	PUSH	HL
-	CALL	_num_len
-	POP	BC
-	LD	C,L
-	LD	B,0
-	PUSH	BC
-	LD	A,(IX+-2)
-	UEXT	HL
-	LD	L,A
-	INC	HL
-	PUSH	HL
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  207	                    gfx_PrintString(" / ");
-	LD	BC,L__39
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  208	                    gfx_PrintUInt(num_programs, num_len(num_programs));
-	LD	BC,(IX+-14)
-	PUSH	BC
-	CALL	_num_len
-	POP	BC
-	LD	C,L
-	LD	B,0
-	PUSH	BC
-	LD	BC,(IX+-14)
-	PUSH	BC
-	CALL	_gfx_PrintUInt
-	POP	BC
-	POP	BC
-;  209	                    gfx_PrintStringXY("File Name: ", 100, ui_textstart_y + 35);
-	LD	BC,110
-	PUSH	BC
-	LD	BC,100
-	PUSH	BC
-	LD	BC,L__40
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  210	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+;  226	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
 	CALL	_gfx_GetTextY
 	PUSH	HL
 	LD	BC,175
@@ -1310,55 +1406,13 @@ L_66:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  211	                    gfx_PrintString(&prog->name[0]/*, 10, 9 * i + 75*/);
-	LD	IY,(IX+-8)
+;  227	                    gfx_PrintString(&prog->name[0]/*, 10, 9 * i + 75*/);
+	LD	IY,(IX+-11)
 	PEA	IY+1
 	CALL	_gfx_PrintString
 	POP	BC
-;  212	                    gfx_PrintStringXY("File Type: ", 100, ui_textstart_y + 45);
-	LD	BC,120
-	PUSH	BC
-	LD	BC,100
-	PUSH	BC
-	LD	BC,L__41
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  213	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
-	CALL	_gfx_GetTextY
-	PUSH	HL
-	LD	BC,175
-	PUSH	BC
-	CALL	_gfx_SetTextXY
-	POP	BC
-	POP	BC
-;  214	                    if(prog->type == TI_PRGM_TYPE || prog->type == TI_PPRGM_TYPE)
-	LD	IY,(IX+-8)
-	LD	A,(IY+0)
-	LD	(IX+-21),A
-	CP	A,5
-	JR	Z,L_69
-	LD	A,(IX+-21)
-	CP	A,6
-	JR	NZ,L_70
-L_69:
-;  215	                        gfx_PrintString("Program");
-	LD	BC,L__44
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  216	                    else gfx_PrintString("AppVar");
-	JR	L_71
-L_70:
-	LD	BC,L__45
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-L_71:
-;  217	                    gfx_PrintStringXY("File Size: ", 100, ui_textstart_y + 60);
-	LD	BC,135
+;  228	                    gfx_PrintStringXY("File Type: ", 100, ui_textstart_y + 30);
+	LD	BC,105
 	PUSH	BC
 	LD	BC,100
 	PUSH	BC
@@ -1368,7 +1422,7 @@ L_71:
 	POP	BC
 	POP	BC
 	POP	BC
-;  218	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+;  229	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
 	CALL	_gfx_GetTextY
 	PUSH	HL
 	LD	BC,175
@@ -1376,8 +1430,153 @@ L_71:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  219	                    gfx_PrintUInt(prog->size, num_len(prog->size));
-	LD	IY,(IX+-8)
+;  230	                    if(prog->type == TI_PRGM_TYPE || prog->type == TI_PPRGM_TYPE)
+	LD	IY,(IX+-11)
+	LD	A,(IY+0)
+	LD	(IX+-17),A
+	CP	A,5
+	JR	Z,L_79
+	LD	A,(IX+-17)
+	CP	A,6
+	JR	NZ,L_80
+L_79:
+;  231	                        gfx_PrintString("Program");
+	LD	BC,L__49
+	PUSH	BC
+	CALL	_gfx_PrintString
+	POP	BC
+;  232	                    else gfx_PrintString("AppVar");
+	JR	L_81
+L_80:
+	LD	BC,L__50
+	PUSH	BC
+	CALL	_gfx_PrintString
+	POP	BC
+L_81:
+;  233	                    gfx_PrintStringXY("Attr Tracking: ", 100, ui_textstart_y + 45);
+	LD	BC,120
+	PUSH	BC
+	LD	BC,100
+	PUSH	BC
+	LD	BC,L__51
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  234	                    if((current = av_LocateFileInPropDB(prog)) != NULL){
+	LD	BC,(IX+-11)
+	PUSH	BC
+	CALL	_av_LocateFileInPropDB
+	POP	BC
+	LD	(IX+-34),HL
+	CALL	__icmpzero
+	JR	Z,L_88
+;  235	                        gfx_PrintString("enabled");
+	LD	BC,L__53
+	PUSH	BC
+	CALL	_gfx_PrintString
+	POP	BC
+;  236	                        if(current->size == prog->size)
+	LD	IY,(IX+-11)
+	LD	BC,(IY+14)
+	LD	IY,(IX+-34)
+	LD	HL,(IY+14)
+	OR	A,A
+	SBC	HL,BC
+	JR	NZ,L_83
+;  237	                            gfx_TransparentSprite(integ_pass, ui_progdata_out + 65, ui_textstart_y + 53);
+	LD	BC,128
+	PUSH	BC
+	LD	BC,240
+	PUSH	BC
+	LD	BC,(IX+-24)
+	PUSH	BC
+	CALL	_gfx_TransparentSprite
+	POP	BC
+	POP	BC
+	POP	BC
+;  238	                        else
+	JR	L_86
+L_83:
+;  239	                            gfx_TransparentSprite(integ_fail, ui_progdata_out + 65, ui_textstart_y + 53);
+	LD	BC,128
+	PUSH	BC
+	LD	BC,240
+	PUSH	BC
+	LD	BC,(IX+-27)
+	PUSH	BC
+	CALL	_gfx_TransparentSprite
+	POP	BC
+	POP	BC
+	POP	BC
+L_86:
+;  240	                        if(current->checksum == prog->checksum)
+	LD	IY,(IX+-34)
+	LD	HL,(IY+10)
+	LD	E,(IY+13)
+	LD	IY,(IX+-11)
+	LD	BC,(IY+10)
+	LD	A,(IY+13)
+	CALL	__lcmpu
+	JR	NZ,L_85
+;  241	                            gfx_TransparentSprite(integ_pass, ui_progdata_out + 65, ui_textstart_y + 63);
+	LD	BC,138
+	PUSH	BC
+	LD	BC,240
+	PUSH	BC
+	LD	BC,(IX+-24)
+	PUSH	BC
+	CALL	_gfx_TransparentSprite
+	POP	BC
+	POP	BC
+	POP	BC
+;  242	                        else
+	JR	L_89
+L_85:
+;  243	                            gfx_TransparentSprite(integ_fail, ui_progdata_out + 65, ui_textstart_y + 63);
+	LD	BC,138
+	PUSH	BC
+	LD	BC,240
+	PUSH	BC
+	LD	BC,(IX+-27)
+	PUSH	BC
+	CALL	_gfx_TransparentSprite
+	POP	BC
+	POP	BC
+	POP	BC
+;  244	                    }
+;  245	                    else {
+	JR	L_89
+L_88:
+;  246	                        gfx_PrintString("disabled");}
+	LD	BC,L__56
+	PUSH	BC
+	CALL	_gfx_PrintString
+	POP	BC
+L_89:
+;  247	                    
+;  248	                    gfx_PrintStringXY("File Size: ", 100, ui_textstart_y + 55);
+	LD	BC,130
+	PUSH	BC
+	LD	BC,100
+	PUSH	BC
+	LD	BC,L__57
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  249	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+	CALL	_gfx_GetTextY
+	PUSH	HL
+	LD	BC,175
+	PUSH	BC
+	CALL	_gfx_SetTextXY
+	POP	BC
+	POP	BC
+;  250	                    gfx_PrintUInt(prog->size, num_len(prog->size));
+	LD	IY,(IX+-11)
 	LD	BC,(IY+14)
 	PUSH	BC
 	CALL	_num_len
@@ -1385,24 +1584,24 @@ L_71:
 	LD	C,L
 	LD	B,0
 	PUSH	BC
-	LD	IY,(IX+-8)
+	LD	IY,(IX+-11)
 	LD	BC,(IY+14)
 	PUSH	BC
 	CALL	_gfx_PrintUInt
 	POP	BC
 	POP	BC
-;  220	                    gfx_PrintStringXY("CRC-32 CS: ", 100, ui_textstart_y + 70);
-	LD	BC,145
+;  251	                    gfx_PrintStringXY("CRC-32 CS: ", 100, ui_textstart_y + 65);
+	LD	BC,140
 	PUSH	BC
 	LD	BC,100
 	PUSH	BC
-	LD	BC,L__47
+	LD	BC,L__58
 	PUSH	BC
 	CALL	_gfx_PrintStringXY
 	POP	BC
 	POP	BC
 	POP	BC
-;  221	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+;  252	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
 	CALL	_gfx_GetTextY
 	PUSH	HL
 	LD	BC,175
@@ -1410,192 +1609,32 @@ L_71:
 	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
-;  222	                    sprintf(cs_string, "%xh", prog->checksum);
-	LD	IY,(IX+-8)
+;  253	                    sprintf(cs_string, "%xh", prog->checksum);
+	LD	IY,(IX+-11)
 	LD	BC,(IY+10)
 	LD	A,(IY+13)
 	LD	H,0
 	LD	L,A
 	PUSH	HL
 	PUSH	BC
-	LD	BC,L__48
+	LD	BC,L__59
 	PUSH	BC
-	PEA	IX+-46
+	PEA	IX+-54
 	CALL	_sprintf
 	POP	BC
 	POP	BC
 	POP	BC
 	POP	BC
-;  223	                    gfx_PrintString(cs_string);
-	PEA	IX+-46
+;  254	                    gfx_PrintString(cs_string);
+	PEA	IX+-54
 	CALL	_gfx_PrintString
 	POP	BC
-;  224	                    gfx_PrintStringXY("Attr Tracking: ", 100, ui_textstart_y + 80);
+;  255	                   // gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
+;  256	                   
+;  257	                    gfx_PrintStringXY("Snapshot: ", 100, ui_textstart_y + 80);
 	LD	BC,155
 	PUSH	BC
 	LD	BC,100
-	PUSH	BC
-	LD	BC,L__49
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  225	                    gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
-	CALL	_gfx_GetTextY
-	PUSH	HL
-	LD	BC,205
-	PUSH	BC
-	CALL	_gfx_SetTextXY
-	POP	BC
-	POP	BC
-;  226	                    if(prog->prop_track) {
-	LD	IY,(IX+-8)
-	LD	HL,(IY+17)
-	CALL	__icmpzero
-	JR	Z,L_75
-;  227	                        ti_var_t propdb = ti_Open(PropDB, "r+");
-	LD	BC,L__51
-	PUSH	BC
-	LD	BC,(_PropDB)
-	PUSH	BC
-	CALL	_ti_Open
-	POP	BC
-	POP	BC
-	LD	(IX+-20),A
-;  228	                        progsave_t* save = prog->prop_track + ti_GetDataPtr(propdb);
-	LD	C,(IX+-20)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_GetDataPtr
-	POP	BC
-	LD	(IX+-35),HL
-;  229	                        ti_Close(propdb);
-	LD	C,(IX+-20)
-	LD	B,0
-	PUSH	BC
-	CALL	_ti_Close
-	POP	BC
-;  230	                        gfx_PrintString("enabled");
-	LD	BC,L__52
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  231	                        if(save->checksum == prog->checksum)
-	LD	IY,(IX+-35)
-	LD	HL,(IY+10)
-	LD	E,(IY+13)
-	LD	IY,(IX+-8)
-	LD	BC,(IY+10)
-	LD	A,(IY+13)
-	CALL	__lcmpu
-	JR	NZ,L_73
-;  232	                            gfx_TransparentSprite(integ_pass, ui_progdata_out + 85, ui_textstart_y + 78);
-	LD	BC,153
-	PUSH	BC
-	LD	BC,260
-	PUSH	BC
-	LD	BC,(IX+-26)
-	PUSH	BC
-	CALL	_gfx_TransparentSprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  233	                        else
-	JR	L_76
-L_73:
-;  234	                            gfx_TransparentSprite(integ_fail, ui_progdata_out + 85, ui_textstart_y + 78);
-	LD	BC,153
-	PUSH	BC
-	LD	BC,260
-	PUSH	BC
-	LD	BC,(IX+-29)
-	PUSH	BC
-	CALL	_gfx_TransparentSprite
-	POP	BC
-	POP	BC
-	POP	BC
-;  235	                    }
-;  236	                    else gfx_PrintString("disabled");
-	JR	L_76
-L_75:
-	LD	BC,L__54
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-L_76:
-;  237	                    gfx_PrintStringXY("Vers Tracking: ", 100, ui_textstart_y + 90);
-	LD	BC,165
-	PUSH	BC
-	LD	BC,100
-	PUSH	BC
-	LD	BC,L__55
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  238	                    gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
-	CALL	_gfx_GetTextY
-	PUSH	HL
-	LD	BC,205
-	PUSH	BC
-	CALL	_gfx_SetTextXY
-	POP	BC
-	POP	BC
-;  239	                    if(prog->vers_track) gfx_PrintString("enabled");
-	LD	IY,(IX+-8)
-	LD	HL,(IY+20)
-	CALL	__icmpzero
-	JR	Z,L_78
-	LD	BC,L__57
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-;  240	                    else gfx_PrintString("disabled");
-	JR	L_80
-L_78:
-	LD	BC,L__58
-	PUSH	BC
-	CALL	_gfx_PrintString
-	POP	BC
-L_80:
-;  241	                    if(selected.progopt){
-	LD	A,(IX+-1)
-	OR	A,A
-	JR	Z,L_81
-;  242	                        gfx_SetColor(140);
-	LD	BC,140
-	PUSH	BC
-	CALL	_gfx_SetColor
-	POP	BC
-;  243	                        gfx_FillRectangle(116, (selected.progopt - 1) * 10 + ui_textstart_y + 99, 160, 10);
-	LD	BC,10
-	PUSH	BC
-	LD	BC,160
-	PUSH	BC
-	LD	A,(IX+-1)
-	UEXT	HL
-	LD	L,A
-	DEC	HL
-	LD	A,10
-	CALL	__imul_b
-	LD	BC,174
-	ADD	HL,BC
-	PUSH	HL
-	LD	BC,116
-	PUSH	BC
-	CALL	_gfx_FillRectangle
-	POP	BC
-	POP	BC
-	POP	BC
-	POP	BC
-;  244	                    }
-L_81:
-;  245	                    gfx_PrintStringXY("Toggle Attr Tracking", 120, ui_textstart_y + 100);
-	LD	BC,175
-	PUSH	BC
-	LD	BC,120
 	PUSH	BC
 	LD	BC,L__60
 	PUSH	BC
@@ -1603,55 +1642,65 @@ L_81:
 	POP	BC
 	POP	BC
 	POP	BC
-;  246	                    gfx_PrintStringXY("Toggle Vers Tracking", 120, ui_textstart_y + 110);
-	LD	BC,185
+;  258	                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+	CALL	_gfx_GetTextY
+	PUSH	HL
+	LD	BC,175
 	PUSH	BC
-	LD	BC,120
-	PUSH	BC
-	LD	BC,L__61
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
+	CALL	_gfx_SetTextXY
 	POP	BC
 	POP	BC
+;  259	                     if((snap = (snapshot_t*)av_LocateFileInSnapDB(prog)) != 0){
+	LD	BC,(IX+-11)
+	PUSH	BC
+	CALL	_av_LocateFileInSnapDB
 	POP	BC
-;  247	                    gfx_PrintStringXY("Verify Attributes", 120, ui_textstart_y + 120);
-	LD	BC,195
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
+	LD	(IX+-37),HL
+	CALL	__icmpzero
+	JR	Z,L_91
+;  260	                         char timestring[11];
+;  261	                         sprintf(timestring, "%02u:%02u:%04u", snap->time.month, snap->time.day, snap->time.year);
+	LD	IY,(IX+-37)
+	LEA	BC,IY+10
+	LD	(IX+-68),BC
+	LD	IY,(IX+-68)
+	LD	BC,(IY+2)
+	CALL	__stoiu
+	PUSH	HL
+	LD	A,(IY+1)
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
+	LD	A,(IY+0)
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
 	LD	BC,L__62
 	PUSH	BC
-	CALL	_gfx_PrintStringXY
+	PEA	IX+-65
+	CALL	_sprintf
 	POP	BC
 	POP	BC
 	POP	BC
-;  248	                    gfx_PrintStringXY("Scan File", 120, ui_textstart_y + 130);
-	LD	BC,205
-	PUSH	BC
-	LD	BC,120
-	PUSH	BC
+	POP	BC
+	POP	BC
+;  262	                         gfx_PrintString(timestring);
+	PEA	IX+-65
+	CALL	_gfx_PrintString
+	POP	BC
+;  263	                    }
+;  264	                    else gfx_PrintString("none");
+	JR	L_92
+L_91:
 	LD	BC,L__63
 	PUSH	BC
-	CALL	_gfx_PrintStringXY
+	CALL	_gfx_PrintString
 	POP	BC
-	POP	BC
-	POP	BC
-;  249	                    break;
-	JR	L_86
-;  250	                case QUIT:
-L_82:
-;  251	                    progRun = false;
-	LD	(IX+-18),0
-;  252	                    break;
-	JR	L_86
-;  253	                default:
-L_83:
-;  254	                    pgrm_EraseContent();
-	CALL	_pgrm_EraseContent
-;  255	                    gfx_PrintStringXY("Option Not Implemented", 10, 75);
-	LD	BC,75
+L_92:
+;  265	                    gfx_PrintStringXY("Update Attributes", 110, ui_textstart_y + 95);
+	LD	BC,170
 	PUSH	BC
-	LD	BC,10
+	LD	BC,110
 	PUSH	BC
 	LD	BC,L__64
 	PUSH	BC
@@ -1659,46 +1708,91 @@ L_83:
 	POP	BC
 	POP	BC
 	POP	BC
-;  256	            }
-;  257	        }
-L_86:
-;  258	        gfx_BlitBuffer();
+;  266	                    gfx_PrintStringXY("Update Snapshot", 110, ui_textstart_y + 105);
+	LD	BC,180
+	PUSH	BC
+	LD	BC,110
+	PUSH	BC
+	LD	BC,L__65
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  267	                    gfx_PrintStringXY("Scan File", 110, ui_textstart_y + 115);
+	LD	BC,190
+	PUSH	BC
+	LD	BC,110
+	PUSH	BC
+	LD	BC,L__66
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  268	                    break;
+	JR	L_97
+;  269	                case QUIT:
+L_93:
+;  270	                    progRun = false;
+	LD	(IX+-15),0
+;  271	                    break;
+	JR	L_97
+;  272	                default:
+L_94:
+;  273	                    pgrm_EraseContent();
+	CALL	_pgrm_EraseContent
+;  274	                    gfx_PrintStringXY("Option Not Implemented", 10, 75);
+	LD	BC,75
+	PUSH	BC
+	LD	BC,10
+	PUSH	BC
+	LD	BC,L__67
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  275	            }
+;  276	        }
+L_97:
+;  277	        gfx_BlitBuffer();
 	LD	BC,1
 	PUSH	BC
 	CALL	_gfx_Blit
 	POP	BC
-;  259	        firstLoop = false;
-	LD	(IX+-23),0
-;  260	    } while(progRun);
-	LD	A,(IX+-18)
+;  278	        firstLoop = false;
+	LD	(IX+-28),0
+;  279	    } while(progRun);
+	LD	A,(IX+-15)
 	OR	A,A
-	JR	NZ,L_87
-;  261	    
-;  262		/* Fill in the body of the main function here */
-;  263	    free(logo);
-	LD	BC,(IX+-32)
+	JR	NZ,L_98
+;  280	    
+;  281		/* Fill in the body of the main function here */
+;  282	    free(logo);
+	LD	BC,(IX+-31)
 	PUSH	BC
 	CALL	_free
 	POP	BC
-;  264	    free(prognames);
-	LD	BC,(IX+-11)
+;  283	    free(prognames);
+	LD	BC,(IX+-8)
 	PUSH	BC
 	CALL	_free
 	POP	BC
-;  265	    free(integ_pass);
-	LD	BC,(IX+-26)
+;  284	    free(integ_pass);
+	LD	BC,(IX+-24)
 	PUSH	BC
 	CALL	_free
 	POP	BC
-;  266	    free(integ_fail);
-	LD	BC,(IX+-29)
+;  285	    free(integ_fail);
+	LD	BC,(IX+-27)
 	PUSH	BC
 	CALL	_free
 	POP	BC
-;  267	    gfx_End();
+;  286	    gfx_End();
 	CALL	_gfx_End
-;  268	    pgrm_CleanUp();
-;  269	}
+;  287	    pgrm_CleanUp();
+;  288	}
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -1708,14 +1802,16 @@ L_86:
 ;Name                         Addr/Register   Size   Type
 ;_gfx_End                            IMPORT  -----   function
 ;_free                               IMPORT  -----   function
-;_gfx_TransparentSprite              IMPORT  -----   function
-;_ti_GetDataPtr                      IMPORT  -----   function
+;_av_LocateFileInSnapDB              IMPORT  -----   function
 ;_sprintf                            IMPORT  -----   function
-;_gfx_GetTextY                       IMPORT  -----   function
-;_gfx_SetTextXY                      IMPORT  -----   function
-;_gfx_PrintString                    IMPORT  -----   function
 ;_num_len                            IMPORT  -----   function
 ;_gfx_PrintUInt                      IMPORT  -----   function
+;_gfx_TransparentSprite              IMPORT  -----   function
+;_av_LocateFileInPropDB              IMPORT  -----   function
+;_gfx_PrintString                    IMPORT  -----   function
+;_gfx_GetTextY                       IMPORT  -----   function
+;_gfx_SetTextXY                      IMPORT  -----   function
+;_progopt_yvals                      STATIC     36   variable
 ;_gfx_SetTextScale                   IMPORT  -----   function
 ;_pgrm_EraseContent                  IMPORT  -----   function
 ;_desc                               STATIC    300   variable
@@ -1726,22 +1822,27 @@ L_86:
 ;_gfx_SetTextFGColor                 IMPORT  -----   function
 ;_pgrm_DrawBackground                IMPORT  -----   function
 ;_av_ScanFile                        IMPORT  -----   function
-;_av_ToggleVersControl               IMPORT  -----   function
+;_av_UpdateSnapshot                  IMPORT  -----   function
+;_av_ToggleSnapshot                  IMPORT  -----   function
+;_av_UpdateAttributes                IMPORT  -----   function
 ;_av_TogglePropTrack                 IMPORT  -----   function
-;_0temp3                             STATIC     11   variable
+;_0temp7                             STATIC     11   variable
 ;_os_GetCSC                          IMPORT  -----   function
 ;_av_GenerateFileIndex               IMPORT  -----   function
-;_memset                             IMPORT  -----   function
+;_exit                               IMPORT  -----   function
+;_calloc                             IMPORT  -----   function
 ;_gfx_Blit                           IMPORT  -----   function
 ;_gfx_PrintStringXY                  IMPORT  -----   function
 ;_gfx_SetDraw                        IMPORT  -----   function
 ;_gfx_SetTextBGColor                 IMPORT  -----   function
 ;_gfx_SetTextTransparentColor        IMPORT  -----   function
 ;_gfx_Begin                          IMPORT  -----   function
+;_SnapDB                             IMPORT      3   variable
 ;_ti_Close                           IMPORT  -----   function
 ;_PropDB                             IMPORT      3   variable
 ;_ti_Open                            IMPORT  -----   function
 ;_ti_CloseAll                        IMPORT  -----   function
+;_integ_fail_icon_compressed         IMPORT     33   variable
 ;_integ_pass_icon_compressed         IMPORT     31   variable
 ;_blast_icon_compressed              IMPORT    384   variable
 ;_zx7_Decompress                     IMPORT  -----   function
@@ -1749,29 +1850,32 @@ L_86:
 ;_malloc                             IMPORT  -----   function
 ;_gfx_AllocSprite                    IMPORT  -----   function
 ;_av_GetNumFiles                     IMPORT  -----   function
-;cs_string                            IX-46     11   variable
-;save                                 IX-35      3   variable
-;logo                                 IX-32      3   variable
-;integ_fail                           IX-29      3   variable
-;integ_pass                           IX-26      3   variable
-;firstLoop                            IX-23      1   variable
-;refresh                              IX-22      1   variable
-;G_0                                  IX-21      1   variable
-;propdb                               IX-20      1   variable
-;heapoffset                           IX-19      1   variable
-;progRun                              IX-18      1   variable
-;progheap                             IX-17      1   variable
-;propfile                             IX-16      1   variable
-;key                                  IX-15      1   variable
-;num_programs                         IX-14      3   variable
-;prognames                            IX-11      3   variable
-;prog                                  IX-8      3   variable
+;timestring                           IX-65     11   variable
+;cs_string                            IX-54     11   variable
+;y                                    IX-43      3   variable
+;x                                    IX-40      3   variable
+;snap                                 IX-37      3   variable
+;current                              IX-34      3   variable
+;logo                                 IX-31      3   variable
+;firstLoop                            IX-28      1   variable
+;integ_fail                           IX-27      3   variable
+;integ_pass                           IX-24      3   variable
+;num_programs                         IX-21      3   variable
+;refresh                              IX-18      1   variable
+;G_0                                  IX-17      1   variable
+;heapoffset                           IX-16      1   variable
+;progRun                              IX-15      1   variable
+;progheap                             IX-14      1   variable
+;key                                  IX-13      1   variable
+;propfile                             IX-12      1   variable
+;prog                                 IX-11      3   variable
+;prognames                             IX-8      3   variable
 ;screen                                IX-5      1   variable
 ;i                                     IX-4      1   variable
 ;selected                              IX-3      3   variable
 
 
-; Stack Frame Size: 58 (bytes)
+; Stack Frame Size: 80 (bytes)
 ;       Spill Code: 0 (instruction)
 
 
@@ -1783,76 +1887,70 @@ L__5:
 	DB	"w+"
 	DB	0
 L__6:
-	DB	"Indexing device contents..."
-	DB	0
-L__34:
-	DB	"FILE OPTIONS"
-	DB	0
-L__38:
-	DB	"File: "
-	DB	0
-L__39:
-	DB	" / "
-	DB	0
-L__40:
-	DB	"File Name: "
-	DB	0
-L__41:
-	DB	"File Type: "
-	DB	0
-L__44:
-	DB	"Program"
-	DB	0
-L__45:
-	DB	"AppVar"
-	DB	0
-L__46:
-	DB	"File Size: "
-	DB	0
-L__47:
-	DB	"CRC-32 CS: "
-	DB	0
-L__48:
-	DB	"%xh"
-	DB	0
-L__49:
-	DB	"Attr Tracking: "
-	DB	0
-L__51:
 	DB	"r+"
 	DB	0
-L__52:
+L__8:
+	DB	"w+"
+	DB	0
+L__9:
+	DB	"Indexing device contents..."
+	DB	0
+L__40:
+	DB	"FILE OPTIONS"
+	DB	0
+L__45:
+	DB	"File Name: "
+	DB	0
+L__46:
+	DB	"File Type: "
+	DB	0
+L__49:
+	DB	"Program"
+	DB	0
+L__50:
+	DB	"AppVar"
+	DB	0
+L__51:
+	DB	"Attr Tracking: "
+	DB	0
+L__53:
 	DB	"enabled"
 	DB	0
-L__54:
+L__56:
 	DB	"disabled"
-	DB	0
-L__55:
-	DB	"Vers Tracking: "
 	DB	0
 L__57:
-	DB	"enabled"
+	DB	"File Size: "
 	DB	0
 L__58:
-	DB	"disabled"
+	DB	"CRC-32 CS: "
+	DB	0
+L__59:
+	DB	"%xh"
 	DB	0
 L__60:
-	DB	"Toggle Attr Tracking"
-	DB	0
-L__61:
-	DB	"Toggle Vers Tracking"
+	DB	"Snapshot: "
 	DB	0
 L__62:
-	DB	"Verify Attributes"
+	DB	"%02u:%02u:%04u"
 	DB	0
 L__63:
-	DB	"Scan File"
+	DB	"none"
 	DB	0
 L__64:
+	DB	"Update Attributes"
+	DB	0
+L__65:
+	DB	"Update Snapshot"
+	DB	0
+L__66:
+	DB	"Scan File"
+	DB	0
+L__67:
 	DB	"Option Not Implemented"
 	DB	0
 	SEGMENT TEXT
-_0temp3:
+_0temp7:
 	DB	0
 	DB	0
 	DB	0
@@ -1869,38 +1967,38 @@ _1temp0:
 	DB	0
 	DB	0
 	SEGMENT CODE
-;  270	
-;  271	
-;  272	
-;  273	int num_len(int num){
+;  289	
+;  290	
+;  291	
+;  292	int num_len(int num){
 _num_len:
 	LD	HL,-3
 	CALL	__frameset
-;  274	    int count = 0;
+;  293	    int count = 0;
 	LD	BC,0
 	LD	(IX+-3),BC
-;  275	    while(num != 0)
-	JR	L_91
-L_92:
-;  276	    {
-;  277	        // n = n/10
-;  278	        num /= 10;
+;  294	    while(num != 0)
+	JR	L_102
+L_103:
+;  295	    {
+;  296	        // n = n/10
+;  297	        num /= 10;
 	LD	BC,10
 	LD	HL,(IX+6)
 	CALL	__idivs
 	LD	(IX+6),HL
-;  279	        ++count;
+;  298	        ++count;
 	LD	BC,(IX+-3)
 	INC	BC
 	LD	(IX+-3),BC
-;  280	    }
-L_91:
+;  299	    }
+L_102:
 	LD	HL,(IX+6)
 	CALL	__icmpzero
-	JR	NZ,L_92
-;  281	    return count;
+	JR	NZ,L_103
+;  300	    return count;
 	LD	HL,(IX+-3)
-;  282	}
+;  301	}
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -1916,11 +2014,11 @@ L_91:
 ;       Spill Code: 0 (instruction)
 
 
-;  283	
-;  284	int text_GetCenterX(char* string, int width){
+;  302	
+;  303	int text_GetCenterX(char* string, int width){
 _text_GetCenterX:
 	CALL	__frameset0
-;  285	    return (width - gfx_GetStringWidth(string)) / 2;
+;  304	    return (width - gfx_GetStringWidth(string)) / 2;
 	LD	BC,(IX+6)
 	PUSH	BC
 	CALL	_gfx_GetStringWidth
@@ -1931,7 +2029,7 @@ _text_GetCenterX:
 	SBC	HL,BC
 	LD	A,1
 	CALL	__ishru_b
-;  286	}
+;  305	}
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -1948,16 +2046,16 @@ _text_GetCenterX:
 ;       Spill Code: 0 (instruction)
 
 
-;  287	
-;  288	
-;  289	void pgrm_EraseContent(void){
+;  306	
+;  307	
+;  308	void pgrm_EraseContent(void){
 _pgrm_EraseContent:
-;  290	    gfx_SetColor(205);
+;  309	    gfx_SetColor(205);
 	LD	BC,205
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  291	    gfx_FillRectangle(111, 71, 319-111, 219-71);
+;  310	    gfx_FillRectangle(111, 71, 319-111, 219-71);
 	LD	BC,148
 	PUSH	BC
 	LD	BC,208
@@ -1971,7 +2069,7 @@ _pgrm_EraseContent:
 	POP	BC
 	POP	BC
 	POP	BC
-;  292	}
+;  311	}
 	RET	
 
 
@@ -1985,22 +2083,22 @@ _pgrm_EraseContent:
 ;       Spill Code: 0 (instruction)
 
 
-;  293	
-;  294	void pgrm_DrawBackground(gfx_sprite_t *icon){
+;  312	
+;  313	void pgrm_DrawBackground(gfx_sprite_t *icon){
 _pgrm_DrawBackground:
 	CALL	__frameset0
-;  295	    // draw background
-;  296	    gfx_FillScreen(205);
+;  314	    // draw background
+;  315	    gfx_FillScreen(205);
 	LD	BC,205
 	PUSH	BC
 	CALL	_gfx_FillScreen
 	POP	BC
-;  297	    gfx_SetColor(0);
+;  316	    gfx_SetColor(0);
 	LD	BC,0
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  298	    gfx_FillRectangle(0, 0, 320, 70);
+;  317	    gfx_FillRectangle(0, 0, 320, 70);
 	LD	BC,70
 	PUSH	BC
 	LD	BC,320
@@ -2013,12 +2111,12 @@ _pgrm_DrawBackground:
 	POP	BC
 	POP	BC
 	POP	BC
-;  299	    gfx_SetColor(40);
+;  318	    gfx_SetColor(40);
 	LD	BC,40
 	PUSH	BC
 	CALL	_gfx_SetColor
 	POP	BC
-;  300	    gfx_FillRectangle(4, 4, 320-8, 70-8);
+;  319	    gfx_FillRectangle(4, 4, 320-8, 70-8);
 	LD	BC,62
 	PUSH	BC
 	LD	BC,312
@@ -2031,19 +2129,19 @@ _pgrm_DrawBackground:
 	POP	BC
 	POP	BC
 	POP	BC
-;  301	    gfx_SetTextFGColor(255);
+;  320	    gfx_SetTextFGColor(255);
 	LD	BC,255
 	PUSH	BC
 	CALL	_gfx_SetTextFGColor
 	POP	BC
-;  302	    gfx_SetTextScale(3,3);
+;  321	    gfx_SetTextScale(3,3);
 	LD	BC,3
 	PUSH	BC
 	PUSH	BC
 	CALL	_gfx_SetTextScale
 	POP	BC
 	POP	BC
-;  303	    gfx_TransparentSprite(icon, 5, 5);
+;  322	    gfx_TransparentSprite(icon, 5, 5);
 	LD	BC,5
 	PUSH	BC
 	PUSH	BC
@@ -2053,62 +2151,10 @@ _pgrm_DrawBackground:
 	POP	BC
 	POP	BC
 	POP	BC
-;  304	    gfx_PrintStringXY("B L A S T", 100, 20);
+;  323	    gfx_PrintStringXY("B L A S T", 100, 20);
 	LD	BC,20
 	PUSH	BC
 	LD	BC,100
-	PUSH	BC
-	LD	BC,L__71
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  305	    gfx_SetTextScale(2,2);
-	LD	BC,2
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_SetTextScale
-	POP	BC
-	POP	BC
-;  306	    gfx_PrintStringXY("2", 265, 15);
-	LD	BC,15
-	PUSH	BC
-	LD	BC,265
-	PUSH	BC
-	LD	BC,L__72
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  307	    gfx_SetTextScale(1,1);
-	LD	BC,1
-	PUSH	BC
-	PUSH	BC
-	CALL	_gfx_SetTextScale
-	POP	BC
-	POP	BC
-;  308	    gfx_PrintStringXY("TI File Integrity Software", 100, 50);
-	LD	BC,50
-	PUSH	BC
-	LD	BC,100
-	PUSH	BC
-	LD	BC,L__73
-	PUSH	BC
-	CALL	_gfx_PrintStringXY
-	POP	BC
-	POP	BC
-	POP	BC
-;  309	    gfx_SetTextFGColor(0);
-	LD	BC,0
-	PUSH	BC
-	CALL	_gfx_SetTextFGColor
-	POP	BC
-;  310	    gfx_PrintStringXY("(c) 2019 - Anthony Cagliano, ClrHome", 5, 228);
-	LD	BC,228
-	PUSH	BC
-	LD	BC,5
 	PUSH	BC
 	LD	BC,L__74
 	PUSH	BC
@@ -2116,7 +2162,59 @@ _pgrm_DrawBackground:
 	POP	BC
 	POP	BC
 	POP	BC
-;  311	}
+;  324	    gfx_SetTextScale(2,2);
+	LD	BC,2
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_SetTextScale
+	POP	BC
+	POP	BC
+;  325	    gfx_PrintStringXY("2", 265, 15);
+	LD	BC,15
+	PUSH	BC
+	LD	BC,265
+	PUSH	BC
+	LD	BC,L__75
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  326	    gfx_SetTextScale(1,1);
+	LD	BC,1
+	PUSH	BC
+	PUSH	BC
+	CALL	_gfx_SetTextScale
+	POP	BC
+	POP	BC
+;  327	    gfx_PrintStringXY("TI File Integrity Software", 100, 50);
+	LD	BC,50
+	PUSH	BC
+	LD	BC,100
+	PUSH	BC
+	LD	BC,L__76
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  328	    gfx_SetTextFGColor(0);
+	LD	BC,0
+	PUSH	BC
+	CALL	_gfx_SetTextFGColor
+	POP	BC
+;  329	    gfx_PrintStringXY("(c) 2019 - Anthony Cagliano, ClrHome", 5, 228);
+	LD	BC,228
+	PUSH	BC
+	LD	BC,5
+	PUSH	BC
+	LD	BC,L__77
+	PUSH	BC
+	CALL	_gfx_PrintStringXY
+	POP	BC
+	POP	BC
+	POP	BC
+;  330	}
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -2139,48 +2237,27 @@ _pgrm_DrawBackground:
 
 
 	SEGMENT STRSECT
-L__71:
+L__74:
 	DB	"B L A S T"
 	DB	0
-L__72:
+L__75:
 	DB	"2"
 	DB	0
-L__73:
+L__76:
 	DB	"TI File Integrity Software"
 	DB	0
-L__74:
+L__77:
 	DB	"(c) 2019 - Anthony Cagliano, ClrHome"
 	DB	0
 	SEGMENT CODE
-;  312	
-;  313	
-;  314	
-;  315	
-;  316	void av_ToggleVersControl(progname_t* program){
-_av_ToggleVersControl:
-	CALL	__frameset0
-;  317	    
-;  318	}
-	LD	SP,IX
-	POP	IX
-	RET	
-
-
-;**************************** _av_ToggleVersControl ***************************
-;Name                         Addr/Register   Size   Type
-;program                               IX+6      3   parameter
-
-
-; Stack Frame Size: 9 (bytes)
-;       Spill Code: 0 (instruction)
-
-
-;  319	
-;  320	void av_ScanFile(progname_t* program){
+;  331	
+;  332	
+;  333	
+;  334	void av_ScanFile(progname_t* program){
 _av_ScanFile:
 	CALL	__frameset0
-;  321	    
-;  322	}
+;  335	    
+;  336	}
 	LD	SP,IX
 	POP	IX
 	RET	
@@ -2195,10 +2272,17 @@ _av_ScanFile:
 ;       Spill Code: 0 (instruction)
 
 
+	XREF _av_LocateFileInSnapDB:ROM
+	XREF _av_UpdateSnapshot:ROM
+	XREF _av_ToggleSnapshot:ROM
+	XREF _av_UpdateAttributes:ROM
 	XREF _av_TogglePropTrack:ROM
+	XREF _av_LocateFileInPropDB:ROM
 	XREF _av_GenerateFileIndex:ROM
 	XREF _av_GetNumFiles:ROM
+	XREF _SnapDB:ROM
 	XREF _PropDB:ROM
+	XREF _integ_fail_icon_compressed:ROM
 	XREF _integ_pass_icon_compressed:ROM
 	XREF _blast_icon_compressed:ROM
 	XREF _zx7_Decompress:ROM
@@ -2221,17 +2305,18 @@ _av_ScanFile:
 	XREF _gfx_End:ROM
 	XREF _gfx_Begin:ROM
 	XREF _gfx_AllocSprite:ROM
-	XREF _memset:ROM
 	XREF _sprintf:ROM
-	XREF _ti_GetDataPtr:ROM
 	XREF _ti_Close:ROM
 	XREF _ti_Open:ROM
 	XREF _ti_CloseAll:ROM
+	XREF _exit:ROM
 	XREF _free:ROM
 	XREF _malloc:ROM
+	XREF _calloc:ROM
 	XREF _os_GetCSC:ROM
 	XREF __lcmpu:ROM
 	XREF __idivs:ROM
+	XREF __stoiu:ROM
 	XREF __frameset0:ROM
 	XREF __frameset:ROM
 	XREF __setflag:ROM
@@ -2240,12 +2325,12 @@ _av_ScanFile:
 	XREF __imul_b:ROM
 	XREF __ishru_b:ROM
 	XDEF _av_ScanFile
-	XDEF _av_ToggleVersControl
 	XDEF _pgrm_DrawBackground
 	XDEF _pgrm_EraseContent
 	XDEF _text_GetCenterX
 	XDEF _num_len
 	XDEF _main
+	XDEF _progopt_yvals
 	XDEF _desc
 	XDEF _strings
 	XDEF _Version

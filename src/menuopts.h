@@ -14,9 +14,15 @@ enum Screens {
 enum ProgOpts {
     NONE,
     TRACK_TOGG,
-    VERS_TOGG,
+    SNAP_TOGG,
+    TRACK_UPD,
+    SNAP_UPD,
     SCAN
 };
+
+typedef struct {
+    int x, y;
+} progopt_t;
 
 typedef struct {
     unsigned char menu;

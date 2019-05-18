@@ -43,7 +43,6 @@ void pgrm_DrawBackground(gfx_sprite_t *icon);
 int text_GetCenterX(char* string, int width);
 int num_len(int num);
 int progsort(const void* a, const void* b);
-void av_ToggleVersControl(progname_t* program);
 void av_ScanFile(progname_t* program);
 
 /* Put all your globals here. */
@@ -53,6 +52,12 @@ const char *Version = "0.91b";
 
 /* Supporting Files */
 
+#define OS_START 0x02000h
+#define CERT_START 0x3B0000h
+#define ARCH_START 0x0C0000h
+#define RAM_START 0xD00000h
+#define ui_textstart_y 75
+#define ui_progdata_out 175
 
 const char strings[][14] = {"File Options", "System Scans", "Settings", "About", "Quit"};
 const char desc[][60] = {"View and modify file data.",
@@ -60,15 +65,14 @@ const char desc[][60] = {"View and modify file data.",
     "Change how this program works.",
     "View information about this program.",
     "Exit the program."};
-
-
-
-#define OS_START 0x02000h
-#define CERT_START 0x3B0000h
-#define ARCH_START 0x0C0000h
-#define RAM_START 0xD00000h
-#define ui_textstart_y 75
-#define ui_progdata_out 175
+progopt_t progopt_yvals[] = {
+    {0, 0},
+    {96, ui_textstart_y + 45},
+    {96, ui_textstart_y + 80},
+    {106, ui_textstart_y + 95},
+    {106, ui_textstart_y + 105},
+    {106, ui_textstart_y + 115}
+};
 
 void main(void) {
     bool progRun = true, firstLoop = true;
@@ -84,13 +88,15 @@ void main(void) {
     selected_t selected = {0};
     //allocate memory
    // int_Disable();
-    dbg_sprintf(dbgout, "Testing\n");
     zx7_Decompress(logo, blast_icon_compressed);
     zx7_Decompress(integ_pass, integ_pass_icon_compressed);
-    zx7_Decompress(integ_fail, integ_pass_icon_compressed);
+    zx7_Decompress(integ_fail, integ_fail_icon_compressed);
     ti_CloseAll();
     if(!(propfile = ti_Open(PropDB, "r+")))
         propfile = ti_Open(PropDB, "w+");
+    ti_Close(propfile);
+    if(!(propfile = ti_Open(SnapDB, "r+")))
+        propfile = ti_Open(SnapDB, "w+");
     ti_Close(propfile);
     gfx_Begin();
     gfx_SetTextTransparentColor(1);
@@ -99,7 +105,7 @@ void main(void) {
     gfx_PrintStringXY("Indexing device contents...", 5, 5); gfx_BlitBuffer();
     // loop save names of all files on device
     prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
-    memset(prognames, 0, sizeof(progname_t) * num_programs);
+    if(prognames == NULL) exit(1);
     av_GenerateFileIndex(prognames, num_programs);
   
     // decompress all graphics
@@ -108,6 +114,8 @@ void main(void) {
         char i;
         char progheap, heapoffset;
         bool refresh = firstLoop;
+        progsave_t* current;
+        snapshot_t* snap;
         unsigned long checksum = 0;
         char cs_string[11] = {'\0'};
         progname_t* prog;
@@ -120,7 +128,7 @@ void main(void) {
                     if(!selected.progopt) {
                         if(selected.program < (num_programs-1)) selected.program++;
                     }else{
-                        if(selected.progopt < SCAN) selected.progopt++;}
+                        if(selected.progopt < TRACK_UPD) selected.progopt++;}
                     break;
             }
         }
@@ -152,11 +160,15 @@ void main(void) {
             if(screen == MAIN) screen = selected.menu;
             else if(screen == FILE_OPTS){
                 if(!selected.progopt) selected.progopt = 1;
-                else if(selected.progopt == 1)
+                else if(selected.progopt == TRACK_TOGG)
                     av_TogglePropTrack(&prognames[selected.program]);
-                else if(selected.progopt == 2)
-                    av_ToggleVersControl(&prognames[selected.program]);
-                else if(selected.progopt == 3)
+                else if(selected.progopt == TRACK_UPD)
+                    av_UpdateAttributes(&prognames[selected.program]);
+                else if(selected.progopt == SNAP_TOGG)
+                    av_ToggleSnapshot(&prognames[selected.program]);
+                else if(selected.progopt == SNAP_UPD)
+                    av_UpdateSnapshot(&prognames[selected.program]);
+                else if(selected.progopt == SCAN)
                     av_ScanFile(&prognames[selected.program]);
             }
         }
@@ -204,50 +216,55 @@ void main(void) {
                     }
                     gfx_SetTextFGColor(0);
                     prog = &prognames[selected.program];
-                    gfx_PrintStringXY("File: ", 100, ui_textstart_y + 20);
-                    gfx_PrintUInt(selected.program + 1, num_len(selected.program + 1));
-                    gfx_PrintString(" / ");
-                    gfx_PrintUInt(num_programs, num_len(num_programs));
-                    gfx_PrintStringXY("File Name: ", 100, ui_textstart_y + 35);
+                    if(selected.progopt){
+                        int x = progopt_yvals[selected.progopt].x;
+                        int y = progopt_yvals[selected.progopt].y - 1;
+                        gfx_SetColor(140);
+                        gfx_FillRectangle(x, y, 160, 10);
+                    }
+                    gfx_PrintStringXY("File Name: ", 100, ui_textstart_y + 20);
                     gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
                     gfx_PrintString(&prog->name[0]/*, 10, 9 * i + 75*/);
-                    gfx_PrintStringXY("File Type: ", 100, ui_textstart_y + 45);
+                    gfx_PrintStringXY("File Type: ", 100, ui_textstart_y + 30);
                     gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
                     if(prog->type == TI_PRGM_TYPE || prog->type == TI_PPRGM_TYPE)
                         gfx_PrintString("Program");
                     else gfx_PrintString("AppVar");
-                    gfx_PrintStringXY("File Size: ", 100, ui_textstart_y + 60);
+                    gfx_PrintStringXY("Attr Tracking: ", 100, ui_textstart_y + 45);
+                    if((current = av_LocateFileInPropDB(prog)) != NULL){
+                        gfx_PrintString("enabled");
+                        if(current->size == prog->size)
+                            gfx_TransparentSprite(integ_pass, ui_progdata_out + 65, ui_textstart_y + 53);
+                        else
+                            gfx_TransparentSprite(integ_fail, ui_progdata_out + 65, ui_textstart_y + 53);
+                        if(current->checksum == prog->checksum)
+                            gfx_TransparentSprite(integ_pass, ui_progdata_out + 65, ui_textstart_y + 63);
+                        else
+                            gfx_TransparentSprite(integ_fail, ui_progdata_out + 65, ui_textstart_y + 63);
+                    }
+                    else {
+                        gfx_PrintString("disabled");}
+                    
+                    gfx_PrintStringXY("File Size: ", 100, ui_textstart_y + 55);
                     gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
                     gfx_PrintUInt(prog->size, num_len(prog->size));
-                    gfx_PrintStringXY("CRC-32 CS: ", 100, ui_textstart_y + 70);
+                    gfx_PrintStringXY("CRC-32 CS: ", 100, ui_textstart_y + 65);
                     gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
                     sprintf(cs_string, "%xh", prog->checksum);
                     gfx_PrintString(cs_string);
-                    gfx_PrintStringXY("Attr Tracking: ", 100, ui_textstart_y + 80);
-                    gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
-                    if(prog->prop_track) {
-                        ti_var_t propdb = ti_Open(PropDB, "r+");
-                        progsave_t* save = prog->prop_track + ti_GetDataPtr(propdb);
-                        ti_Close(propdb);
-                        gfx_PrintString("enabled");
-                        if(save->checksum == prog->checksum)
-                            gfx_TransparentSprite(integ_pass, ui_progdata_out + 85, ui_textstart_y + 78);
-                        else
-                            gfx_TransparentSprite(integ_fail, ui_progdata_out + 85, ui_textstart_y + 78);
+                   // gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
+                   
+                    gfx_PrintStringXY("Snapshot: ", 100, ui_textstart_y + 80);
+                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                     if((snap = (snapshot_t*)av_LocateFileInSnapDB(prog)) != 0){
+                         char timestring[11];
+                         sprintf(timestring, "%02u:%02u:%04u", snap->time.month, snap->time.day, snap->time.year);
+                         gfx_PrintString(timestring);
                     }
-                    else gfx_PrintString("disabled");
-                    gfx_PrintStringXY("Vers Tracking: ", 100, ui_textstart_y + 90);
-                    gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
-                    if(prog->vers_track) gfx_PrintString("enabled");
-                    else gfx_PrintString("disabled");
-                    if(selected.progopt){
-                        gfx_SetColor(140);
-                        gfx_FillRectangle(116, (selected.progopt - 1) * 10 + ui_textstart_y + 99, 160, 10);
-                    }
-                    gfx_PrintStringXY("Toggle Attr Tracking", 120, ui_textstart_y + 100);
-                    gfx_PrintStringXY("Toggle Vers Tracking", 120, ui_textstart_y + 110);
-                    gfx_PrintStringXY("Verify Attributes", 120, ui_textstart_y + 120);
-                    gfx_PrintStringXY("Scan File", 120, ui_textstart_y + 130);
+                    else gfx_PrintString("none");
+                    gfx_PrintStringXY("Update Attributes", 110, ui_textstart_y + 95);
+                    gfx_PrintStringXY("Update Snapshot", 110, ui_textstart_y + 105);
+                    gfx_PrintStringXY("Scan File", 110, ui_textstart_y + 115);
                     break;
                 case QUIT:
                     progRun = false;
@@ -313,11 +330,6 @@ void pgrm_DrawBackground(gfx_sprite_t *icon){
 }
 
 
-
-
-void av_ToggleVersControl(progname_t* program){
-    
-}
 
 void av_ScanFile(progname_t* program){
     
