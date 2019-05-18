@@ -21,10 +21,10 @@ typedef struct {
 } progname_t;
 
 typedef struct {
+    size_t size;
     char type;
     char fname[9];
     stime_t time;
-    size_t size;
     uint8_t data[1];
 } snapshot_t;
 

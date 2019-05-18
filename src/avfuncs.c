@@ -158,9 +158,21 @@ void av_ToggleSnapshot(progname_t* program){
 }
 
 void av_DeleteSnapshot(progname_t* program){
-    snapshot_t* loc = (snapshot_t*)av_LocateFileInSnapDB(program);
-    if(loc == 0) return;
-    memset((void*)loc, 0, sizeof(snapshot_t) + loc->size);
+    size_t size;
+    unsigned int start = (unsigned int)av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
+    unsigned int end = start + size;
+    snapshot_t* dest = (snapshot_t*)av_LocateFileInSnapDB(program);
+    size_t itemsize = dest->size;
+    snapshot_t* src = (snapshot_t*)((size_t)dest + itemsize);
+    dbg_sprintf(dbgout, "Start: %u\n", start);
+    dbg_sprintf(dbgout, "End: %u\n", end);
+    dbg_sprintf(dbgout, "Dest: %u\n", dest);
+    dbg_sprintf(dbgout, "Src: %u\n", src);
+    dbg_sprintf(dbgout, "item size: %u\n", itemsize);
+    if(dest == 0) return;
+    memset(dest, 0, itemsize);
+    memcpy(dest, src, end - (size_t)src);
+    av_ResizeFile(SnapDB, TI_APPVAR_TYPE, -1 * itemsize);
     program->snapshot = (av_LocateFileInSnapDB(program) != 0);
 }
 
@@ -172,7 +184,7 @@ void av_CreateSnapshot(progname_t* program){
     if(db_data ==NULL) return;
     strncpy(tmp.fname, program->name, 8);
     tmp.type = program->type;
-    tmp.size = program->size;
+    tmp.size = program->size + sizeof(snapshot_t);
     boot_GetDate(&tmp.time.day, &tmp.time.month, &tmp.time.year);
     if(dbfile = ti_Open(SnapDB, "r+")){
         ti_var_t srcfile;
@@ -196,7 +208,7 @@ unsigned int av_LocateFileInSnapDB(progname_t* program){
         snapshot_t* this = (snapshot_t*)db_data;
         if((!strncmp(this->fname, program->name, 8)) && (this->type == program->type))
             return (unsigned int)this;
-        db_data += (sizeof(snapshot_t) + this->size);
+        db_data += this->size;
     }
     return 0;
 }
