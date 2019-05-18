@@ -15,7 +15,7 @@ typedef struct {
     char type;
     char name[9];
     unsigned long checksum;
-    int size;
+    unsigned int size;
     unsigned int prop_track;
 } progname_t;
 

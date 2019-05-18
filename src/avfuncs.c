@@ -176,17 +176,20 @@ void av_DeleteSnapshot(progname_t* program){
     size_t itemsize = dest->size;
     snapshot_t* src = (snapshot_t*)((size_t)dest + itemsize);
     size_t copybytes = end - (size_t)src;
-    if(!strncmp("BLASTFIS", program->name, 8)) return;
-    dbg_sprintf(dbgout, "Start: %u\n", start);
-    dbg_sprintf(dbgout, "End: %u\n", end);
-    dbg_sprintf(dbgout, "File Size: %u\n", size);
-    dbg_sprintf(dbgout, "Dest: %u\n", dest);
-    dbg_sprintf(dbgout, "Src: %u\n", src);
-    dbg_sprintf(dbgout, "item size: %u\n", itemsize);
-    dbg_sprintf(dbgout, "Bytes to copy: %u\n", copybytes);
-    if(dest == 0) return;
-    if(copybytes) memcpy(dest, src, copybytes);
-    if(!av_ResizeFile(SnapDB, TI_APPVAR_TYPE, (-itemsize))) dbg_sprintf(dbgout, "Resize Failed!\n");
+    if(strncmp("BLASTFIS", program->name, 8)){
+        dbg_sprintf(dbgout, "Start: %u\n", start);
+        dbg_sprintf(dbgout, "End: %u\n", end);
+        dbg_sprintf(dbgout, "File Size: %u\n", size);
+        dbg_sprintf(dbgout, "Dest: %u\n", dest);
+        dbg_sprintf(dbgout, "Src: %u\n", src);
+        dbg_sprintf(dbgout, "item size: %u\n", itemsize);
+        dbg_sprintf(dbgout, "Bytes to copy: %u\n", copybytes);
+        if(dest){
+            if(copybytes) memcpy(dest, src, copybytes);
+            if(av_ResizeFile(SnapDB, TI_APPVAR_TYPE, (-itemsize)) < 1)
+                dbg_sprintf(dbgout, "Resize Failed!\n");
+        }
+    }
 }
 
 void av_CreateSnapshot(progname_t* program){
@@ -194,20 +197,21 @@ void av_CreateSnapshot(progname_t* program){
     snapshot_t tmp;
     size_t size;
     progsave_t* db_data = av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
-    if(db_data ==NULL) return;
-    strncpy(tmp.fname, program->name, 8);
-    tmp.type = program->type;
-    tmp.size = program->size + sizeof(snapshot_t);
-    boot_GetDate(&tmp.time.day, &tmp.time.month, &tmp.time.year);
-    if(dbfile = ti_Open(SnapDB, "r+")){
-        ti_var_t srcfile;
-        ti_Seek(0, SEEK_END, dbfile);
-        ti_Write(&tmp, sizeof(snapshot_t), 1, dbfile);
-        if(srcfile = ti_OpenVar(program->name, "r", program->type)){
-            ti_Write(ti_GetDataPtr(srcfile), ti_GetSize(srcfile), 1, dbfile);
-            ti_Close(srcfile);
+    if(db_data){
+        strncpy(tmp.fname, program->name, 8);
+        tmp.type = program->type;
+        tmp.size = program->size + sizeof(snapshot_t);
+        boot_GetDate(&tmp.time.day, &tmp.time.month, &tmp.time.year);
+        if(dbfile = ti_Open(SnapDB, "r+")){
+            ti_var_t srcfile;
+            ti_Seek(0, SEEK_END, dbfile);
+            ti_Write(&tmp, sizeof(snapshot_t), 1, dbfile);
+            if(srcfile = ti_OpenVar(program->name, "r", program->type)){
+                ti_Write(ti_GetDataPtr(srcfile), ti_GetSize(srcfile), 1, dbfile);
+                ti_Close(srcfile);
+            }
+            ti_Close(dbfile);
         }
-        ti_Close(dbfile);
     }
 }
 
@@ -215,9 +219,12 @@ unsigned int av_LocateFileInSnapDB(progname_t* program){
     size_t size;
     unsigned int db_data = (unsigned int)av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
     unsigned int db_end = db_data + size;
+    dbg_sprintf(dbgout, "SnapPtr(InFunc): %u\n", db_data);
+    dbg_sprintf(dbgout, "SnapEnd(InFunc): %u\n", db_end);
     if(db_data == NULL) return 0;
     while(db_data < db_end){
         snapshot_t* this = (snapshot_t*)db_data;
+        dbg_sprintf(dbgout, "SnapPtr(InFuncLoop): %u\n", db_data);
         if((!strncmp(this->fname, program->name, 8)) && (this->type == program->type))
             return (unsigned int)this;
         db_data += this->size;

@@ -259,11 +259,12 @@ void main(void) {
                     sprintf(cs_string, "%xh", prog->checksum);
                     gfx_PrintString(cs_string);
                    // gfx_SetTextXY(ui_progdata_out + 30, gfx_GetTextY());
-                   
+                    dbg_sprintf(dbgout, "We Got here!\n");
                     gfx_PrintStringXY("Snapshot: ", 100, ui_textstart_y + 80);
                     gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
                      if((snap = (snapshot_t*)av_LocateFileInSnapDB(prog)) != 0){
                          char timestring[11];
+                         dbg_sprintf(dbgout, "SnapPtr: %u\n", snap);
                          sprintf(timestring, "%02u:%02u:%04u", snap->time.month, snap->time.day, snap->time.year);
                          gfx_PrintString(timestring);
                     }

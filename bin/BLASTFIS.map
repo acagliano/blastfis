@@ -6,10 +6,10 @@ libs     D1A9FB D1AA8C            91h
 startup  D1AA8C D1AACB            3Fh
 cleanup  D1AACB D1AADF            14h
 exit     D1AADF D1AAE5             6h
-code     D1AAE5 D1C6E1          1BFCh
-data     D1C6E1 D1C8FF           21Eh
-strsect  D1C8FF D1CB1B           21Ch
-text     D1CB1B D1CC9B           180h
+code     D1AAE5 D1C748          1C63h
+data     D1C748 D1C966           21Eh
+strsect  D1C966 D1CBE0           27Ah
+text     D1CBE0 D1CD60           180h
 bss      D031F6 D035FC D13FD6    406h
 header   D1A87F D1A882             3h
 
@@ -175,9 +175,9 @@ _exit                        = D1AAE1
 __exit                       = D1AABA
 __exitsp                     = D1AABA
 __errsp                      = D1AABA
-_av_UpdateSnapshot           = D1BA30
-_av_LocateFileInSnapDB       = D1B99C
-_av_CreateSnapshot           = D1B87A
+_av_UpdateSnapshot           = D1BA72
+_av_LocateFileInSnapDB       = D1B99F
+_av_CreateSnapshot           = D1B87D
 _av_DeleteSnapshot           = D1B718
 _av_ToggleSnapshot           = D1B6E7
 _av_UpdateAttributes         = D1B6AE
@@ -190,25 +190,25 @@ _av_LocateFileInPropDB       = D1B3DD
 _av_GenerateFileIndex        = D1B15B
 _av_GetNumFiles              = D1B0A7
 _progsort                    = D1B031
-_SnapDB                      = D1C70C
-_AvDB                        = D1C709
-_PropDB                      = D1C706
-_rc_crc32                    = D1BA3E
-_blast_icon_compressed       = D1C712
-_integ_fail_icon_compressed  = D1C892
-_integ_pass_icon_compressed  = D1C8B3
-_av_ScanFile                 = D1C6D3
-_pgrm_DrawBackground         = D1C5D6
-_pgrm_EraseContent           = D1C5A2
-_text_GetCenterX             = D1C57D
-_num_len                     = D1C544
-_main                        = D1BBA5
-_progopt_yvals               = D1C8DB
-_desc                        = D1CB61
-_strings                     = D1CB1B
-_Version                     = D1C8D8
-_SubName                     = D1C8D5
-_ProgName                    = D1C8D2
+_SnapDB                      = D1C773
+_AvDB                        = D1C770
+_PropDB                      = D1C76D
+_rc_crc32                    = D1BA80
+_blast_icon_compressed       = D1C779
+_integ_fail_icon_compressed  = D1C8F9
+_integ_pass_icon_compressed  = D1C91A
+_av_ScanFile                 = D1C73A
+_pgrm_DrawBackground         = D1C63D
+_pgrm_EraseContent           = D1C609
+_text_GetCenterX             = D1C5E4
+_num_len                     = D1C5AB
+_main                        = D1BBE7
+_progopt_yvals               = D1C942
+_desc                        = D1CC26
+_strings                     = D1CBE0
+_Version                     = D1C93F
+_SubName                     = D1C93C
+_ProgName                    = D1C939
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17
