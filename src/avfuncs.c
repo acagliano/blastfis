@@ -170,28 +170,20 @@ void av_ToggleSnapshot(progname_t* program){
 }
 
 void av_DeleteSnapshot(progname_t* program){
-    unsigned int i;
-    size_t size;
-    unsigned int snap_db = (unsigned int)av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
-    unsigned int snap_end = snap_db + size;
-    unsigned int snap_cur = av_LocateFileInSnapDB(program);
-    snapshot_t* temp = (snapshot_t*)snap_cur;
-    size_t cur_size = temp->size;
-    unsigned int snap_next = snap_cur + cur_size;
-    uint8_t* curr = (uint8_t*)snap_cur;
-    dbg_sprintf(dbgout, "File Start: %u\n", snap_db);
-    dbg_sprintf(dbgout, "File End: %u\n", snap_end);
-    dbg_sprintf(dbgout, "Size: %u\n", size);
-    dbg_sprintf(dbgout, "Starting at: %u\n", snap_cur);
-    for(i = snap_next; i < snap_end; i++){
-        uint8_t* this = (uint8_t*)i;
-        dbg_sprintf(dbgout, "Moving from %u to %u\n", this, curr);
-        *curr = *this;
-        curr++;
+    ti_var_t existing, new;
+    char* temp = "\x01";
+    if(new = ti_Open(temp, "w")){
+        size_t size;
+        uint8_t* orig_start = (uint8_t*)av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
+        uint8_t* orig_curr = (uint8_t*)av_LocateFileInSnapDB(program);
+        uint8_t* orig_end = orig_start + size;
+        uint24_t N;
+        ti_Write(orig_start, (uint24_t)orig_curr - (uint24_t)orig_start, 1, new);
+        N = (uint24_t)orig_curr + ((uint24_t)*orig_curr);
+        ti_Write((uint8_t*)N, (uint24_t)orig_end - N, 1, new);
+        ti_Delete(SnapDB);
+        ti_Rename(temp, SnapDB);
     }
-    size = av_ShrinkFile(SnapDB, TI_APPVAR_TYPE, cur_size);
-    dbg_sprintf(dbgout, "New Size: %u\n", size);
-    os_GetKey();
 }
 
 void av_CreateSnapshot(progname_t* program){
