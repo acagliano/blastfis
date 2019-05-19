@@ -24,7 +24,6 @@ typedef struct {
     char type;
     char fname[9];
     stime_t time;
-    uint8_t data[1];
 } snapshot_t;
 
 

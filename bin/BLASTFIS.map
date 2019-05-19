@@ -6,10 +6,10 @@ libs     D1A9FB D1AA8C            91h
 startup  D1AA8C D1AACB            3Fh
 cleanup  D1AACB D1AADF            14h
 exit     D1AADF D1AAE5             6h
-code     D1AAE5 D1C748          1C63h
-data     D1C748 D1C966           21Eh
-strsect  D1C966 D1CBE0           27Ah
-text     D1CBE0 D1CD60           180h
+code     D1AAE5 D1C6F4          1C0Fh
+data     D1C6F4 D1C912           21Eh
+strsect  D1C912 D1CB78           266h
+text     D1CB78 D1CCF8           180h
 bss      D031F6 D035FC D13FD6    406h
 header   D1A87F D1A882             3h
 
@@ -154,7 +154,6 @@ __lcmpzero                   = 0001B0
 __s_sbrk                     = D1ABA1
 _memcpy                      = 0000A4
 __icmpzero                   = D1ABC1
-__ineg                       = 000160
 __setflag                    = 000218
 _memset                      = D1ABC6
 __imuls                      = 000154
@@ -175,40 +174,40 @@ _exit                        = D1AAE1
 __exit                       = D1AABA
 __exitsp                     = D1AABA
 __errsp                      = D1AABA
-_av_UpdateSnapshot           = D1BA72
-_av_LocateFileInSnapDB       = D1B99F
-_av_CreateSnapshot           = D1B87D
-_av_DeleteSnapshot           = D1B718
-_av_ToggleSnapshot           = D1B6E7
-_av_UpdateAttributes         = D1B6AE
-_disable_PropTrack           = D1B66E
-_enable_PropTrack            = D1B56A
-_av_TogglePropTrack          = D1B53C
-_av_ResizeFile               = D1B4D8
+_av_UpdateSnapshot           = D1BA1E
+_av_LocateFileInSnapDB       = D1B94B
+_av_CreateSnapshot           = D1B849
+_av_DeleteSnapshot           = D1B723
+_av_ToggleSnapshot           = D1B6F2
+_av_UpdateAttributes         = D1B6B9
+_disable_PropTrack           = D1B679
+_enable_PropTrack            = D1B575
+_av_TogglePropTrack          = D1B547
+_av_ShrinkFile               = D1B4D8
 _av_FileGetPtr               = D1B474
 _av_LocateFileInPropDB       = D1B3DD
 _av_GenerateFileIndex        = D1B15B
 _av_GetNumFiles              = D1B0A7
 _progsort                    = D1B031
-_SnapDB                      = D1C773
-_AvDB                        = D1C770
-_PropDB                      = D1C76D
-_rc_crc32                    = D1BA80
-_blast_icon_compressed       = D1C779
-_integ_fail_icon_compressed  = D1C8F9
-_integ_pass_icon_compressed  = D1C91A
-_av_ScanFile                 = D1C73A
-_pgrm_DrawBackground         = D1C63D
-_pgrm_EraseContent           = D1C609
-_text_GetCenterX             = D1C5E4
-_num_len                     = D1C5AB
-_main                        = D1BBE7
-_progopt_yvals               = D1C942
-_desc                        = D1CC26
-_strings                     = D1CBE0
-_Version                     = D1C93F
-_SubName                     = D1C93C
-_ProgName                    = D1C939
+_SnapDB                      = D1C71F
+_AvDB                        = D1C71C
+_PropDB                      = D1C719
+_rc_crc32                    = D1BA2C
+_blast_icon_compressed       = D1C725
+_integ_fail_icon_compressed  = D1C8A5
+_integ_pass_icon_compressed  = D1C8C6
+_av_ScanFile                 = D1C6E6
+_pgrm_DrawBackground         = D1C5E9
+_pgrm_EraseContent           = D1C5B5
+_text_GetCenterX             = D1C590
+_num_len                     = D1C557
+_main                        = D1BB93
+_progopt_yvals               = D1C8EE
+_desc                        = D1CBBE
+_strings                     = D1CB78
+_Version                     = D1C8EB
+_SubName                     = D1C8E8
+_ProgName                    = D1C8E5
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17
