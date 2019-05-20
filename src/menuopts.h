@@ -4,6 +4,7 @@
 enum Screens {
     FILE_OPTS,
     SYS_SCANS,
+    SNAPSHOTS,
     SETTINGS,
     ABOUT,
     QUIT,
@@ -14,10 +15,9 @@ enum Screens {
 enum ProgOpts {
     NONE,
     TRACK_TOGG,
-    SNAP_TOGG,
     TRACK_UPD,
-    SNAP_UPD,
-    SCAN
+    SCAN,
+    SNAP_ENABLE
 };
 
 typedef struct {
@@ -28,6 +28,8 @@ typedef struct {
     unsigned char menu;
     unsigned char program;
     unsigned char progopt;
+    unsigned char snapopt;
+    uint16_t snapshot;
 } selected_t;
 
 #endif

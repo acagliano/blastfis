@@ -20,9 +20,9 @@ typedef struct {
 } progname_t;
 
 typedef struct {
-    size_t size;
     char type;
     char fname[9];
+    size_t size;
     stime_t time;
 } snapshot_t;
 
