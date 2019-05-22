@@ -1,6 +1,6 @@
 
 #include <string.h>
-#include <debug.h>
+//#include <debug.h>
 #include <fileioc.h>
 #include <graphx.h>
 #include "indexing.h"
@@ -11,6 +11,7 @@ const char *PropDB = "AVPropDB";
 const char *AvDB = "AVDefsDB";
 const char *SnapDB = "AVSnapDB";
 const char *SnapFile = "AVshXXXX";
+const char *AVSettings = "AVSett";
 
 
 int progsort(const void* a, const void* b){
@@ -29,9 +30,9 @@ int progsort(const void* a, const void* b){
 }
 
 
-int av_GetNumFiles(void){
+uint24_t av_GetNumFiles(void){
     char* var_name;
-    int count = 0;
+    uint24_t count = 0;
     uint8_t *search_pos = NULL;
     uint8_t type;
     while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
@@ -50,11 +51,12 @@ int av_GetNumFiles(void){
     return count;
 }
 
-int av_GenerateFileIndex(progname_t* prognames, int count){
+int av_GenerateFileIndex(progname_t* prognames, uint24_t count){
     int i = 0;
     char* var_name;
     uint8_t *search_pos = NULL;
     uint8_t type;
+    
     while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
         unsigned int complete = (100 * i / count);
         gfx_SetColor(255);
@@ -75,22 +77,31 @@ int av_GenerateFileIndex(progname_t* prognames, int count){
                    strncmp(var_name, PropDB, 8) &&
                    strncmp(var_name, SnapDB, 8) &&
                    strncmp(var_name, "AVsh", 4)){
+                    size_t size;
+                    settings_t* s = (settings_t*)av_FileGetPtr(AVSettings, TI_APPVAR_TYPE, &size);
                     ti_var_t openfile;
                     progname_t* prog = &prognames[i++];
                     prog->type = type;
                     memcpy(prog->name, var_name, 8);
-                    if(openfile = ti_OpenVar(prog->name, "r", type)){
-                        int value = 0; unsigned long checksum = 0;
-                        prog->prop_track = (unsigned int)av_LocateFileInPropDB(prog);
-                        prog->size = ti_GetSize(openfile);
-                        prog->checksum = rc_crc32(0, ti_GetDataPtr(openfile), prog->size);
-                        ti_Close(openfile);
-                    }
+                    if(s->indexSplit) break;
+                    av_TellAttributes(prog);
                 }
         }
     }
     qsort(prognames, count, sizeof(progname_t), progsort);
     return 1;
+}
+
+void av_TellAttributes(progname_t* program){
+    ti_var_t openfile;
+    if(openfile = ti_OpenVar(program->name, "r", program->type)){
+        int value = 0; unsigned long checksum = 0;
+        program->prop_track = (unsigned int)av_LocateFileInPropDB(program);
+        program->size = ti_GetSize(openfile);
+        program->checksum = rc_crc32(0, ti_GetDataPtr(openfile), program->size);
+        ti_Close(openfile);
+        program->indexed = true;
+    }
 }
 
 progsave_t* av_LocateFileInPropDB(progname_t* program){
@@ -287,7 +298,7 @@ int16_t av_SnapDB_GetSlotMatchOffset(progname_t* program){
 snapshot_t* av_SnapDB_IndexToPtr(int16_t index){
     size_t size;
     snapshot_t* dbstart = av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
-    if(index == -1) return 0;
+    if((index == -1) ||(size == 0)) return 0;
     return &dbstart[index];
     
 }

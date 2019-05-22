@@ -17,7 +17,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <debug.h>
+//#include <debug.h>
 
 /* Other available headers */
 // stdarg.h, setjmp.h, assert.h, ctype.h, float.h, iso646.h, limits.h, errno.h, debug.h
@@ -54,9 +54,8 @@ const char *Version = "0.91b";
 /* Supporting Files */
 
 #define OS_START 0x02000h
-#define CERT_START 0x3B0000h
-#define ARCH_START 0x0C0000h
-#define RAM_START 0xD00000h
+// _OSSIZE = read this for OS size
+
 #define ui_textstart_y 75
 #define ui_progdata_out 175
 
@@ -66,22 +65,16 @@ const char desc[][60] = {"View and modify file data.",
     "Change how this program works.",
     "View information about this program.",
     "Exit the program."};
-progopt_t progopt_yvals[] = {
-    {0, 0},
-    {106, ui_textstart_y + 75},
-    {106, ui_textstart_y + 85},
-    {106, ui_textstart_y + 95},
-    {106, ui_textstart_y + 120}
-};
+
 
 void main(void) {
     bool progRun = true, firstLoop = true;
-    char i;
+    uint24_t i;
     char screen = MAIN;
     uint8_t *search_pos;
     progname_t* prognames = NULL;
     ti_var_t propfile;
-    int num_programs = av_GetNumFiles();
+    uint24_t num_programs = av_GetNumFiles();
     int num_snaps;
     gfx_sprite_t* logo = gfx_MallocSprite(blast_icon_width, blast_icon_height);
     gfx_sprite_t* integ_pass = gfx_MallocSprite(integ_pass_icon_width, integ_pass_icon_height);
@@ -93,32 +86,50 @@ void main(void) {
     zx7_Decompress(integ_pass, integ_pass_icon_compressed);
     zx7_Decompress(integ_fail, integ_fail_icon_compressed);
     ti_CloseAll();
+    if(!(propfile = ti_Open(AVSettings, "r+"))){
+        if(propfile = ti_Open(AVSettings, "w")){
+            settings_t s = {0};
+            ti_Write(&s, sizeof(settings_t), 1, propfile);
+            ti_Close(propfile);
+        }
+    }
     if(!(propfile = ti_Open(PropDB, "r+")))
-        propfile = ti_Open(PropDB, "w+");
+        if(!(propfile = ti_Open(PropDB, "w+"))){
+            os_ClrHomeFull();
+            exit(1);
+        }
     ti_Close(propfile);
     if(!(propfile = ti_Open(SnapDB, "r+")))
-        propfile = ti_Open(SnapDB, "w+");
+        if(!(propfile = ti_Open(SnapDB, "w+"))){
+            os_ClrHomeFull();
+            exit(1);
+        }
     num_snaps = (ti_GetSize(propfile) / sizeof(snapshot_t));
+    prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
+    if(prognames == NULL) {
+        os_ClrHomeFull();
+        exit(1);
+    }
     ti_Close(propfile);
     gfx_Begin();
     gfx_SetTextTransparentColor(1);
     gfx_SetTextBGColor(1);
     gfx_SetDrawBuffer();
     // loop save names of all files on device
-    prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
-    if(prognames == NULL) exit(1);
     av_GenerateFileIndex(prognames, num_programs);
     // decompress all graphics
     do {
         unsigned char key = os_GetCSC();
-        char i;
-        char progheap, heapoffset;
+        uint24_t i;
+        uint24_t progheap, heapoffset;
         bool refresh = firstLoop;
         progsave_t* current;
         snapshot_t* snap;
         unsigned long checksum = 0;
         char cs_string[11] = {'\0'};
         progname_t* prog;
+        size_t size;
+        settings_t* s = (settings_t*)av_FileGetPtr(AVSettings, TI_APPVAR_TYPE, &size);
         if(propfile = ti_Open(SnapDB, "r+")){
             num_snaps = (ti_GetSize(propfile) / sizeof(snapshot_t));
             ti_Close(propfile);
@@ -143,6 +154,9 @@ void main(void) {
         }
         if(key == sk_Right){
             switch(screen){
+                case FILE_OPTS:
+                    if((selected.program + 13) < num_programs) selected.program += 13;
+                    break;
                 case SNAPSHOTS:
                     if(selected.snapshot < (num_snaps-1)) selected.snapshot++;
                     break;
@@ -150,6 +164,9 @@ void main(void) {
         }
         if(key == sk_Left){
             switch(screen){
+                case FILE_OPTS:
+                    if((selected.program - 13) >= 0) selected.program -= 13;
+                    break;
                 case SNAPSHOTS:
                     if(selected.snapshot > 0) selected.snapshot--;
                     break;
@@ -209,7 +226,6 @@ void main(void) {
                         av_CreateSnapshot(&prognames[selected.program]);
                     else
                         av_UpdateSnapshot(&prognames[selected.program], selected.snapshot);
-                        
                 }
             }
             else if(screen == SNAPSHOTS){
@@ -219,7 +235,13 @@ void main(void) {
                     if(selected.snapopt == 2) av_DeleteSnapshot(selected.snapshot, num_snaps);
                 }
             }
+            else if(screen == SETTINGS){
+                size_t size;
+                settings_t* s = (settings_t*)av_FileGetPtr(AVSettings, TI_APPVAR_TYPE, &size);
+                if(selected.settopt == 0) s->indexSplit = (!s->indexSplit);
+            }
         }
+        
         if(key == sk_Clear){
             if(screen == MAIN) progRun = false;
             else if(screen == FILE_OPTS){
@@ -249,12 +271,20 @@ void main(void) {
                     //gfx_PrintStringXY(desc[selected.menu], text_GetCenterX(desc[selected.menu], 100), 205);
                     break;
                 case FILE_OPTS:
+                {
+                    progopt_t progopt_yvals[] = {
+                        {0, 0},
+                        {106, ui_textstart_y + 75},
+                        {106, ui_textstart_y + 85},
+                        {106, ui_textstart_y + 95},
+                        {106, ui_textstart_y + 120}
+                    };
                     pgrm_EraseContent();
                     gfx_SetTextScale(2,2);
                     gfx_PrintStringXY("FILE OPTIONS", 5, 75);
                     gfx_SetTextScale(1,1);
                     progheap = selected.program / 13 * 13;
-                    for(i = progheap; i < (progheap + 14); i++){
+                    for(i = progheap; i < (progheap + 13); i++){
                         heapoffset = i - progheap;
                         gfx_SetTextFGColor(0);
                         if(i < num_programs){
@@ -263,11 +293,12 @@ void main(void) {
                                 gfx_SetColor(40); gfx_SetTextFGColor(255);
                                 gfx_FillRectangle(3, heapoffset * 10 + ui_textstart_y + 18, 70, 11);
                             }
-                            gfx_PrintStringXY(&prog->name[0], 5, heapoffset * 10 + ui_textstart_y + 20);
+                            gfx_PrintStringXY(prog->name, 5, heapoffset * 10 + ui_textstart_y + 20);
                         }
                     }
                     gfx_SetTextFGColor(0);
                     prog = &prognames[selected.program];
+                    if(s->indexSplit && (!prog->indexed)) av_TellAttributes(prog);
                     if(selected.progopt){
                         int x = progopt_yvals[selected.progopt].x;
                         int y = progopt_yvals[selected.progopt].y - 1;
@@ -314,7 +345,6 @@ void main(void) {
                     gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
                      if(snap = av_SnapDB_IndexToPtr(av_SnapDB_GetSlotMatchOffset(prog))){
                          char timestring[11];
-                         dbg_sprintf(dbgout, "Snap Looking at: %u", snap);
                          sprintf(timestring, "%02u:%02u:%04u", snap->time.month, snap->time.day, snap->time.year);
                          gfx_PrintString(timestring);
                          gfx_PrintStringXY("Update ", 110, ui_textstart_y + 120);
@@ -325,38 +355,68 @@ void main(void) {
                      }
                     gfx_PrintString("Snapshot");
                     break;
+                }
                 case SNAPSHOTS:
                 {
                     size_t size;
                     snapshot_t* snap = av_SnapDB_IndexToPtr(selected.snapshot);
-                    char timestring[11];
+                    if(snap && snap->type){
+                        char timestring[11];
+                        pgrm_EraseContent();
+                        gfx_SetTextScale(2,2);
+                        gfx_PrintStringXY("SNAPSHOTS", 5, 75);
+                        gfx_SetTextScale(1,1);
+                        gfx_PrintStringXY("File Name: ", 100, ui_textstart_y + 40);
+                        gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                        gfx_PrintString(snap->fname/*, 10, 9 * i + 75*/);
+                        gfx_PrintStringXY("File Type: ", 100, ui_textstart_y + 50);
+                        gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                        if(snap->type == TI_PRGM_TYPE || snap->type == TI_PPRGM_TYPE)
+                            gfx_PrintString("Program");
+                        else gfx_PrintString("AppVar");
+                        gfx_PrintStringXY("File Size: ", 100, ui_textstart_y + 60);
+                        gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                        gfx_PrintUInt(snap->size, num_len(snap->size));
+                        gfx_PrintStringXY("Modified: ", 100, ui_textstart_y + 70);
+                        gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
+                        sprintf(timestring, "%02u:%02u:%04u", snap->time.month, snap->time.day, snap->time.year);
+                        gfx_PrintString(timestring);
+                        if(selected.snapopt){
+                            gfx_SetColor(140);
+                            gfx_FillRectangle(105, ui_textstart_y + 74 + (selected.snapopt * 10) , 150, 10);
+                        }
+                        gfx_PrintStringXY("Restore Snapshot", 110, ui_textstart_y + 85);
+                        gfx_PrintStringXY("Delete Snapshot", 110, ui_textstart_y + 95);
+                    }
+                    else {
+                        gfx_PrintStringXY("No Snapshots Found!", 80, ui_textstart_y + 40);
+                        selected.snapopt = 0;
+                    }
+                }
+                    break;
+                case SETTINGS:
+                {
+                    progopt_t settings_yvals[] = {
+                        {25, ui_textstart_y + 20},
+                    };
                     pgrm_EraseContent();
                     gfx_SetTextScale(2,2);
-                    gfx_PrintStringXY("SNAPSHOTS", 5, 75);
+                    gfx_PrintStringXY("AV SETTINGS", 5, 75);
                     gfx_SetTextScale(1,1);
-                    gfx_PrintStringXY("File Name: ", 100, ui_textstart_y + 40);
-                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
-                    gfx_PrintString(snap->fname/*, 10, 9 * i + 75*/);
-                    gfx_PrintStringXY("File Type: ", 100, ui_textstart_y + 50);
-                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
-                    if(snap->type == TI_PRGM_TYPE || snap->type == TI_PPRGM_TYPE)
-                        gfx_PrintString("Program");
-                    else gfx_PrintString("AppVar");
-                    gfx_PrintStringXY("File Size: ", 100, ui_textstart_y + 60);
-                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
-                    gfx_PrintUInt(snap->size, num_len(snap->size));
-                    gfx_PrintStringXY("Modified: ", 100, ui_textstart_y + 70);
-                    gfx_SetTextXY(ui_progdata_out, gfx_GetTextY());
-                    sprintf(timestring, "%02u:%02u:%04u", snap->time.month, snap->time.day, snap->time.year);
-                    gfx_PrintString(timestring);
-                    if(selected.snapopt){
-                        gfx_SetColor(140);
-                        gfx_FillRectangle(105, ui_textstart_y + 74 + (selected.snapopt * 10) , 150, 10);
+                    gfx_SetColor(140);
+                    gfx_FillRectangle(25, settings_yvals[selected.settopt].y - 1, 200, 11);
+                    gfx_SetColor(0);
+                    gfx_Rectangle(10, ui_textstart_y + 20, 11, 11);
+                    if(s->indexSplit) {
+                        gfx_SetTextXY(12, ui_textstart_y + 22);
+                        gfx_PrintChar('X');
                     }
-                    gfx_PrintStringXY("Restore Snapshot", 110, ui_textstart_y + 85);
-                    gfx_PrintStringXY("Delete Snapshot", 110, ui_textstart_y + 95);
-                    break;
+                    gfx_PrintStringXY("Enable Split Indexing Mode", 30, ui_textstart_y + 20);
+                    gfx_PrintStringXY("Reserve checksum and size calculations", 40, ui_textstart_y + 30);
+                    gfx_PrintStringXY("for first viewing in Program Options.", 40, ui_textstart_y + 40);
+                    gfx_PrintStringXY("Less load time, slight scroll lag.", 40, ui_textstart_y + 50);
                 }
+                    break;
                 case QUIT:
                     progRun = false;
                     break;
@@ -377,6 +437,7 @@ void main(void) {
     gfx_End();
     av_SendAllToArchive();
     pgrm_CleanUp();
+    os_ClrHomeFull();
 }
 
 void av_SendAllToArchive(void){
@@ -387,6 +448,7 @@ void av_SendAllToArchive(void){
         if (type == TI_PRGM_TYPE || type == TI_PPRGM_TYPE || type == TI_APPVAR_TYPE){
             if((!strncmp(var_name, SnapDB, 8)) ||
                (!strncmp(var_name, PropDB, 8)) ||
+               (!strncmp(var_name, AVSettings, 8)) ||
                (!strncmp(var_name, "AVsh", 4))){
                     ti_var_t fp = ti_OpenVar(var_name, "r", type);
                     if(fp) ti_SetArchiveStatus(true, fp);
@@ -395,6 +457,8 @@ void av_SendAllToArchive(void){
         }
     }
 }
+
+                  
 
 
 

@@ -26,10 +26,12 @@ typedef struct {
 
 typedef struct {
     unsigned char menu;
-    unsigned char program;
+    uint24_t program;
     unsigned char progopt;
     unsigned char snapopt;
+    unsigned char settopt;
     uint16_t snapshot;
 } selected_t;
+
 
 #endif

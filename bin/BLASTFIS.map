@@ -2,21 +2,22 @@ Segment  Base   Top    High   Length
 -------- ------ ------ ------ -------
 icon     D1A882 D1A9A3           121h
 launcher D1A9A3 D1A9FB            58h
-libs     D1A9FB D1AA94            99h
-startup  D1AA94 D1AAD3            3Fh
-cleanup  D1AAD3 D1AAE7            14h
-exit     D1AAE7 D1AAED             6h
-code     D1AAED D1CE1D          2330h
-data     D1CE1D D1D038           21Bh
-strsect  D1D038 D1D2C4           28Ch
-text     D1D2C4 D1D466           1A2h
+libs     D1A9FB D1AA9C            A1h
+startup  D1AA9C D1AADB            3Fh
+cleanup  D1AADB D1AAEF            14h
+exit     D1AAEF D1AAF5             6h
+code     D1AAF5 D1D22E          2739h
+data     D1D22E D1D42E           200h
+strsect  D1D42E D1D75D           32Fh
+text     D1D75D D1D927           1CAh
 bss      D031F6 D035FC D13FD6    406h
 header   D1A87F D1A882             3h
 
 Label                           Value
 -----------------------------   ------
-_os_DisableHomeTextBuffer     = D1AAED
-_os_EnableHomeTextBuffer      = D1AAFF
+__OS                          = D1AAF5
+_os_DisableHomeTextBuffer     = D1AAFF
+_os_EnableHomeTextBuffer      = D1AB11
 _boot_GetBootMajorVer         = 000080
 _boot_GetHardwareVer          = 000084
 _boot_GetBootMinorVer         = 00008C
@@ -130,21 +131,20 @@ _asm_DisableAPD               = 021134
 _asm_EnableAPD                = 021138
 _asm_DrawStatusBar            = 021A3C
 _asm_ArcChk                   = 022040
-_zx7_Decompress               = D1AB11
+_zx7_Decompress               = D1AB23
 _strncpy                      = 0000E0
 _strncmp                      = 0000DC
 __idvrmu                      = 000140
 __idvrmu                      = 000144
 __lnot                        = 0001D4
-__case8D                      = 000128
 _sprintf                      = 0000BC
 __imul_b                      = 000158
 __imul_b                      = 000150
 __lmulu                       = 0001CC
 __idivs                       = 00013C
 __stoi                        = 000260
-__frameset                    = D1AB7D
-_calloc                       = D1AB8B
+__frameset                    = D1AB8F
+_calloc                       = D1AB9D
 __ishru_b                     = 000184
 __ishru_b                     = 000188
 __itol                        = 000194
@@ -152,68 +152,73 @@ __lshru                       = 0001EC
 __lxor                        = 0001FC
 __stoiu                       = 000264
 __lcmpzero                    = 0001B0
-__s_sbrk                      = D1ABA9
+__s_sbrk                      = D1ABBB
+__istix                       = 00018C
+__frameset0                   = D1ABDB
 _memcpy                       = 0000A4
-__icmpzero                    = D1ABC9
+__ildix                       = 000148
+__icmpzero                    = D1ABE6
 __setflag                     = 000218
-_memset                       = D1ABCE
+_memset                       = D1ABEB
 __imuls                       = 000154
 __indcall                     = 00015C
+__case8                       = 000124
 __lcmpu                       = 0001AC
-_malloc                       = D1AC16
+_malloc                       = D1AC33
 __alloc_base                  = D031F6
-_qsort                        = D1AD0A
-_free                         = D1AECA
-_realloc                      = D1AFC8
+_qsort                        = D1AD27
+_free                         = D1AEE7
+_realloc                      = D1AFE5
 __findlibload                 = D1A9A3
 __program_icon                = D1A887
 __program_description         = D1A989
-__ccleanup                    = D1AAD3
+__ccleanup                    = D1AADB
 _errno                        = D008DC
 _init                         = D1A882
-_exit                         = D1AAE9
-__exit                        = D1AAC2
-__exitsp                      = D1AAC2
-__errsp                       = D1AAC2
-_av_SnapDB_IndexToPtr         = D1BC8A
-_av_SnapDB_GetSlotMatchOffset = D1BBE6
-_av_SnapDB_GetOpenSlotOffset  = D1BB66
-_av_UpdateSnapshot            = D1BB1A
-_av_RestoreSnapshot           = D1BA56
-_av_CreateSnapshot            = D1B8E3
-_av_DeleteSnapshot            = D1B79D
-_av_UpdateAttributes          = D1B764
-_disable_PropTrack            = D1B724
-_enable_PropTrack             = D1B620
-_av_TogglePropTrack           = D1B5F2
-_av_ShrinkFile                = D1B583
-_av_FileGetEnd                = D1B51F
-_av_FileGetPtr                = D1B4BB
-_av_LocateFileInPropDB        = D1B424
-_av_GenerateFileIndex         = D1B19C
-_av_GetNumFiles               = D1B0AF
-_progsort                     = D1B039
-_SnapFile                     = D1CE4B
-_SnapDB                       = D1CE48
-_AvDB                         = D1CE45
-_PropDB                       = D1CE42
-_rc_crc32                     = D1BCD5
-_blast_icon_compressed        = D1CE51
-_integ_fail_icon_compressed   = D1CFD1
-_integ_pass_icon_compressed   = D1CFF2
-_av_ScanFile                  = D1CE0F
-_pgrm_DrawBackground          = D1CD12
-_pgrm_EraseContent            = D1CCDE
-_text_GetCenterX              = D1CCB9
-_num_len                      = D1CC80
-_av_SendAllToArchive          = D1CBA4
-_main                         = D1BE3C
-_progopt_yvals                = D1D01A
-_desc                         = D1D329
-_strings                      = D1D2D5
-_Version                      = D1D017
-_SubName                      = D1D014
-_ProgName                     = D1D011
+_exit                         = D1AAF1
+__exit                        = D1AACA
+__exitsp                      = D1AACA
+__errsp                       = D1AACA
+_av_SnapDB_IndexToPtr         = D1BC99
+_av_SnapDB_GetSlotMatchOffset = D1BBFA
+_av_SnapDB_GetOpenSlotOffset  = D1BB7F
+_av_UpdateSnapshot            = D1BB36
+_av_RestoreSnapshot           = D1BA77
+_av_CreateSnapshot            = D1B909
+_av_DeleteSnapshot            = D1B7C8
+_av_UpdateAttributes          = D1B791
+_disable_PropTrack            = D1B753
+_enable_PropTrack             = D1B654
+_av_TogglePropTrack           = D1B62B
+_av_ShrinkFile                = D1B5C0
+_av_FileGetEnd                = D1B55F
+_av_FileGetPtr                = D1B4FE
+_av_LocateFileInPropDB        = D1B46C
+_av_TellAttributes            = D1B3E2
+_av_GenerateFileIndex         = D1B1B0
+_av_GetNumFiles               = D1B0C9
+_progsort                     = D1B056
+_AVSettings                   = D1D25F
+_SnapFile                     = D1D25C
+_SnapDB                       = D1D259
+_AvDB                         = D1D256
+_PropDB                       = D1D253
+_rc_crc32                     = D1BCEA
+_blast_icon_compressed        = D1D265
+_integ_fail_icon_compressed   = D1D3E5
+_integ_pass_icon_compressed   = D1D406
+_av_ScanFile                  = D1D225
+_pgrm_DrawBackground          = D1D12D
+_pgrm_EraseContent            = D1D106
+_text_GetCenterX              = D1D0E6
+_num_len                      = D1D0AF
+_av_SendAllToArchive          = D1CFBC
+_main                         = D1BE4C
+_desc                         = D1D7C2
+_strings                      = D1D76E
+_Version                      = D1D42B
+_SubName                      = D1D428
+_ProgName                     = D1D425
 _ti_CloseAll                  = D1AA0F
 _ti_Open                      = D1AA13
 _ti_OpenVar                   = D1AA17
@@ -232,16 +237,18 @@ _gfx_SetColor                 = D1AA50
 _gfx_FillScreen               = D1AA54
 _gfx_SetDraw                  = D1AA58
 _gfx_Blit                     = D1AA5C
-_gfx_PrintUInt                = D1AA60
-_gfx_PrintString              = D1AA64
-_gfx_PrintStringXY            = D1AA68
-_gfx_SetTextXY                = D1AA6C
-_gfx_SetTextBGColor           = D1AA70
-_gfx_SetTextFGColor           = D1AA74
-_gfx_SetTextTransparentColor  = D1AA78
-_gfx_GetStringWidth           = D1AA7C
-_gfx_GetTextY                 = D1AA80
-_gfx_FillRectangle            = D1AA84
-_gfx_AllocSprite              = D1AA88
-_gfx_TransparentSprite        = D1AA8C
-_gfx_SetTextScale             = D1AA90
+_gfx_PrintChar                = D1AA60
+_gfx_PrintUInt                = D1AA64
+_gfx_PrintString              = D1AA68
+_gfx_PrintStringXY            = D1AA6C
+_gfx_SetTextXY                = D1AA70
+_gfx_SetTextBGColor           = D1AA74
+_gfx_SetTextFGColor           = D1AA78
+_gfx_SetTextTransparentColor  = D1AA7C
+_gfx_GetStringWidth           = D1AA80
+_gfx_GetTextY                 = D1AA84
+_gfx_Rectangle                = D1AA88
+_gfx_FillRectangle            = D1AA8C
+_gfx_AllocSprite              = D1AA90
+_gfx_TransparentSprite        = D1AA94
+_gfx_SetTextScale             = D1AA98

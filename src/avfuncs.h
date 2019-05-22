@@ -5,9 +5,11 @@
 extern const char *PropDB;
 extern const char *AvDB;
 extern const char *SnapDB;
+extern const char *AVSettings;
 
-int av_GetNumFiles(void);
-int av_GenerateFileIndex(progname_t* prognames, int count);
+uint24_t av_GetNumFiles(void);
+int av_GenerateFileIndex(progname_t* prognames, uint24_t count);
+void av_TellAttributes(progname_t* program);
 progsave_t* av_LocateFileInPropDB(progname_t* program);
 void av_CollapseDB(progsave_t* delete);
 void* av_FileGetPtr(const char *name, uint8_t type, size_t *Len);

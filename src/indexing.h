@@ -12,6 +12,7 @@ typedef struct {
 } progsave_t;
 
 typedef struct {
+    bool indexed;
     char type;
     char name[9];
     unsigned long checksum;
@@ -26,5 +27,8 @@ typedef struct {
     stime_t time;
 } snapshot_t;
 
+typedef struct {
+    bool indexSplit;
+} settings_t;
 
 #endif
