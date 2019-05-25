@@ -7,7 +7,7 @@
 #define warning_width 11
 #define warning_height 11
 #define warning_size 123
-extern uint8_t warning_compressed[38];
+extern uint8_t warning_compressed[41];
 #define tracking_icon_width 9
 #define tracking_icon_height 9
 #define tracking_icon_size 83
@@ -24,7 +24,9 @@ extern uint8_t integ_pass_icon_compressed[31];
 #define integ_fail_icon_height 9
 #define integ_fail_icon_size 83
 extern uint8_t integ_fail_icon_compressed[33];
-#define sizeof_all_gfx_pal 512
-extern uint16_t all_gfx_pal[256];
+#define waiticon_width 9
+#define waiticon_height 9
+#define waiticon_size 83
+extern uint8_t waiticon_compressed[28];
 
 #endif

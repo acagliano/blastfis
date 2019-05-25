@@ -28,8 +28,10 @@ typedef struct {
     unsigned char menu;
     uint24_t program;
     unsigned char progopt;
-    unsigned char snapopt;
+    unsigned char snapnum_sel;
+    unsigned char snapnum_opt;
     unsigned char settopt;
+    unsigned char sysopt;
     uint16_t snapshot;
 } selected_t;
 

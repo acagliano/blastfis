@@ -1,18 +1,22 @@
 
 #include <string.h>
-//#include <debug.h>
+#include <debug.h>
 #include <fileioc.h>
 #include <graphx.h>
 #include "indexing.h"
 #include "crypto.h"
 #include "avfuncs.h"
+#include "gfx/all_gfx.h"
 
 const char *PropDB = "AVPropDB";
 const char *AvDB = "AVDefsDB";
 const char *SnapDB = "AVSnapDB";
 const char *SnapFile = "AVshXXXX";
 const char *AVSettings = "AVSett";
+const char *OSProp = "AVOSProp";
+const char *AVDefs = "AVMALDEF";
 
+#define MIN(x, y) (((x) < (y)) ? (x) : (y))
 
 int progsort(const void* a, const void* b){
     char i;
@@ -51,12 +55,21 @@ uint24_t av_GetNumFiles(void){
     return count;
 }
 
+uint16_t av_GetSnapsCount(void){
+    char* var_name;
+    uint16_t count = 0;
+    uint8_t *search_pos = NULL;
+    while((var_name = ti_Detect(&search_pos, NULL)) != NULL){
+        if(!strncmp(var_name, "AVsh", 4)) count++;
+    }
+    return count;
+}
+
 int av_GenerateFileIndex(progname_t* prognames, uint24_t count){
     int i = 0;
     char* var_name;
     uint8_t *search_pos = NULL;
     uint8_t type;
-    
     while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
         unsigned int complete = (100 * i / count);
         gfx_SetColor(255);
@@ -79,7 +92,6 @@ int av_GenerateFileIndex(progname_t* prognames, uint24_t count){
                    strncmp(var_name, "AVsh", 4)){
                     size_t size;
                     settings_t* s = (settings_t*)av_FileGetPtr(AVSettings, TI_APPVAR_TYPE, &size);
-                    ti_var_t openfile;
                     progname_t* prog = &prognames[i++];
                     prog->type = type;
                     memcpy(prog->name, var_name, 8);
@@ -92,16 +104,58 @@ int av_GenerateFileIndex(progname_t* prognames, uint24_t count){
     return 1;
 }
 
+void av_GenerateSnapIndex(snapname_t* snapnames, uint16_t count){
+    int i = 0;
+    char* var_name;
+    uint8_t *search_pos = NULL;
+    uint8_t type;
+    if(!count) return;
+    while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
+        unsigned int complete = (100 * i / count);
+        gfx_SetColor(255);
+        gfx_FillRectangle(0, 0, 320, 25);
+        gfx_PrintStringXY("Indexing snapshots...", 5, 5);
+        gfx_BlitBuffer();
+        if(!strncmp(var_name, "AVsh", 4)){
+            snapname_t* snap = &snapnames[i++];
+            size_t size;
+            snapshot_t* data = av_FileGetPtr(var_name, TI_APPVAR_TYPE, &size);
+            strncpy(snap->snapname, var_name, 8);
+            strncpy(snap->progname, data->name, 8);
+            snap->progtype = data->type;
+        }
+    }
+}
+
 void av_TellAttributes(progname_t* program){
     ti_var_t openfile;
     if(openfile = ti_OpenVar(program->name, "r", program->type)){
         int value = 0; unsigned long checksum = 0;
+        char* start = (char*)ti_GetDataPtr(openfile);
         program->prop_track = (unsigned int)av_LocateFileInPropDB(program);
         program->size = ti_GetSize(openfile);
         program->checksum = rc_crc32(0, ti_GetDataPtr(openfile), program->size);
         ti_Close(openfile);
         program->indexed = true;
     }
+}
+
+void av_ChecksumOS(ossave_t* ossave, char *start, char *end){
+    size_t size = (size_t)(end - start);
+    ossave->checksum = rc_crc32(0, start, size);
+}
+
+void av_SaveOSAttr(ossave_t* ossave){
+    ti_var_t osdb;
+    if(osdb = ti_Open(OSProp, "r+")){
+        ossave_t* save = (ossave_t*)ti_GetDataPtr(osdb);
+        save->checksum = ossave->checksum;
+    }
+    else {
+        osdb = ti_Open(OSProp, "w");
+        ti_Write(ossave, sizeof(ossave_t), 1, osdb);
+    }
+    ti_Close(osdb);
 }
 
 progsave_t* av_LocateFileInPropDB(progname_t* program){
@@ -192,114 +246,166 @@ void av_UpdateAttributes(progname_t* program){
 }
 
 
-uint16_t av_DeleteSnapshot(uint16_t index, uint16_t count){
-    ti_var_t dbfile, snapfile;
-    char snapname[9];
-    uint16_t slots_to_copy = count - (index + 1);
-    int i;
-    if(index != -1){
+void av_DeleteSnapshot(snapname_t* snap){
+    ti_Delete(snap->snapname);
+}
+
+void av_CreateSnapshot(snapname_t* snapnames, uint16_t num_snaps, progname_t* program){
+    size_t size;
+    uint16_t index = 0;
+    char snapname[9] = {'\0'};
+    settings_t* s = (settings_t*)av_FileGetPtr(AVSettings, TI_APPVAR_TYPE, &size);
+    while(index < s->maxSnaps){
+        ti_var_t snapfile;
         strncpy(snapname, SnapFile, 8);
         sprintf(snapname + 4, "%04x", index);
-        if(ti_Delete(snapname)){
-            if(dbfile = ti_Open(SnapDB, "r+")){
-                snapshot_t *dest, *src;
-                ti_Seek(index * sizeof(snapshot_t), SEEK_SET, dbfile);
-                dest = (snapshot_t*)ti_GetDataPtr(dbfile);
-                memset(dest, 0, sizeof(snapshot_t));
-                src = dest + 1;
-                for(i = 0; i < slots_to_copy; i++)
-                    memcpy(dest++, src++, sizeof(snapshot_t));
-                ti_Close(dbfile);
-                count--;
-            }
-        }
-    }
-    return count;
-}
-
-void av_CreateSnapshot(progname_t* program){
-    char snapname[9];
-    ti_var_t snapfile, srcfile;
-    uint16_t index;
-    snapshot_t tmp = {0};
-    size_t size;
-    strncpy(tmp.fname, program->name, 8);
-    tmp.type = program->type;
-    tmp.size = program->size;
-    boot_GetDate(&tmp.time.day, &tmp.time.month, &tmp.time.year);
-    index = av_SnapDB_GetOpenSlotOffset();
-    strncpy(snapname, SnapFile, 8);
-    sprintf(snapname + 4, "%04x", index);
-    if(snapfile = ti_Open(snapname, "w")){
-        if(srcfile = ti_OpenVar(program->name, "r", program->type)){
-            if(ti_Write(ti_GetDataPtr(srcfile), ti_GetSize(srcfile), 1, snapfile)){
-                ti_var_t dbfile;
-                if(dbfile = ti_Open(SnapDB, "r+")){
-                    ti_Seek(index * sizeof(snapshot_t), SEEK_SET, dbfile);
-                    ti_Write(&tmp, sizeof(snapshot_t), 1, dbfile);
-                    ti_Close(dbfile);
-                }
-            }
-            ti_Close(srcfile);
-        }
+        if(!(snapfile = ti_Open(snapname, "r"))) break;
         ti_Close(snapfile);
+        index++;
     }
-}
-
-void av_RestoreSnapshot(uint16_t index){
-    char snapname[9];
-    ti_var_t destfile, snapfile;
-    snapshot_t *ref = av_SnapDB_IndexToPtr(index);
-    strncpy(snapname, SnapFile, 8);
-    sprintf(snapname + 4, "%04x", index);
-    if(destfile = ti_OpenVar(ref->fname, "w", ref->type)){
-        if(snapfile = ti_Open(snapname, "r")){
-            ti_Write(ti_GetDataPtr(snapfile), ti_GetSize(snapfile), 1, destfile);
-            ti_Close(snapfile);
+    if(index == s->maxSnaps) return;
+    {
+        ti_var_t snapshot, srcfile;
+        if((snapshot = ti_Open(snapname, "w")) &&
+           (srcfile = ti_OpenVar(program->name, "r", program->type))){
+            snapshot_t snapdata;
+            snapdata.size = ti_GetSize(srcfile);
+            strncpy(&snapdata.name, program->name, 8);
+            snapdata.type = program->type;
+            boot_GetDate(&snapdata.time.day, &snapdata.time.month, &snapdata.time.year);
+            ti_Write(&snapdata, sizeof(snapshot_t) - 1, 1, snapshot);
+            ti_Write(ti_GetDataPtr(srcfile), ti_GetSize(srcfile), 1, snapshot);
         }
-        ti_Close(destfile);
+        ti_Close(snapshot);
+        ti_Close(srcfile);
     }
 }
 
-void av_UpdateSnapshot(progname_t* program, uint16_t index){
-    size_t size;
-    snapshot_t* dbstart = av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
-    size /= sizeof(snapshot_t);
-    av_DeleteSnapshot(index, size);
-    av_CreateSnapshot(program);
-}
-
-
-int16_t av_SnapDB_GetOpenSlotOffset(void){
-    size_t size;
-    int16_t i;
-    snapshot_t* dbstart = av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
-    size /= sizeof(snapshot_t);
-    for(i = 0; i < size; i++){
-        snapshot_t* dbcurr = &dbstart[i];
-        if(!dbcurr->type) return i;
+void av_UpdateSnapshot(snapname_t* snapnames, uint16_t count, progname_t* program){
+    uint16_t index;
+    if((index = av_FindSnap(snapnames, count, program)) != 'EOF'){
+        snapname_t* snap = &snapnames[index];
+        ti_var_t snapshot, srcfile;
+        if((snapshot = ti_Open(snap->snapname, "r+")) &&
+           (srcfile = ti_OpenVar(program->name, "r", program->type))){
+            snapshot_t snapdata;
+            snapdata.size = ti_GetSize(srcfile);
+            strncpy(&snapdata.name, program->name, 8);
+            snapdata.type = program->type;
+            boot_GetDate(&snapdata.time.day, &snapdata.time.month, &snapdata.time.year);
+            ti_Seek(0, SEEK_END, snapshot);
+            ti_Write(&snapdata, sizeof(snapshot_t) - 1, 1, snapshot);
+            ti_Write(ti_GetDataPtr(srcfile), ti_GetSize(srcfile), 1, snapshot);
+        }
+        ti_Close(snapshot);
+        ti_Close(srcfile);
     }
-    return i;
 }
 
-int16_t av_SnapDB_GetSlotMatchOffset(progname_t* program){
+void av_RestoreSnapshot(snapname_t* snap, uint16_t which){
     size_t size;
-    int16_t i;
-    snapshot_t* dbstart = av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
-    size /= sizeof(snapshot_t);
-    for(i = 0; i < size; i++){
-        snapshot_t* dbcurr = &dbstart[i];
-        if((!strncmp(dbcurr->fname, program->name, 8)) && (dbcurr->type == program->type))
-            return i;
+    ti_var_t file;
+    char* snapdata = (char*)av_FileGetPtr(snap->snapname, TI_APPVAR_TYPE, &size);
+    char* snapend = (char*)av_FileGetEnd(snap->snapname, TI_APPVAR_TYPE);
+    while(which){
+        snapshot_t *curr = (snapshot_t*)snapdata;
+        snapdata = (char*)(&curr->data + curr->size);
+        which--;
     }
-    return -1;
+        
+    ti_DeleteVar(snap->progname, snap->progtype);
+    if(file = ti_OpenVar(snap->progname, "w", snap->progtype)){
+        snapshot_t *curr = (snapshot_t*)snapdata;
+        ti_Write(curr->data, curr->size, 1, file);
+        dbg_sprintf(dbgout, "Writing %u bytes.", curr->size);
+        ti_Close(file);
+    }
 }
 
-snapshot_t* av_SnapDB_IndexToPtr(int16_t index){
+
+int24_t av_FindSnap(snapname_t* snapnames, size_t count, progname_t* program){
+    uint16_t index = 0;
     size_t size;
-    snapshot_t* dbstart = av_FileGetPtr(SnapDB, TI_APPVAR_TYPE, &size);
-    if((index == -1) ||(size == 0)) return 0;
-    return &dbstart[index];
-    
+    if(snapnames == NULL) return 'EOF';
+    for(index = 0; index < count; index++){
+        snapname_t* snap = &snapnames[index];
+        ti_var_t file;
+        if((!strncmp(program->name, snap->progname, 8)) && (program->type == snap->progtype))
+            if(file = ti_Open(snap->snapname, "r")){
+                ti_Close(file);
+                return index;
+            }
+    }
+    return 'EOF';
 }
 
+void gfx_PrintBoundedStringXY(const char* text, int len, int x, int y){
+    int i;
+    gfx_SetTextXY(x, y);
+    for(i = 0; i < len; i++){
+        if(text[i] == '\0') return;
+        gfx_PrintChar(text[i]);
+    }
+    gfx_PrintString("...");
+}
+
+void av_ScanData(char* data, size_t size, gfx_sprite_t* warning){
+    size_t avsize;
+    char* filestart = (char*)av_FileGetPtr(AVDefs, TI_APPVAR_TYPE, &avsize);
+    int l = 100, t = 75, w = (310 - l), h = (230 - t);
+    int curx, cury;
+    int resultx = 120;
+    unsigned char len;
+    stime_t timestamp;
+    gfx_SetColor(40);
+    gfx_FillRectangle(l, t, w, h);
+    gfx_SetColor(205);
+    gfx_FillRectangle(l + 2, t + 2, w - 4, h - 4);
+    curx = l + 4; cury = t + 4;
+    memcpy(&timestamp, filestart, sizeof(stime_t));
+    filestart += sizeof(stime_t);
+    avsize -= sizeof(stime_t);
+    gfx_BlitBuffer();
+    while(avsize){
+        char disp[11];
+        uint24_t locate;
+        char readbuff[256] = {'\0'};
+        len = *filestart;
+        memcpy(readbuff, filestart + 1, len);
+        gfx_PrintStringXY(readbuff, curx, cury);
+        filestart += (len + 1);
+        avsize -= (len + 1);
+        len = *filestart;
+        if(locate = av_FindScanMatch(data, size, filestart + 1, len)){
+            char ptr_string[7];
+            gfx_TransparentSprite(warning, curx + resultx, cury - 2);
+            gfx_PrintStringXY(" 0x", curx + resultx + 15, cury);
+            sprintf(ptr_string, "%02x", locate);
+            gfx_PrintString(ptr_string);
+        }
+        else gfx_PrintStringXY("None found", curx + resultx, cury);
+        filestart += (len + 1);
+        avsize -= (len + 1);
+        cury += 10;
+        if(cury >= 210) {
+            gfx_PrintStringXY("Any key to continue...", curx, cury);
+            while(!os_GetCSC());
+            gfx_FillRectangle(l + 2, t + 2, w - 4, h - 4);
+            cury = t + 4;
+        }
+        gfx_BlitBuffer();
+    }
+    gfx_PrintStringXY("Done!", curx, cury);
+    gfx_BlitBuffer();
+    while(!os_GetCSC());
+}
+
+
+uint24_t av_FindScanMatch(char* data, size_t datasize, char* readbuff, size_t len){
+    if(!len) return 0;
+    while(datasize--){
+        if(!memcmp(data, readbuff, len)) return (uint24_t)data;
+        data++;
+    }
+    return 0;
+}
