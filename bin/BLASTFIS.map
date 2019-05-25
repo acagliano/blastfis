@@ -6,10 +6,10 @@ libs     D1A9FB D1AAA4            A9h
 startup  D1AAA4 D1AAE3            3Fh
 cleanup  D1AAE3 D1AAF7            14h
 exit     D1AAF7 D1AAFD             6h
-code     D1AAFD D1DB4C          304Fh
-data     D1DB4C D1DD7B           22Fh
-strsect  D1DD7B D1E16C           3F1h
-text     D1E16C D1E46D           301h
+code     D1AAFD D1DB5D          3060h
+data     D1DB5D D1DD8C           22Fh
+strsect  D1DD8C D1E17D           3F1h
+text     D1E17D D1E47E           301h
 bss      D031F6 D034FC D13FD6    306h
 header   D1A87F D1A882             3h
 
@@ -179,11 +179,11 @@ _exit                        = D1AAF9
 __exit                       = D1AAD2
 __exitsp                     = D1AAD2
 __errsp                      = D1AAD2
-_av_FindScanMatch            = D1C191
-_av_ScanData                 = D1BF38
-_gfx_PrintBoundedStringXY    = D1BED9
-_av_FindSnap                 = D1BE10
-_av_RestoreSnapshot          = D1BD32
+_av_FindScanMatch            = D1C18A
+_av_ScanData                 = D1BF31
+_gfx_PrintBoundedStringXY    = D1BED2
+_av_FindSnap                 = D1BE09
+_av_RestoreSnapshot          = D1BD2E
 _av_UpdateSnapshot           = D1BBE0
 _av_CreateSnapshot           = D1BA46
 _av_DeleteSnapshot           = D1BA2D
@@ -203,29 +203,29 @@ _av_GenerateFileIndex        = D1B218
 _av_GetSnapsCount            = D1B1B6
 _av_GetNumFiles              = D1B0C9
 _progsort                    = D1B053
-_AVDefs                      = D1DB83
-_OSProp                      = D1DB80
-_AVSettings                  = D1DB7D
-_SnapFile                    = D1DB7A
-_SnapDB                      = D1DB77
-_AvDB                        = D1DB74
-_PropDB                      = D1DB71
-_rc_crc32                    = D1C1E7
-_blast_icon_compressed       = D1DB89
-_integ_fail_icon_compressed  = D1DD09
-_integ_pass_icon_compressed  = D1DD2A
-_warning_compressed          = D1DD49
-_pgrm_DrawBackground         = D1DA4F
-_pgrm_EraseContent           = D1DA1B
-_text_GetCenterX             = D1D9F6
-_num_len                     = D1D9BD
-_av_SendAllToArchive         = D1D8A9
-_main                        = D1C32B
-_desc                        = D1E2C9
-_strings                     = D1E275
-_Version                     = D1DD78
-_SubName                     = D1DD75
-_ProgName                    = D1DD72
+_AVDefs                      = D1DB94
+_OSProp                      = D1DB91
+_AVSettings                  = D1DB8E
+_SnapFile                    = D1DB8B
+_SnapDB                      = D1DB88
+_AvDB                        = D1DB85
+_PropDB                      = D1DB82
+_rc_crc32                    = D1C1E0
+_blast_icon_compressed       = D1DB9A
+_integ_fail_icon_compressed  = D1DD1A
+_integ_pass_icon_compressed  = D1DD3B
+_warning_compressed          = D1DD5A
+_pgrm_DrawBackground         = D1DA60
+_pgrm_EraseContent           = D1DA2C
+_text_GetCenterX             = D1DA07
+_num_len                     = D1D9CE
+_av_SendAllToArchive         = D1D8BA
+_main                        = D1C324
+_desc                        = D1E2DA
+_strings                     = D1E286
+_Version                     = D1DD89
+_SubName                     = D1DD86
+_ProgName                    = D1DD83
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17

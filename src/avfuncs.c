@@ -104,7 +104,7 @@ int av_GenerateFileIndex(progname_t* prognames, uint24_t count){
     return 1;
 }
 
-void av_GenerateSnapIndex(snapname_t* snapnames, uint16_t count){
+void av_GenerateSnapIndex(snapname_t* snapnames, uint24_t count){
     int i = 0;
     char* var_name;
     uint8_t *search_pos = NULL;
@@ -250,7 +250,7 @@ void av_DeleteSnapshot(snapname_t* snap){
     ti_Delete(snap->snapname);
 }
 
-void av_CreateSnapshot(snapname_t* snapnames, uint16_t num_snaps, progname_t* program){
+void av_CreateSnapshot(snapname_t* snapnames, uint24_t num_snaps, progname_t* program){
     size_t size;
     uint16_t index = 0;
     char snapname[9] = {'\0'};
@@ -281,7 +281,7 @@ void av_CreateSnapshot(snapname_t* snapnames, uint16_t num_snaps, progname_t* pr
     }
 }
 
-void av_UpdateSnapshot(snapname_t* snapnames, uint16_t count, progname_t* program){
+void av_UpdateSnapshot(snapname_t* snapnames, uint24_t count, progname_t* program){
     uint16_t index;
     if((index = av_FindSnap(snapnames, count, program)) != 'EOF'){
         snapname_t* snap = &snapnames[index];
@@ -302,7 +302,7 @@ void av_UpdateSnapshot(snapname_t* snapnames, uint16_t count, progname_t* progra
     }
 }
 
-void av_RestoreSnapshot(snapname_t* snap, uint16_t which){
+void av_RestoreSnapshot(snapname_t* snap, uint24_t which){
     size_t size;
     ti_var_t file;
     char* snapdata = (char*)av_FileGetPtr(snap->snapname, TI_APPVAR_TYPE, &size);

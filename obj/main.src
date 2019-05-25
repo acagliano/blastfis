@@ -2165,7 +2165,8 @@ L_18:
 .LINE 120
 
 	LD	BC,(IX+-13)
-	PUSH	BC
+	CALL	__stoiu
+	PUSH	HL
 	LD	BC,(IX+-16)
 	PUSH	BC
 	CALL	_av_GenerateSnapIndex
@@ -2809,7 +2810,8 @@ L_90:
 	ADD	HL,BC
 	PUSH	HL
 	LD	BC,(IX+-13)
-	PUSH	BC
+	CALL	__stoiu
+	PUSH	HL
 	LD	BC,(IX+-16)
 	PUSH	BC
 	CALL	_av_CreateSnapshot
@@ -2869,7 +2871,8 @@ L_85:
 .LINE 224
 
 	LD	BC,(IX+-13)
-	PUSH	BC
+	CALL	__stoiu
+	PUSH	HL
 	LD	BC,(IX+-16)
 	PUSH	BC
 	CALL	_av_GenerateSnapIndex
@@ -2892,7 +2895,8 @@ L_87:
 	ADD	HL,BC
 	PUSH	HL
 	LD	BC,(IX+-13)
-	PUSH	BC
+	CALL	__stoiu
+	PUSH	HL
 	LD	BC,(IX+-16)
 	PUSH	BC
 	CALL	_av_UpdateSnapshot
@@ -2998,7 +3002,8 @@ L_98:
 .LINE 243
 
 	LD	BC,(IX+-13)
-	PUSH	BC
+	CALL	__stoiu
+	PUSH	HL
 	LD	BC,(IX+-16)
 	PUSH	BC
 	CALL	_av_GenerateSnapIndex
@@ -3022,8 +3027,10 @@ L_99:
 
 	JR	L_139
 L_101:
-	LD	C,(IX+-6)
-	PUSH	BC
+	LD	A,(IX+-6)
+	UEXT	HL
+	LD	L,A
+	PUSH	HL
 	LD	BC,(IX+-34)
 	PUSH	BC
 	CALL	_av_RestoreSnapshot
