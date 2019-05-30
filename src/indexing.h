@@ -26,6 +26,7 @@ typedef struct {
 } progname_t;
 
 typedef struct {
+    size_t savesize;
     char type;
     char name[9];
     size_t size;

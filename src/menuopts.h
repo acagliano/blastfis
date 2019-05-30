@@ -35,5 +35,21 @@ typedef struct {
     uint16_t snapshot;
 } selected_t;
 
+enum ExitCodes {
+    NEUTRAL,
+    FAIL,
+    SUCCESS
+};
+
+typedef struct {
+    char tracktogg;
+    char trackupd;
+    char snapcreate;
+    char snapupd;
+    char snapdel;
+    char snaprevert;
+    char avscan;
+    char ossave;
+} exit_t;
 
 #endif

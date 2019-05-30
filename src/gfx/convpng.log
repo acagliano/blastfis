@@ -2,13 +2,15 @@ opened convpng.ini
 
 --- all_gfx (C) ---
 using built-in xlibc palette ...
-6:
+8:
  warning : converted! (123 > 41 bytes)
  tracking_icon : converted! (83 > 35 bytes)
  blast_icon : converted! (3602 > 384 bytes)
  integ_pass_icon : converted! (83 > 31 bytes)
  integ_fail_icon : converted! (83 > 33 bytes)
  waiticon : converted! (83 > 28 bytes)
+ success_icon : converted! (123 > 40 bytes)
+ fail_icon : converted! (123 > 29 bytes)
 
 converted in 0 s
 
