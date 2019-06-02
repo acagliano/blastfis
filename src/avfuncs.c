@@ -143,8 +143,10 @@ void av_TellAttributes(progname_t* program){
     }
 }
 
-void av_ChecksumOS(ossave_t* ossave, char *start, char *end){
+void av_ChecksumOS(ossave_t* ossave, char *start, char *end, gfx_sprite_t* wait){
     size_t size = (size_t)(end - start);
+    gfx_TransparentSprite(wait, 165, 134);
+    gfx_BlitBuffer();
     ossave->checksum = rc_crc32(0, start, size);
 }
 
@@ -431,6 +433,6 @@ uint24_t av_FindScanMatch(char* data, size_t datasize, char* readbuff, size_t le
 
 void av_CheckRestoreTime(stime_t* backup){
     stime_t system = boot_GetDate(&system.day, &system.month, &system.year);
-    if(system.year < backup->year || system.month < backup->month || system.day < backup->day)
+    if((system.year < backup->year) || (system.month < backup->month) || (system.day < backup->day))
         boot_SetDate(backup->day, backup->month, backup->year);
 }

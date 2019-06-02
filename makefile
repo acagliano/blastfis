@@ -9,7 +9,7 @@
 
 NAME        ?= BLASTFIS
 DEBUGMODE   ?= NDEBUG
-COMPRESSED  ?= NO
+COMPRESSED  ?= YES
 ICON        ?= iconc.png
 DESCRIPTION ?= "Calculator Security Suite"
 

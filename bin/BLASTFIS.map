@@ -6,10 +6,10 @@ libs     D1A9FB D1AAA8            ADh
 startup  D1AAA8 D1AAE7            3Fh
 cleanup  D1AAE7 D1AAFB            14h
 exit     D1AAFB D1AB01             6h
-code     D1AB01 D1DFC8          34C7h
-data     D1DFC8 D1E23F           277h
-strsect  D1E23F D1E6BC           47Dh
-text     D1E6BC D1E9E7           32Bh
+code     D1AB01 D1DFFF          34FEh
+data     D1DFFF D1E292           293h
+strsect  D1E292 D1E70F           47Dh
+text     D1E70F D1EA3A           32Bh
 bss      D031F6 D034FC D13FD6    306h
 header   D1A87F D1A882             3h
 
@@ -183,24 +183,24 @@ _exit                        = D1AAFD
 __exit                       = D1AAD6
 __exitsp                     = D1AAD6
 __errsp                      = D1AAD6
-_av_CheckRestoreTime         = D1C185
-_av_FindScanMatch            = D1C134
-_av_ScanData                 = D1BEC9
-_av_FindSnap                 = D1BE03
-_av_RestoreSnapshot          = D1BD38
-_av_UpdateSnapshot           = D1BCCF
-_av_CreateSnapshot           = D1BBFF
-_av_SnapWriteTemp            = D1BAB9
-_av_DeleteSnapshot           = D1BA99
-_av_UpdateAttributes         = D1BA56
-_disable_PropTrack           = D1BA12
-_enable_PropTrack            = D1B8F9
-_av_TogglePropTrack          = D1B8D0
-_av_ShrinkFile               = D1B865
-_av_FileGetEnd               = D1B804
-_av_FileGetPtr               = D1B7A3
-_av_LocateFileInPropDB       = D1B711
-_av_SaveOSAttr               = D1B61D
+_av_CheckRestoreTime         = D1C1A5
+_av_FindScanMatch            = D1C154
+_av_ScanData                 = D1BEE9
+_av_FindSnap                 = D1BE23
+_av_RestoreSnapshot          = D1BD58
+_av_UpdateSnapshot           = D1BCEF
+_av_CreateSnapshot           = D1BC1F
+_av_SnapWriteTemp            = D1BAD9
+_av_DeleteSnapshot           = D1BAB9
+_av_UpdateAttributes         = D1BA76
+_disable_PropTrack           = D1BA32
+_enable_PropTrack            = D1B919
+_av_TogglePropTrack          = D1B8F0
+_av_ShrinkFile               = D1B885
+_av_FileGetEnd               = D1B824
+_av_FileGetPtr               = D1B7C3
+_av_LocateFileInPropDB       = D1B731
+_av_SaveOSAttr               = D1B63D
 _av_ChecksumOS               = D1B5E5
 _av_TellAttributes           = D1B54C
 _av_GenerateSnapIndex        = D1B433
@@ -208,34 +208,35 @@ _av_GenerateFileIndex        = D1B219
 _av_GetSnapsCount            = D1B1BC
 _av_GetNumFiles              = D1B0D5
 _progsort                    = D1B062
-_OSSaveName                  = D1E002
-_AVDefs                      = D1DFFF
-_OSProp                      = D1DFFC
-_AVSettings                  = D1DFF9
-_SnapFile                    = D1DFF6
-_SnapDB                      = D1DFF3
-_AvDB                        = D1DFF0
-_PropDB                      = D1DFED
-_rc_crc32                    = D1C1E8
-_blast_icon_compressed       = D1E008
-_fail_icon_compressed        = D1E188
-_integ_fail_icon_compressed  = D1E1A5
-_integ_pass_icon_compressed  = D1E1C6
-_success_icon_compressed     = D1E1E5
-_warning_compressed          = D1E20D
-_pgrm_DrawBackground         = D1DED0
-_pgrm_EraseContent           = D1DEA9
-_text_GetCenterX             = D1DE89
-_num_len                     = D1DE45
-_scrn_RenderRespIcon         = D1DDF0
-_av_SendAllToArchive         = D1DCC3
-_exitProg                    = D1DC9C
-_main                        = D1C327
-_desc                        = D1E82A
-_strings                     = D1E7D6
-_Version                     = D1E23C
-_SubName                     = D1E239
-_ProgName                    = D1E236
+_OSSaveName                  = D1E039
+_AVDefs                      = D1E036
+_OSProp                      = D1E033
+_AVSettings                  = D1E030
+_SnapFile                    = D1E02D
+_SnapDB                      = D1E02A
+_AvDB                        = D1E027
+_PropDB                      = D1E024
+_rc_crc32                    = D1C208
+_blast_icon_compressed       = D1E03F
+_fail_icon_compressed        = D1E1BF
+_integ_fail_icon_compressed  = D1E1DC
+_integ_pass_icon_compressed  = D1E1FD
+_success_icon_compressed     = D1E21C
+_waiticon_compressed         = D1E244
+_warning_compressed          = D1E260
+_pgrm_DrawBackground         = D1DF07
+_pgrm_EraseContent           = D1DEE0
+_text_GetCenterX             = D1DEC0
+_num_len                     = D1DE7C
+_scrn_RenderRespIcon         = D1DE27
+_av_SendAllToArchive         = D1DCFA
+_exitProg                    = D1DCD3
+_main                        = D1C347
+_desc                        = D1E87D
+_strings                     = D1E829
+_Version                     = D1E28F
+_SubName                     = D1E28C
+_ProgName                    = D1E289
 _ti_CloseAll                 = D1AA0F
 _ti_Open                     = D1AA13
 _ti_OpenVar                  = D1AA17

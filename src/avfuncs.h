@@ -29,7 +29,7 @@ char av_CreateSnapshot(snapname_t* snapnames, uint24_t num_snaps, progname_t* pr
 char av_UpdateSnapshot(snapname_t* snapnames, uint24_t count, progname_t* program);
 char av_RestoreSnapshot(snapname_t* snapname, uint24_t which);
 int24_t av_FindSnap(snapname_t* snapnames, size_t count, progname_t* program);
-void av_ChecksumOS(ossave_t* ossave, char *start, char *end);
+void av_ChecksumOS(ossave_t* ossave, char *start, char *end, gfx_sprite_t* wait);
 char av_SaveOSAttr(ossave_t* ossave);
 char av_ScanData(char* data, size_t size, gfx_sprite_t* warning);
 uint24_t av_FindScanMatch(char* data, size_t datasize, char* readbuff, size_t len);

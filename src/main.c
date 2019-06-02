@@ -98,6 +98,7 @@ void main(void) {
     zx7_Decompress(integ_fail, integ_fail_icon_compressed);
     zx7_Decompress(op_fail, fail_icon_compressed);
     zx7_Decompress(op_success, success_icon_compressed);
+    zx7_Decompress(wait_icon, waiticon_compressed);
     ti_CloseAll();
     if(propfile = ti_Open(AVSettings, "r")){
         ti_Read(&s, sizeof(settings_t), 1, propfile);
@@ -297,7 +298,7 @@ void main(void) {
                         s.indexSplit = (!s.indexSplit);
                     break;
                 case SYS_SCANS:
-                    if(selected.sysopt == 0) av_ChecksumOS(&ossave, os_start, *_OSSIZE);
+                    if(selected.sysopt == 0) av_ChecksumOS(&ossave, os_start, *_OSSIZE, wait_icon);
                     if((selected.sysopt == 1) && (ossave.checksum)) e.ossave = av_SaveOSAttr(&ossave);
                     if(selected.sysopt == 2) {
                         char* os_end = *_OSSIZE;
