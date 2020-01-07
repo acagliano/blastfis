@@ -7,22 +7,21 @@
 typedef struct {
     char type;
     char name[9];
-    unsigned long checksum;
-    int size;
+    unsigned int checksum;
+    size_t size;
 } progsave_t;
 
 typedef struct {
     size_t size;
-    unsigned long checksum;
+    unsigned int checksum;
 } ossave_t;
 
 typedef struct {
     bool indexed;
     char type;
     char name[9];
-    unsigned long checksum;
-    unsigned int size;
-    unsigned int prop_track;
+    unsigned int checksum;
+    size_t size;
 } progname_t;
 
 typedef struct {
@@ -42,6 +41,7 @@ typedef struct {
 
 typedef struct {
     bool indexSplit;
+    bool indexProgs, indexAppvars;
     uint16_t maxSnaps;
 } settings_t;
 

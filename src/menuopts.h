@@ -28,7 +28,7 @@ typedef struct {
     unsigned char menu;
     uint24_t program;
     unsigned char progopt;
-    unsigned char snapnum_sel;
+    uint24_t snapnum_sel;
     unsigned char snapnum_opt;
     unsigned char settopt;
     unsigned char sysopt;

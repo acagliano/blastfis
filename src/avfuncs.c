@@ -10,11 +10,9 @@
 #include "menuopts.h"
 
 const char *PropDB = "AVPropDB";
-const char *AvDB = "AVDefsDB";
 const char *SnapDB = "AVSnapDB";
 const char *SnapFile = "AVshXXXX";
 const char *AVSettings = "AVSett";
-const char *OSProp = "AVOSProp";
 const char *AVDefs = "AVMALDEF";
 const char *OSSaveName = "AVOSSave";
 
@@ -36,7 +34,7 @@ int progsort(const void* a, const void* b){
 }
 
 
-uint24_t av_GetNumFiles(void){
+uint24_t av_GetNumFiles(settings_t* s){
     char* var_name;
     uint24_t count = 0;
     uint8_t *search_pos = NULL;
@@ -44,8 +42,10 @@ uint24_t av_GetNumFiles(void){
     while((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL){
         switch(type){
             case TI_PRGM_TYPE:
-            case TI_PPRGM_TYPE:
             case TI_APPVAR_TYPE:
+            case TI_PPRGM_TYPE:
+                if((!s->indexProgs) && (type == TI_PRGM_TYPE)) break;
+                if((!s->indexAppvars) && (type == TI_APPVAR_TYPE)) break;
                 if(strncmp(var_name, "#", 8) &&
                    strncmp(var_name, "!", 8) &&
                    strncmp(var_name, PropDB, 8) &&
@@ -85,8 +85,10 @@ int av_GenerateFileIndex(progname_t* prognames, uint24_t count, settings_t* s){
         gfx_BlitBuffer();
         switch(type){
             case TI_PRGM_TYPE:
-            case TI_PPRGM_TYPE:
             case TI_APPVAR_TYPE:
+            case TI_PPRGM_TYPE:
+                if((!s->indexProgs) && (type == TI_PRGM_TYPE)) break;
+                if((!s->indexAppvars) && (type == TI_APPVAR_TYPE)) break;
                 if(strncmp(var_name, "#", 8) &&
                    strncmp(var_name, "!", 8) &&
                    strncmp(var_name, PropDB, 8) &&
@@ -133,9 +135,8 @@ void av_GenerateSnapIndex(snapname_t* snapnames, uint24_t count, uint24_t* snapM
 void av_TellAttributes(progname_t* program){
     ti_var_t openfile;
     if(openfile = ti_OpenVar(program->name, "r", program->type)){
-        int value = 0; unsigned long checksum = 0;
+        int value = 0; unsigned int checksum = 0;
         char* start = (char*)ti_GetDataPtr(openfile);
-        program->prop_track = (unsigned int)av_LocateFileInPropDB(program);
         program->size = ti_GetSize(openfile);
         program->checksum = rc_crc32(0, ti_GetDataPtr(openfile), program->size);
         ti_Close(openfile);
@@ -222,7 +223,7 @@ size_t av_ShrinkFile(const char *name, uint8_t type, unsigned int sizealt){
 
 
 char av_TogglePropTrack(progname_t* program){
-    if(program->prop_track == 0) return enable_PropTrack(program);
+    if(av_LocateFileInPropDB(program) == NULL) return enable_PropTrack(program);
     else return disable_PropTrack(program);
 }
 
@@ -245,7 +246,6 @@ char enable_PropTrack(progname_t* program){
     if(!(ti_Seek(i * sizeof(progsave_t), SEEK_SET, dbfile))) return FAIL;
     if(!(ti_Write(&tmp, sizeof(progsave_t), 1, dbfile))) return FAIL;
     ti_Close(dbfile);
-    program->prop_track = (unsigned int)av_LocateFileInPropDB(program);
     return SUCCESS;
 }
 
@@ -253,7 +253,6 @@ char disable_PropTrack(progname_t* program){
     progsave_t* dest;
     if(dest = av_LocateFileInPropDB(program)){
         memset(dest, 0, sizeof(progsave_t));
-        program->prop_track = 0;
         return SUCCESS;
     }
     return FAIL;

@@ -3,15 +3,13 @@
 
 #include "indexing.h"
 extern const char *PropDB;
-extern const char *AvDB;
 extern const char *SnapDB;
 extern const char *AVSettings;
-extern const char *OSProp;
 extern const char *AVDefs;
 extern const char *OSSaveName;
 #define TI_OSSAVE_TYPE 0xff
 
-uint24_t av_GetNumFiles(void);
+uint24_t av_GetNumFiles(settings_t* s);
 uint16_t av_GetSnapsCount(void);
 int av_GenerateFileIndex(progname_t* prognames, uint24_t count, settings_t* s);
 void av_GenerateSnapIndex(snapname_t* snapnames, uint24_t count, uint24_t* snapMemUse);

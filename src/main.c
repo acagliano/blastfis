@@ -75,8 +75,8 @@ void main(void) {
     progname_t* prognames = NULL;
     snapname_t* snapnames = NULL;
     ti_var_t propfile;
-    uint24_t num_programs = av_GetNumFiles();
-    uint16_t num_snaps = av_GetSnapsCount();
+    uint24_t num_programs;
+    uint16_t num_snaps;
     uint16_t snapopt_max = 0;
     ossave_t ossave = {0};
     uint24_t snapMemUse = 0;
@@ -104,28 +104,27 @@ void main(void) {
         ti_Read(&s, sizeof(settings_t), 1, propfile);
         ti_Close(propfile);
     }
-    else if(propfile = ti_Open(AVSettings, "w")) {
-        ti_Close(propfile);
-        s.maxSnaps = 20;
-    }
+    else if(propfile = ti_Open(AVSettings, "w")) ti_Close(propfile);
     if(!(propfile = ti_Open(PropDB, "r+")))
         if(!(propfile = ti_Open(PropDB, "w+"))){
             exitProg();
             return;
         }
     ti_Close(propfile);
-    prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
-    if(num_snaps) snapnames = (snapname_t*)calloc(num_snaps, sizeof(snapname_t));
-    if(prognames == NULL) {
-        exitProg();
-        return;
-    }
     ti_Close(propfile);
     gfx_Begin();
     gfx_SetTextTransparentColor(1);
     gfx_SetTextBGColor(1);
     gfx_SetDrawBuffer();
     // loop save names of all files on device
+    num_programs = av_GetNumFiles(&s);
+    num_snaps = av_GetSnapsCount();
+    prognames = (progname_t*)calloc(num_programs, sizeof(progname_t));
+    if(num_snaps) snapnames = (snapname_t*)calloc(num_snaps, sizeof(snapname_t));
+    if(prognames == NULL) {
+        exitProg();
+        return;
+    }
     av_GenerateFileIndex(prognames, num_programs, &s);
     av_GenerateSnapIndex(snapnames, num_snaps, &snapMemUse);
     {
@@ -165,7 +164,7 @@ void main(void) {
                     if(selected.sysopt < 2) selected.sysopt++;
                     break;
                 case SETTINGS:
-                    if(selected.settopt < 1) selected.settopt++;
+                    if(selected.settopt < 3) selected.settopt++;
                     break;
             }
         }
@@ -176,7 +175,7 @@ void main(void) {
                     if((selected.program + 13) < num_programs) selected.program += 13;
                     break;
                 case SETTINGS:
-                    if(selected.settopt == 1) s.maxSnaps++;
+                    if(selected.settopt == 3) s.maxSnaps++;
                     break;
             }
         }
@@ -186,7 +185,7 @@ void main(void) {
                     if((selected.program - 13) >= 0) selected.program -= 13;
                     break;
                 case SETTINGS:
-                    if(selected.settopt == 1)
+                    if(selected.settopt == 3)
                         if(s.maxSnaps > 0) s.maxSnaps--;
                     break;
             }
@@ -218,7 +217,7 @@ void main(void) {
         }
         if(key == sk_Stat){
             progname_t* newmem;
-            num_programs = av_GetNumFiles();
+            num_programs = av_GetNumFiles(&s);
             newmem = realloc(prognames, num_programs * sizeof(progname_t));
             if(newmem) prognames = newmem;
             memset(prognames, 0, num_programs * sizeof(progname_t));
@@ -296,6 +295,10 @@ void main(void) {
                 case SETTINGS:
                     if(selected.settopt == 0)
                         s.indexSplit = (!s.indexSplit);
+                    if(selected.settopt == 1)
+                        s.indexProgs = (!s.indexProgs);
+                    if(selected.settopt == 2)
+                        s.indexAppvars = (!s.indexAppvars);
                     break;
                 case SYS_SCANS:
                     if(selected.sysopt == 0) av_ChecksumOS(&ossave, os_start, *_OSSIZE, wait_icon);
@@ -313,6 +316,11 @@ void main(void) {
             switch(screen){
                 case MAIN:
                     progRun = false;
+                {
+                    ti_var_t fp = ti_Open(AVSettings, "r+");
+                    ti_Write(&s, sizeof(settings_t), 1, fp);
+                    ti_Close(fp);
+                }
                     break;
                 case FILE_OPTS:
                     if(selected.progopt) selected.progopt = 0;
@@ -608,7 +616,9 @@ void main(void) {
                     int snap_x;
                     progopt_t settings_yvals[] = {
                         {25, ui_textstart_y + 22},
-                        {65, ui_textstart_y + 65}
+                        {25, ui_textstart_y + 65},
+                        {25, ui_textstart_y + 75},
+                        {65, ui_textstart_y + 90}
                     };
                     pgrm_EraseContent();
                     gfx_SetTextScale(2,2);
@@ -622,17 +632,28 @@ void main(void) {
                         gfx_SetTextXY(12, ui_textstart_y + 22);
                         gfx_PrintChar('X');
                     }
-                    
                     gfx_PrintStringXY("Enable Split Indexing Mode", 30, ui_textstart_y + 22);
                     gfx_PrintStringXY("Reserve checksum and size calculations", 40, ui_textstart_y + 32);
                     gfx_PrintStringXY("for first viewing in Program Options.", 40, ui_textstart_y + 42);
                     gfx_PrintStringXY("Less load time, slight scroll lag.", 40, ui_textstart_y + 52);
-                    gfx_SetTextXY(10, ui_textstart_y + 65);
+                    gfx_Rectangle(10, ui_textstart_y + 63, 11, 11);
+                    if(s.indexProgs) {
+                        gfx_SetTextXY(12, ui_textstart_y + 65);
+                        gfx_PrintChar('X');
+                    }
+                    gfx_Rectangle(10, ui_textstart_y + 73, 11, 11);
+                    if(s.indexAppvars) {
+                        gfx_SetTextXY(12, ui_textstart_y + 75);
+                        gfx_PrintChar('X');
+                    }
+                    gfx_PrintStringXY("Index Unlocked Programs", 30, ui_textstart_y + 65);
+                    gfx_PrintStringXY("Index Application Variables", 30, ui_textstart_y + 75);
+                    gfx_SetTextXY(10, ui_textstart_y + 90);
                     gfx_PrintUInt(num_snaps, num_len(num_snaps));
                     gfx_PrintString(" / ");
                     gfx_PrintUInt(s.maxSnaps, num_len(s.maxSnaps));
                     gfx_PrintStringXY("Snapshot Max File Count", 70, gfx_GetTextY());
-                    gfx_PrintStringXY("Memory Usage: ", 20, ui_textstart_y + 77);
+                    gfx_PrintStringXY("Memory Usage: ", 20, ui_textstart_y + 100);
                     gfx_PrintUInt(snapMemUse, num_len(snapMemUse));
                     gfx_PrintString(" bytes");
                     
@@ -680,7 +701,6 @@ void av_SendAllToArchive(void){
                (!strncmp(var_name, PropDB, 8)) ||
                (!strncmp(var_name, AVSettings, 8)) ||
                (!strncmp(var_name, AVDefs, 8)) ||
-               (!strncmp(var_name, OSProp, 8)) ||
                (!strncmp(var_name, "AVsh", 4))){
                     ti_var_t fp = ti_OpenVar(var_name, "r", type);
                     if(fp) ti_SetArchiveStatus(true, fp);
